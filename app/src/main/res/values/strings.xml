@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">EcoSphereProject</string>
+    <string name="title_edikasi">Edukasi</string>
+    <string name="title_komunitas">Komunitas</string>
+    <string name="title_home">Home</string>
+    <string name="title_map">Peta</string>
 </resources>

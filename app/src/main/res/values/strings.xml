@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">EcoSphereProject</string>
+    <string name="logo_name">Logo App</string>
     <string name="title_edikasi">Edukasi</string>
     <string name="title_komunitas">Komunitas</string>
     <string name="title_home">Home</string>
     <string name="title_map">Peta</string>
+
+    <!--splash screen-->
+    <string name="splash_screen_animate_title">Reducing Waste</string>
+    <string name="splash_screen_animate_desc">Preserving Our World</string>
 </resources>

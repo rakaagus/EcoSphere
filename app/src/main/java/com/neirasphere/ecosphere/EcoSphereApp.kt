@@ -23,6 +23,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.neirasphere.ecosphere.ui.navigation.NavigationItem
 import com.neirasphere.ecosphere.ui.navigation.Screen
+import com.neirasphere.ecosphere.ui.screen.onboarding.OnboardingScreen
 import com.neirasphere.ecosphere.ui.screen.splashscreen.SplashScreen
 
 @Composable
@@ -58,7 +59,7 @@ fun EcoSphereApp(
                 SplashScreen(navController = navController)
             }
             composable(Screen.OnboardingScreen.route) {
-
+                OnboardingScreen(navController = navController)
             }
             composable(Screen.LoginScreen.route) {
 

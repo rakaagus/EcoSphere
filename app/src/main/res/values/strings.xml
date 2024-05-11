@@ -9,4 +9,12 @@
     <!--splash screen-->
     <string name="splash_screen_animate_title">Reducing Waste</string>
     <string name="splash_screen_animate_desc">Preserving Our World</string>
+
+    <!--onboarding-->
+    <string name="title_onboarding_page_1">Selamat Datang di \nEcoSphere!</string>
+    <string name="desc_onboarding_page_1">Mari bergabung dalam perjalanan \nkeberlanjutan dan kebersihan \nlingkungan!</string>
+    <string name="title_onboarding_page_2">Setiap langkah hijau \nmenuju perubahan besar</string>
+    <string name="desc_onboarding_page_2">Aksi kecil memiliki dampak besar pada \nlingkungan. Dengan EcoSphere, kamu \ndapat membuat perbedaan!</string>
+    <string name="title_onboarding_page_3">Satu aksi hijau, satu dunia \nyang lebih baik!</string>
+    <string name="desc_onboarding_page_3">Mulailah hari ini dengan EcoSphere! \nJadikan setiap langkah hijau membawa \nkita menuju masa depan yang lebih baik!</string>
 </resources>

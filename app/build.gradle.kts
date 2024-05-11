@@ -64,6 +64,12 @@ dependencies {
     implementation(libs.androidx.lifecyle.viewModel)
     implementation(libs.io.coil.kt)
     testImplementation(libs.junit)
+
+    /*pager*/
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.pager.indicator)
+    implementation(libs.accompanist.flow.layout)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

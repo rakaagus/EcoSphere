@@ -17,4 +17,18 @@
     <string name="desc_onboarding_page_2">Aksi kecil memiliki dampak besar pada \nlingkungan. Dengan EcoSphere, kamu \ndapat membuat perbedaan!</string>
     <string name="title_onboarding_page_3">Satu aksi hijau, satu dunia \nyang lebih baik!</string>
     <string name="desc_onboarding_page_3">Mulailah hari ini dengan EcoSphere! \nJadikan setiap langkah hijau membawa \nkita menuju masa depan yang lebih baik!</string>
+    
+    <!--Auth - Login-->
+    <string name="not_have_account">Don’t have an account yet? </string>
+    <string name="sign_up">Sign up</string>
+    <string name="login_in">Login In</string>
+    <string name="title_email">Your Email</string>
+    <string name="title_password">Your Password</string>
+    <string name="title_forgot">Forgot Password</string>
+    <string name="continue_with">or login with</string>
+    <string name="title_first_name">First Name</string>
+    <string name="title_last_name">Last Name</string>
+    <string name="you_have_account">Do you have an account?</string>
+    <string name="term_1">By creating an account or signing you agree to \nour</string>
+    <string name="term_2">Terms and Conditions</string>
 </resources>

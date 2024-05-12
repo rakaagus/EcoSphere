@@ -29,6 +29,8 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.neirasphere.ecosphere.ui.navigation.NavigationItem
 import com.neirasphere.ecosphere.ui.navigation.Screen
+import com.neirasphere.ecosphere.ui.screen.auth.login.LoginScreen
+import com.neirasphere.ecosphere.ui.screen.auth.register.RegisterScreen
 import com.neirasphere.ecosphere.ui.screen.onboarding.OnboardingScreen
 import com.neirasphere.ecosphere.ui.screen.splashscreen.SplashScreen
 
@@ -68,10 +70,10 @@ fun EcoSphereApp(
                 OnboardingScreen(navController = navController)
             }
             composable(Screen.LoginScreen.route) {
-
+                LoginScreen(navController = navController)
             }
             composable(Screen.RegisterScreen.route) {
-
+                RegisterScreen(navController = navController)
             }
         }
     }
@@ -83,7 +85,7 @@ fun BottomAppBar(
     modifier: Modifier = Modifier
 ) {
     NavigationBar(
-        modifier = modifier
+        modifier = modifier,
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route

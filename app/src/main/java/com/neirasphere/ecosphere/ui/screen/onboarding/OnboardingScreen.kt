@@ -1,6 +1,7 @@
 package com.neirasphere.ecosphere.ui.screen.onboarding
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,7 +29,9 @@ import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
 import com.neirasphere.ecosphere.ui.navigation.Screen
 import com.neirasphere.ecosphere.ui.theme.BlackColor
+import com.neirasphere.ecosphere.ui.theme.InActiveColor
 import com.neirasphere.ecosphere.ui.theme.NeutralColorWhite
+import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 import com.neirasphere.ecosphere.utils.OnboardingPage
 import kotlinx.coroutines.launch
 
@@ -66,10 +69,11 @@ fun OnboardingScreen(
         Button(
             onClick = {
                 scope.launch {
-                    pagerState.animateScrollToPage(pagerState.currentPage + 1)
-                }
-                if(pagerState.currentPage == 2){
-                    navController.navigate(Screen.LoginScreen.route)
+                    if(pagerState.currentPage == pagerState.pageCount - 1){
+                        navController.navigate(Screen.LoginScreen.route)
+                    }else {
+                        pagerState.animateScrollToPage(pagerState.currentPage + 1)
+                    }
                 }
             },
             shape = MaterialTheme.shapes.medium,
@@ -82,7 +86,12 @@ fun OnboardingScreen(
             modifier = Modifier
                 .align(Alignment.CenterHorizontally)
                 .weight(1f),
-            pagerState = pagerState
+            pagerState = pagerState,
+            inactiveColor = InActiveColor,
+            activeColor = PrimaryColor,
+            spacing = 5.dp,
+            indicatorHeight = 10.dp,
+            indicatorWidth = 10.dp
         )
     }
 }

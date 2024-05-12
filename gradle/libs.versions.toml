@@ -14,6 +14,7 @@ coilVersion = "2.6.0"
 veiwModelVersion = "2.7.0"
 accompanist_version = "0.24.2-alpha"
 flowLayoutVersion = "0.27.1"
+systemUi = "0.27.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -44,6 +45,8 @@ accompanist-pager = { group = "com.google.accompanist", name = "accompanist-page
 accompanist-pager-indicator = { group = "com.google.accompanist", name = "accompanist-pager-indicators", version.ref="accompanist_version"}
 accompanist-flow-layout = {group = "com.google.accompanist", name = "accompanist-flowlayout", version.ref = "flowLayoutVersion"}
 
+#statubar
+accompanist-system-ui = {group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref="systemUi"}
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

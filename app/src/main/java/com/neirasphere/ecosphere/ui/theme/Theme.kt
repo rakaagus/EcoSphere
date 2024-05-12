@@ -36,7 +36,8 @@ private val LightColorScheme = lightColorScheme(
     primaryContainer = PrimaryColor,
     onPrimaryContainer = NeutralColorWhite,
     secondaryContainer = NeutralColorGrey,
-    onSecondaryContainer = NeutralColorWhite
+    onSecondaryContainer = NeutralColorWhite,
+    background = Color.White
 
 //    primary = Purple40,
 //    secondary = PurpleGrey40,
@@ -60,7 +61,7 @@ fun EcoSphereProjectTheme(
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
+    /*val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
@@ -68,7 +69,8 @@ fun EcoSphereProjectTheme(
 
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
-    }
+    }*/
+    val colorScheme = LightColorScheme
     val view = LocalView.current
     if (!view.isInEditMode) {
         SideEffect {

@@ -70,6 +70,9 @@ dependencies {
     implementation(libs.accompanist.pager.indicator)
     implementation(libs.accompanist.flow.layout)
 
+    /*StatusBar*/
+    implementation(libs.accompanist.system.ui)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

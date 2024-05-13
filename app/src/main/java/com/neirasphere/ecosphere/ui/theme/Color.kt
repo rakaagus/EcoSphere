@@ -17,3 +17,5 @@ val BlackColor = Color(0xFF1F1F1F)
 val NeutralColorGrey = Color(0xFFE7E7E7)
 val NeutralColorWhite = Color(0xFFF9F9F9)
 val InActiveColor = Color(0xFF7CC07C)
+
+val containerColor = Color(0xFFF9F9F9)

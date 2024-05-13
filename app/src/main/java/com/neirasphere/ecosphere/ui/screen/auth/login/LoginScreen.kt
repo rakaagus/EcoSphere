@@ -80,7 +80,7 @@ fun LoginContent(
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 10.dp)
     )
-    ButtonAuth(label = "Login", navHostController = navController, click = { /*TODO*/ })
+    ButtonAuth(label = "Login", navHostController = navController, click = { navController.navigate(Screen.HomeScreen.route) })
     AuthWith(string = R.string.continue_with)
     Row(
         verticalAlignment = Alignment.CenterVertically,

@@ -29,7 +29,7 @@ fun ButtonAuth(
     click: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Button(shape = MaterialTheme.shapes.medium, onClick = {  }, modifier = modifier
+    Button(shape = MaterialTheme.shapes.medium, onClick = click, modifier = modifier
         .fillMaxWidth()
         .padding(horizontal = 16.dp)
         .height(50.dp)) {

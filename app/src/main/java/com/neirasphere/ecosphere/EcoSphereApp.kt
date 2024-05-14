@@ -93,7 +93,7 @@ fun EcoSphereApp(
                 RegisterScreen(navController = navController)
             }
             composable(Screen.HomeScreen.route) {
-                HomeScreen()
+                HomeScreen(navController = navController)
             }
             composable(Screen.EducationScreen.route) {}
             composable(Screen.MapScreen.route) {}
@@ -159,7 +159,8 @@ fun BottomAppBar(
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.scan_icon),
-                            contentDescription = "icon"
+                            contentDescription = "icon",
+                            modifier = Modifier.size(35.dp)
                         )
                     }
                 }

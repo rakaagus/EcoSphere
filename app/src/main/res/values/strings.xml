@@ -31,4 +31,12 @@
     <string name="you_have_account">Do you have an account?</string>
     <string name="term_1">By creating an account or signing you agree to \nour</string>
     <string name="term_2">Terms and Conditions</string>
+
+    <!--Home-->
+    <string name="hello_user">Halo, %s</string>
+    <string name="count_classify">%s \nTotal</string>
+    <string name="count_anorganic">%s \nAnorganik</string>
+    <string name="count_organic">%s \nOrganik</string>
+    <string name="section_one">Kategori Belajar Kamu</string>
+    <string name="section_two">TPS Sekitar Piyungan, Yogyakarta</string>
 </resources>

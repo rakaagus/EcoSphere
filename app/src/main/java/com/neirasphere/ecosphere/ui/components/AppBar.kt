@@ -119,7 +119,6 @@ fun CenterTopAppBar(
         navigationIcon = {
             IconButton(
                 onClick = {
-                    navController.popBackStack()
                     navController.navigateUp()
                 },
                 colors = IconButtonDefaults.iconButtonColors(

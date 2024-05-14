@@ -80,7 +80,10 @@ fun HomeContent(
                 }
             }
         }
-        SectionTextColumn(title = R.string.section_two, modifier = Modifier.padding(top = 25.dp, bottom = 20.dp)) {
+        SectionTextColumn(
+            title = R.string.section_two,
+            modifier = Modifier.padding(top = 25.dp, bottom = 20.dp)
+        ) {
             Image(
                 painter = painterResource(id = R.drawable.map_image),
                 contentDescription = "Map",

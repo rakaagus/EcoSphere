@@ -42,12 +42,13 @@ fun HomeScreen(
     ),
     modifier: Modifier = Modifier
 ) {
-    HomeContent(viewModel = viewModel, modifier = modifier)
+    HomeContent(viewModel = viewModel, navController = navController, modifier = modifier)
 }
 
 @Composable
 fun HomeContent(
     viewModel: HomeViewModel,
+    navController: NavController,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -55,7 +56,7 @@ fun HomeContent(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        HomeAppBar(name = "Erlin", location = "Cipayung, Bekasi")
+        HomeAppBar(name = "Erlin", location = "Cipayung, Bekasi", navController = navController)
         SearchBar(query = "", onQueryChange = {}, modifier = Modifier.padding(horizontal = 16.dp))
         HomeCardClassify("10", "20", "30")
         SectionTextColumn(title = R.string.section_one, modifier = Modifier.padding(top = 25.dp)) {

@@ -51,6 +51,8 @@ import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.FabPosition
 import androidx.compose.ui.res.painterResource
 import androidx.compose.material.FloatingActionButtonDefaults
+import com.neirasphere.ecosphere.ui.components.CenterTopAppBar
+import com.neirasphere.ecosphere.ui.screen.profile.ProfileScreen
 
 @Composable
 fun EcoSphereApp(
@@ -64,6 +66,9 @@ fun EcoSphereApp(
         topBar = {
             when (currentRoute) {
                 Screen.SplashScreen.route, Screen.OnboardingScreen.route, Screen.LoginScreen.route, Screen.RegisterScreen.route -> {}
+                Screen.ProfileScreen.route -> {
+                    CenterTopAppBar(navController = navController, title = null)
+                }
             }
         },
         bottomBar = {
@@ -77,7 +82,7 @@ fun EcoSphereApp(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.HomeScreen.route,
+            startDestination = Screen.SplashScreen.route,
             modifier = modifier.padding(innerPadding)
         ) {
             composable(Screen.SplashScreen.route) {
@@ -99,6 +104,9 @@ fun EcoSphereApp(
             composable(Screen.MapScreen.route) {}
             composable(Screen.CommunityScreen.route) {}
             composable(Screen.ClassifyScreen.route) {}
+            composable(Screen.ProfileScreen.route) {
+                ProfileScreen(navController = navController)
+            }
         }
     }
 }

@@ -51,6 +51,15 @@ import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.FabPosition
 import androidx.compose.ui.res.painterResource
 import androidx.compose.material.FloatingActionButtonDefaults
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
+import com.neirasphere.ecosphere.ui.screen.education.EducationDetailScreen
+import com.neirasphere.ecosphere.ui.screen.education.EducationDone
+import com.neirasphere.ecosphere.ui.screen.education.EducationScreen
+import com.neirasphere.ecosphere.ui.screen.education.FifthEducationDetailScreen
+import com.neirasphere.ecosphere.ui.screen.education.FourthEducationDetailScreen
+import com.neirasphere.ecosphere.ui.screen.education.SecondEducationDetailScreen
+import com.neirasphere.ecosphere.ui.screen.education.ThirdEducationDetailScreen
 
 @Composable
 fun EcoSphereApp(
@@ -95,7 +104,89 @@ fun EcoSphereApp(
             composable(Screen.HomeScreen.route) {
                 HomeScreen(navController = navController)
             }
-            composable(Screen.EducationScreen.route) {}
+            composable(Screen.EducationScreen.route) {
+                EducationScreen(
+                    onClickDetail = { educationId ->
+                        navController.navigate(Screen.EducationDetailScreen.createRoute(educationId))
+                    }
+                )
+            }
+            composable(Screen.EducationDetailScreen.route,
+                arguments = listOf(
+                    navArgument("educationId") {
+                        type = NavType.LongType
+                    }
+                )
+            ){
+                val id = it.arguments?.getLong("educationId") ?: 1
+                EducationDetailScreen(
+                    onClickDetail = { firstEducationId ->
+                        navController.navigate(Screen.SecondEducationDetailScreen.createRoute(firstEducationId))
+                    },
+                    educationId = id
+                )
+            }
+            composable(Screen.SecondEducationDetailScreen.route,
+                arguments = listOf(
+                    navArgument("firstEducationId") {
+                        type = NavType.LongType
+                    }
+                )
+            ){
+                val id = it.arguments?.getLong("firstEducationId") ?: 1
+                SecondEducationDetailScreen(
+                    onClickDetail = { secondEducationId ->
+                        navController.navigate(Screen.ThirdEducationDetailScreen.createRoute(secondEducationId))
+                    },
+                    firstEducationId = id,
+                    navController = navController
+                )
+            }
+            composable(Screen.ThirdEducationDetailScreen.route,
+                arguments = listOf(
+                    navArgument("secondEducationId") {
+                        type = NavType.LongType
+                    }
+                )
+            ){
+                val id = it.arguments?.getLong("secondEducationId") ?: 1
+                ThirdEducationDetailScreen(
+                    onClickDetail = { thirdEducationId ->
+                        navController.navigate(Screen.FourthEducationDetailScreen.createRoute(thirdEducationId))
+                    },
+                    secondEducationId = id,
+                    navController = navController
+                )
+            }
+            composable(Screen.FourthEducationDetailScreen.route,
+                arguments = listOf(
+                    navArgument("thirdEducationId") {
+                        type = NavType.LongType
+                    }
+                )
+            ){
+                val id = it.arguments?.getLong("thirdEducationId") ?: 1
+                FourthEducationDetailScreen(
+                    onClickDetail = { fourthEducationId ->
+                        navController.navigate(Screen.FifthEducationDetailScreen.createRoute(fourthEducationId))
+                    },
+                    thirdEducationId = id,
+                    navController = navController
+                )
+            }
+            composable(Screen.FifthEducationDetailScreen.route,
+                arguments = listOf(
+                    navArgument("fourthEducationId") {
+                        type = NavType.LongType
+                    }
+                )
+            ){
+                val id = it.arguments?.getLong("fourthEducationId") ?: 1
+                FifthEducationDetailScreen(fourthEducationId = id, navController = navController )
+            }
+            composable(Screen.EducationDoneScreen.route){
+                EducationDone(navController = navController)
+            }
             composable(Screen.MapScreen.route) {}
             composable(Screen.CommunityScreen.route) {}
             composable(Screen.ClassifyScreen.route) {}

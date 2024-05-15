@@ -68,8 +68,8 @@ fun HomeContent(
                     is UiState.Error -> {}
                     is UiState.Success -> {
                         LazyColumn(
-                            verticalArrangement = Arrangement.spacedBy(20.dp),
-                            modifier = Modifier.height(450.dp)
+                            verticalArrangement = Arrangement.spacedBy(18.dp),
+                            modifier = Modifier.height((670.dp))
                         ) {
                             items(state.data) {
                                 HomeCategoriesLearnCard(categoriesLearn = it)

@@ -109,5 +109,26 @@ fun ButtonEducation(
                     .clickable { onClick() }
             )
         }
-    }
+    }  
 }
+
+@Composable
+fun ButtonProfile(
+    label: String,
+    navHostController: NavHostController,
+    click: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Button(
+        shape = MaterialTheme.shapes.medium,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color(0xFFE22F2F)
+        ),
+        onClick = click,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+            .height(50.dp))
+    {
+        Text(text = label, style = MaterialTheme.typography.bodyMedium, color = Color.White)
+    }

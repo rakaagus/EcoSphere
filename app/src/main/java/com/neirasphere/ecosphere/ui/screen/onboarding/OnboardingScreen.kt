@@ -70,6 +70,7 @@ fun OnboardingScreen(
             onClick = {
                 scope.launch {
                     if(pagerState.currentPage == pagerState.pageCount - 1){
+                        navController.popBackStack()
                         navController.navigate(Screen.LoginScreen.route)
                     }else {
                         pagerState.animateScrollToPage(pagerState.currentPage + 1)

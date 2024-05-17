@@ -42,12 +42,13 @@ fun HomeScreen(
     ),
     modifier: Modifier = Modifier
 ) {
-    HomeContent(viewModel = viewModel, modifier = modifier)
+    HomeContent(viewModel = viewModel, navController = navController, modifier = modifier)
 }
 
 @Composable
 fun HomeContent(
     viewModel: HomeViewModel,
+    navController: NavController,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -55,7 +56,7 @@ fun HomeContent(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        HomeAppBar(name = "Erlin", location = "Cipayung, Bekasi")
+        HomeAppBar(name = "Erlin", location = "Cipayung, Bekasi", navController = navController)
         SearchBar(query = "", onQueryChange = {}, modifier = Modifier.padding(horizontal = 16.dp))
         HomeCardClassify("10", "20", "30")
         SectionTextColumn(title = R.string.section_one, modifier = Modifier.padding(top = 25.dp)) {
@@ -68,8 +69,8 @@ fun HomeContent(
                     is UiState.Error -> {}
                     is UiState.Success -> {
                         LazyColumn(
-                            verticalArrangement = Arrangement.spacedBy(18.dp),
-                            modifier = Modifier.height((670.dp))
+                            verticalArrangement = Arrangement.spacedBy(20.dp),
+                            modifier = Modifier.height(450.dp)
                         ) {
                             items(state.data) {
                                 HomeCategoriesLearnCard(categoriesLearn = it)
@@ -79,7 +80,10 @@ fun HomeContent(
                 }
             }
         }
-        SectionTextColumn(title = R.string.section_two, modifier = Modifier.padding(top = 25.dp, bottom = 20.dp)) {
+        SectionTextColumn(
+            title = R.string.section_two,
+            modifier = Modifier.padding(top = 25.dp, bottom = 20.dp)
+        ) {
             Image(
                 painter = painterResource(id = R.drawable.map_image),
                 contentDescription = "Map",

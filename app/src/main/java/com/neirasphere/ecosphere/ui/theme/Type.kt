@@ -48,5 +48,15 @@ val Typography = Typography(
         fontSize = 14.sp,
         fontWeight = FontWeight.Bold,
         fontFamily = Nunito
+    ),
+    labelMedium = TextStyle(
+        fontSize = 16.sp,
+        fontWeight = FontWeight.Bold,
+        fontFamily = Nunito
+    ),
+    labelLarge = TextStyle(
+        fontSize = 18.sp,
+        fontWeight = FontWeight.Bold,
+        fontFamily = Nunito
     )
 )

@@ -2,6 +2,7 @@ package com.neirasphere.ecosphere.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.model.CategoryLearn
+import com.neirasphere.ecosphere.model.EducationData
 import com.neirasphere.ecosphere.ui.theme.BlackColor
 import com.neirasphere.ecosphere.ui.theme.NeutralColorGrey
 import com.neirasphere.ecosphere.ui.theme.NeutralColorWhite
@@ -65,11 +67,10 @@ fun HomeCardClassify(
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.padding(end = 12.dp)
                 ) {
-                    Icon(
+                    Image(
                         painter = painterResource(id = R.drawable.trash_icon_normal),
                         contentDescription = "count_classify",
-                        modifier = Modifier.size(40.dp),
-                        tint = Color.White
+                        modifier = Modifier.size(40.dp)
                     )
                     Spacer(modifier = Modifier.width(5.dp))
                     Text(
@@ -91,11 +92,10 @@ fun HomeCardClassify(
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.padding(start = 12.dp)
                 ) {
-                    Icon(
+                    Image(
                         painter = painterResource(id = R.drawable.trash_icon_anorganic),
                         contentDescription = "count_classify",
-                        modifier = Modifier.size(40.dp),
-                        tint = Color.White
+                        modifier = Modifier.size(40.dp)
                     )
                     Spacer(modifier = Modifier.width(5.dp))
                     Text(
@@ -195,4 +195,40 @@ private fun HomeCategoriesLearnCardPrev() {
             1, "Sampah Anorganik", R.drawable.item_home_1
         )
     )
+}
+
+
+@Composable
+fun EducationCard(
+    educationData : EducationData,
+    onClickDetail : (Long) -> Unit,
+    modifier : Modifier = Modifier
+){
+    Card(shape = RoundedCornerShape(10.dp),
+        colors = CardDefaults.cardColors(NeutralColorWhite),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable {
+                onClickDetail(educationData.id)
+            }
+
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            Image(
+                painter = painterResource(id = educationData.image),
+                contentDescription = educationData.title,
+                modifier = Modifier
+                    .size(120.dp)
+                    .padding(12.dp)
+            )
+            Text(
+                text = educationData.title,
+                style = MaterialTheme.typography.labelMedium,
+            )
+        }
+    }
 }

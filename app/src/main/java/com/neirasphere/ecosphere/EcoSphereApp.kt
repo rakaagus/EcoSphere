@@ -57,6 +57,7 @@ import com.neirasphere.ecosphere.ui.components.CenterTopAppBar
 import com.neirasphere.ecosphere.ui.screen.profile.ProfileScreen
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import com.neirasphere.ecosphere.ui.screen.auth.changepassword.ChangePasswordScreen
 import com.neirasphere.ecosphere.ui.screen.education.EducationDetailScreen
 import com.neirasphere.ecosphere.ui.screen.education.EducationDone
 import com.neirasphere.ecosphere.ui.screen.education.EducationScreen
@@ -104,7 +105,7 @@ fun EcoSphereApp(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.HomeScreen.route,
+            startDestination = Screen.ChangePasswordScreen.route,
             modifier = modifier.padding(innerPadding)
         ) {
             composable(Screen.SplashScreen.route) {
@@ -215,7 +216,7 @@ fun EcoSphereApp(
                 EditProfileScreen(navController = navController)
             }
             composable(Screen.ChangePasswordScreen.route){
-
+                ChangePasswordScreen(navController = navController)
             }
             composable(Screen.VerificationEmailScreen.route){
 

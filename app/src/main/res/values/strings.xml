@@ -72,5 +72,6 @@
 
     <!--Change password-->
     <string name="title_page_change_password">Akun Personal</string>
-
+    <string name="change_pass_header_title">Masukkan Password Baru Kamu Disini :</string>
+    <string name="edit_sec_title_6">Konfirmasi Password</string>
 </resources>

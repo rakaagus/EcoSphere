@@ -86,6 +86,12 @@ fun EcoSphereApp(
                 Screen.EducationScreen.route -> {
                     CenterTopAppBar(navController = navController, title = R.string.title_page_education)
                 }
+                Screen.VerificationEmailScreen.route -> {
+                    CenterTopAppBar(navController = navController, title = R.string.title_page_verif_eamil)
+                }
+                Screen.ChangePasswordScreen.route -> {
+                    CenterTopAppBar(navController = navController, title = R.string.title_page_change_password)
+                }
             }
         },
         bottomBar = {
@@ -98,7 +104,7 @@ fun EcoSphereApp(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.SplashScreen.route,
+            startDestination = Screen.HomeScreen.route,
             modifier = modifier.padding(innerPadding)
         ) {
             composable(Screen.SplashScreen.route) {
@@ -207,6 +213,12 @@ fun EcoSphereApp(
             }
             composable(Screen.EditProfileScreen.route){
                 EditProfileScreen(navController = navController)
+            }
+            composable(Screen.ChangePasswordScreen.route){
+
+            }
+            composable(Screen.VerificationEmailScreen.route){
+
             }
         }
     }

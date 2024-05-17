@@ -117,8 +117,8 @@ fun ProfileContent(
     }
     ButtonProfile(
         label = "Delete Account",
-        navHostController = rememberNavController(),
         modifier = Modifier.padding(vertical = 33.dp),
+        isLogoutButton = true,
         click = {
 
         })

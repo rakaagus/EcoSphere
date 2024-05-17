@@ -29,4 +29,7 @@ sealed class Screen(val route: String) {
     object MapScreen: Screen("map_screen")
     object CommunityScreen: Screen("community_screen")
     object ClassifyScreen: Screen("classify_screen")
+
+    object ChangePasswordScreen: Screen("change_password_screen")
+    object VerificationEmailScreen: Screen("verification_email_screen")
 }

@@ -117,14 +117,14 @@ fun ButtonEducation(
 @Composable
 fun ButtonProfile(
     label: String,
-    navHostController: NavHostController,
+    isLogoutButton: Boolean,
     click: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Button(
         shape = MaterialTheme.shapes.medium,
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFFE22F2F)
+            containerColor = if(isLogoutButton) Color(0xFFE22F2F) else PrimaryColor
         ),
         onClick = click,
         modifier = modifier

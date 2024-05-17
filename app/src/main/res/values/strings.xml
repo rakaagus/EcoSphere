@@ -52,4 +52,10 @@
     <string name="item_header_5">Free Up Space</string>
     <string name="item_header_6">Report a Problem</string>
     <string name="item_header_7">Log out</string>
+
+    <!--Edit Profile-->
+    <string name="title_page_edit_profile">Edit Profil</string>
+
+    <!--Education-->
+    <string name="title_page_education">Edukasi</string>
 </resources>

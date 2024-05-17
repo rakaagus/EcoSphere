@@ -66,8 +66,8 @@ fun EducationContent(
 ){
     Column(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp)
+            .fillMaxSize()
+            .padding(horizontal = 16.dp)
             .verticalScroll(rememberScrollState()),
     ){
         viewModel.education.collectAsState(initial = UiState.Loading).value.let {state ->
@@ -119,7 +119,7 @@ fun EducationContent(
                     )
                     LazyColumn (
                         verticalArrangement = Arrangement.spacedBy(18.dp),
-                        modifier = Modifier.height((670.dp))
+                        modifier = Modifier.height((690.dp))
                     ){
                         items(state.data){
                             EducationCard(educationData = it, onClickDetail = onClickDetail)

@@ -25,6 +25,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.neirasphere.ecosphere.R
@@ -61,7 +62,8 @@ fun RoundedIconButton(
         content = {
             Image(
                 painter = painterResource(id = imageId), // Gambar di dalam tombol
-                contentDescription = null // Deskripsi konten kosong karena gambar akan berfungsi sebagai tombol
+                contentDescription = null, // Deskripsi konten kosong karena gambar akan berfungsi sebagai tombol
+                modifier = Modifier.size(25.dp)
             )
         },
         colors = IconButtonDefaults.filledIconButtonColors(NeutralColorGrey)
@@ -128,7 +130,9 @@ fun ButtonProfile(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
-            .height(50.dp))
+            .height(50.dp)
+    )
     {
         Text(text = label, style = MaterialTheme.typography.bodyMedium, color = Color.White)
     }
+}

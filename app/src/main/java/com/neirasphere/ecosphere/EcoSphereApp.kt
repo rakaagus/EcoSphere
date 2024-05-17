@@ -51,6 +51,8 @@ import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.FabPosition
 import androidx.compose.ui.res.painterResource
 import androidx.compose.material.FloatingActionButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.text.font.FontWeight
 import com.neirasphere.ecosphere.ui.components.CenterTopAppBar
 import com.neirasphere.ecosphere.ui.screen.profile.ProfileScreen
 import androidx.navigation.NavType
@@ -62,6 +64,7 @@ import com.neirasphere.ecosphere.ui.screen.education.FifthEducationDetailScreen
 import com.neirasphere.ecosphere.ui.screen.education.FourthEducationDetailScreen
 import com.neirasphere.ecosphere.ui.screen.education.SecondEducationDetailScreen
 import com.neirasphere.ecosphere.ui.screen.education.ThirdEducationDetailScreen
+import com.neirasphere.ecosphere.ui.screen.profile.edit.EditProfileScreen
 
 @Composable
 fun EcoSphereApp(
@@ -74,15 +77,19 @@ fun EcoSphereApp(
     Scaffold(
         topBar = {
             when (currentRoute) {
-                Screen.SplashScreen.route, Screen.OnboardingScreen.route, Screen.LoginScreen.route, Screen.RegisterScreen.route -> {}
                 Screen.ProfileScreen.route -> {
                     CenterTopAppBar(navController = navController, title = null)
+                }
+                Screen.EditProfileScreen.route -> {
+                    CenterTopAppBar(navController = navController, title = R.string.title_page_edit_profile)
+                }
+                Screen.EducationScreen.route -> {
+                    CenterTopAppBar(navController = navController, title = R.string.title_page_education)
                 }
             }
         },
         bottomBar = {
             when (currentRoute) {
-                Screen.SplashScreen.route, Screen.OnboardingScreen.route, Screen.LoginScreen.route, Screen.RegisterScreen.route -> {}
                 Screen.HomeScreen.route, Screen.EducationScreen.route, Screen.MapScreen.route, Screen.CommunityScreen.route -> {
                     BottomAppBar(navController = navController)
                 }
@@ -91,7 +98,7 @@ fun EcoSphereApp(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.HomeScreen.route,
+            startDestination = Screen.SplashScreen.route,
             modifier = modifier.padding(innerPadding)
         ) {
             composable(Screen.SplashScreen.route) {
@@ -198,6 +205,9 @@ fun EcoSphereApp(
             composable(Screen.ProfileScreen.route) {
                 ProfileScreen(navController = navController)
             }
+            composable(Screen.EditProfileScreen.route){
+                EditProfileScreen(navController = navController)
+            }
         }
     }
 }
@@ -279,7 +289,9 @@ fun BottomAppBar(
                     },
                     label = {
                         Text(
-                            text = item.title
+                            text = item.title, style = MaterialTheme.typography.bodySmall.copy(
+                                fontWeight = FontWeight.Bold
+                            )
                         )
                     },
                     colors = customColors

@@ -67,10 +67,11 @@ fun HomeCardClassify(
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.padding(end = 12.dp)
                 ) {
-                    Image(
+                    Icon(
                         painter = painterResource(id = R.drawable.trash_icon_normal),
                         contentDescription = "count_classify",
-                        modifier = Modifier.size(40.dp)
+                        modifier = Modifier.size(40.dp),
+                        tint = Color.White
                     )
                     Spacer(modifier = Modifier.width(5.dp))
                     Text(
@@ -92,10 +93,11 @@ fun HomeCardClassify(
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.padding(start = 12.dp)
                 ) {
-                    Image(
+                    Icon(
                         painter = painterResource(id = R.drawable.trash_icon_anorganic),
                         contentDescription = "count_classify",
-                        modifier = Modifier.size(40.dp)
+                        modifier = Modifier.size(40.dp),
+                        tint = Color.White
                     )
                     Spacer(modifier = Modifier.width(5.dp))
                     Text(

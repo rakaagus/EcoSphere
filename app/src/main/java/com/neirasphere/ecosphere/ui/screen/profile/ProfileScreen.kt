@@ -41,12 +41,15 @@ fun ProfileScreen(
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
     ) {
-        ProfileContent()
+        ProfileContent(navController = navController)
     }
 }
 
 @Composable
-fun ProfileContent(modifier: Modifier = Modifier) {
+fun ProfileContent(
+    navController: NavController,
+    modifier: Modifier = Modifier
+) {
     HeaderProfile(
         image = R.drawable.example_image_user,
         name = "Erlin",
@@ -61,7 +64,9 @@ fun ProfileContent(modifier: Modifier = Modifier) {
             SectionProfile(
                 title = R.string.profile_title,
                 icon = R.drawable.accoun_user,
-                navigateTo = { })
+                navigateTo = {
+                    navController.navigate(Screen.EditProfileScreen.route)
+                })
             SectionProfile(
                 title = R.string.item_header_1,
                 icon = R.drawable.icon_security,

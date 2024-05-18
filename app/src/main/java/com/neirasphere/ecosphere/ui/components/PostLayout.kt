@@ -15,10 +15,14 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowUpward
+import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Comment
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.filled.OutlinedFlag
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,8 +31,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -42,7 +44,7 @@ fun PostLayout(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(10.dp)
+            .padding(16.dp)
     ) {
         Row(
             horizontalArrangement = Arrangement.Center
@@ -57,17 +59,31 @@ fun PostLayout(
             )
             Spacer(modifier = Modifier.size(8.dp))
             Column {
-                Text(
-                    text = post.user.nama,
-                    style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 12.sp)
-                )
-                Spacer(modifier = Modifier.size(5.dp))
-                Text(
-                    text = "@${post.user.username} · ${post.timeAgo()}",
-                    style = TextStyle(fontSize = 12.sp)
-                )
+                Row(
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = post.user.nama,
+                        style = MaterialTheme.typography.labelSmall.copy(
+                            fontSize = 12.sp
+                        )
+                    )
+                    Spacer(modifier = Modifier.size(5.dp))
+                    Text(
+                        text = "@${post.user.username} · ${post.timeAgo()}",
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            fontSize = 12.sp
+                        )
+                    )
+                }
                 PostAndImage(post = post)
-                PostActions(post = post)
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    PostActions(post = post)
+                }
             }
 
         }
@@ -94,22 +110,28 @@ fun PostAvatarAndInfo(
         Spacer(modifier = Modifier.size(8.dp))
         Text(
             text = post.user.nama,
-            style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 12.sp)
+            style = MaterialTheme.typography.bodySmall.copy(
+                fontSize = 12.sp
+            )
         )
         Spacer(modifier = Modifier.size(5.dp))
         Text(
             text = "@${post.user.username} · ${post.timeAgo()}",
-            style = TextStyle(fontSize = 12.sp)
+            style = MaterialTheme.typography.bodySmall.copy(
+                fontSize = 12.sp
+            )
         )
     }
 }
 
 @Composable
 private fun PostAndImage(post: CommunityPost, modifier: Modifier = Modifier) {
-    Column(modifier = modifier.padding(top = 8.dp)) {
+    Column(modifier = modifier) {
         Text(
             text = post.text,
-            style = TextStyle(fontSize = 14.sp)
+            style = MaterialTheme.typography.bodySmall.copy(
+                fontSize = 14.sp
+            )
         )
         if (post.image != null) {
             Spacer(modifier = Modifier.size(10.dp))
@@ -150,10 +172,14 @@ fun PostActionWithText(icon: ImageVector, content: String) {
             imageVector = icon,
             contentDescription = "",
             modifier = Modifier.size(16.dp),
-            tint = if (icon == Icons.Default.Favorite) Color.Black else Color.Red
+            tint = if (icon == Icons.Default.Favorite) Color.Red else Color.Black
             )
         Spacer(modifier = Modifier.size(4.dp))
-        Text(text = content, fontSize = 12.sp)
+        Text(
+            text = content,
+            style = MaterialTheme.typography.bodySmall.copy(
+            fontSize = 12.sp)
+        )
     }
 }
 
@@ -167,5 +193,35 @@ fun PostAction(icon: ImageVector) {
                 .size(16.dp)
         )
         Spacer(modifier = Modifier.size(4.dp))
+    }
+}
+
+@Composable
+fun PostOptions(modifier: Modifier = Modifier) {
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp, end = 60.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Default.OutlinedFlag,
+            contentDescription = "",
+            modifier = Modifier
+                .size(16.dp)
+        )
+        Icon(
+            imageVector = Icons.Default.BookmarkBorder,
+            contentDescription = "",
+            modifier = Modifier
+                .size(16.dp)
+        )
+        Icon(
+            imageVector = Icons.Default.ArrowUpward,
+            contentDescription = "",
+            modifier = Modifier
+                .size(16.dp)
+        )
     }
 }

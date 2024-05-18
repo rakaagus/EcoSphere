@@ -28,7 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -98,39 +97,28 @@ fun CommunityAppBar(
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
-    val tabs = listOf(
-        MagicTabItem(title = "Populer") { },
-        MagicTabItem(title = "Terbaru") { }
-    )
-
     Column {
         Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(horizontal = 16.dp)
         ) {
-            IconButton(
-                onClick = {
-                    navController.navigateUp()
-                },
-                colors = IconButtonDefaults.iconButtonColors(
-                    containerColor = PrimaryColor
-                ),
-                modifier = Modifier.size(34.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBackIosNew,
-                    contentDescription = "Back",
-                    tint = Color.White,
-                    modifier = Modifier.size(18.dp)
-                )
-            }
-            SearchBar(query = "", onQueryChange = {}, modifier = Modifier.padding(horizontal = 16.dp))
+//            IconButton(
+//                onClick = {
+//                    navController.navigateUp()
+//                },
+//                colors = IconButtonDefaults.iconButtonColors(
+//                    containerColor = PrimaryColor
+//                ),
+//                modifier = Modifier.size(34.dp)
+//            ) {
+//                Icon(
+//                    imageVector = Icons.Default.ArrowBackIosNew,
+//                    contentDescription = "Back",
+//                    tint = Color.White,
+//                    modifier = Modifier.size(18.dp)
+//                )
+//            }
+            CommunitySearchBar(navController = navController)
         }
-        MagicTabLayout(
-            modifier = Modifier.layoutId("tablayout"),
-            tabList = tabs,
-            tabIndicatorColor = PrimaryColor
-        )
 
     }
 }

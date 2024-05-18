@@ -4,17 +4,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.FloatingActionButtonElevation
+import androidx.compose.material.FloatingActionButtonDefaults
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Book
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
@@ -23,11 +24,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -37,22 +36,20 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.neirasphere.ecosphere.ui.components.CenterTopAppBar
+import com.neirasphere.ecosphere.ui.components.CommunityAppBar
 import com.neirasphere.ecosphere.ui.navigation.NavigationItem
 import com.neirasphere.ecosphere.ui.navigation.Screen
 import com.neirasphere.ecosphere.ui.screen.auth.login.LoginScreen
 import com.neirasphere.ecosphere.ui.screen.auth.register.RegisterScreen
+import com.neirasphere.ecosphere.ui.screen.community.CommunityScreen
 import com.neirasphere.ecosphere.ui.screen.home.HomeScreen
 import com.neirasphere.ecosphere.ui.screen.onboarding.OnboardingScreen
+import com.neirasphere.ecosphere.ui.screen.profile.ProfileScreen
 import com.neirasphere.ecosphere.ui.screen.splashscreen.SplashScreen
 import com.neirasphere.ecosphere.ui.theme.BlackColor
 import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 import com.neirasphere.ecosphere.ui.theme.containerColor
-import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.FabPosition
-import androidx.compose.ui.res.painterResource
-import androidx.compose.material.FloatingActionButtonDefaults
-import com.neirasphere.ecosphere.ui.components.CenterTopAppBar
-import com.neirasphere.ecosphere.ui.screen.profile.ProfileScreen
 
 @Composable
 fun EcoSphereApp(
@@ -63,11 +60,34 @@ fun EcoSphereApp(
     val currentRoute = navBackStackEntry?.destination?.route
 
     Scaffold(
+        floatingActionButton = {
+            when (currentRoute) {
+                Screen.CommunityScreen.route -> {
+                    IconButton(
+                        onClick = { /*TODO*/ },
+                        colors = IconButtonDefaults.iconButtonColors(
+                            containerColor = PrimaryColor
+                        ),
+                        modifier = Modifier.size(34.dp)
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Add,
+                            contentDescription = "Add",
+                            tint = Color.White,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                }
+            }
+        },
         topBar = {
             when (currentRoute) {
                 Screen.SplashScreen.route, Screen.OnboardingScreen.route, Screen.LoginScreen.route, Screen.RegisterScreen.route -> {}
                 Screen.ProfileScreen.route -> {
                     CenterTopAppBar(navController = navController, title = null)
+                }
+                Screen.CommunityScreen.route -> {
+                    CommunityAppBar(navController = navController)
                 }
             }
         },
@@ -85,6 +105,7 @@ fun EcoSphereApp(
             startDestination = Screen.HomeScreen.route,
             modifier = modifier.padding(innerPadding)
         ) {
+
             composable(Screen.SplashScreen.route) {
                 SplashScreen(navController = navController)
             }
@@ -102,7 +123,9 @@ fun EcoSphereApp(
             }
             composable(Screen.EducationScreen.route) {}
             composable(Screen.MapScreen.route) {}
-            composable(Screen.CommunityScreen.route) {}
+            composable(Screen.CommunityScreen.route) {
+                CommunityScreen(navController = navController)
+            }
             composable(Screen.ClassifyScreen.route) {}
             composable(Screen.ProfileScreen.route) {
                 ProfileScreen(navController = navController)

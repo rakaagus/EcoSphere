@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.androidx.compose.material)
     implementation(libs.androidx.lifecyle.viewModel)
     implementation(libs.io.coil.kt)
+    implementation(libs.material)
     testImplementation(libs.junit)
 
     /*pager*/

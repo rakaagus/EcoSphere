@@ -24,18 +24,18 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.currentBackStackEntryAsState
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.ui.navigation.Screen
 import com.neirasphere.ecosphere.ui.theme.BlackColor
@@ -89,6 +89,49 @@ fun HomeAppBar(
                 modifier = Modifier.size(24.dp)
             )
         }
+    }
+}
+
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun CommunityAppBar(
+    navController: NavController,
+    modifier: Modifier = Modifier
+) {
+    val tabs = listOf(
+        MagicTabItem(title = "Populer") { },
+        MagicTabItem(title = "Terbaru") { }
+    )
+
+    Column {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(16.dp)
+        ) {
+            IconButton(
+                onClick = {
+                    navController.navigateUp()
+                },
+                colors = IconButtonDefaults.iconButtonColors(
+                    containerColor = PrimaryColor
+                ),
+                modifier = Modifier.size(34.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBackIosNew,
+                    contentDescription = "Back",
+                    tint = Color.White,
+                    modifier = Modifier.size(18.dp)
+                )
+            }
+            SearchBar(query = "", onQueryChange = {}, modifier = Modifier.padding(horizontal = 16.dp))
+        }
+        MagicTabLayout(
+            modifier = Modifier.layoutId("tablayout"),
+            tabList = tabs,
+            tabIndicatorColor = PrimaryColor
+        )
+
     }
 }
 

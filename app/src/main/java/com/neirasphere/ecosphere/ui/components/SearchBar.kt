@@ -25,6 +25,7 @@ import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -34,11 +35,10 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.neirasphere.ecosphere.R
-import com.neirasphere.ecosphere.data.local.DataSource
-import com.neirasphere.ecosphere.model.CommunityPost
 import com.neirasphere.ecosphere.ui.theme.NeutralColorGrey
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -81,8 +81,7 @@ fun SearchBar(
 @Composable
 fun CommunitySearchBar(
     modifier: Modifier = Modifier,
-    navController: NavController,
-    posts: List<CommunityPost> = DataSource.communityPostData()
+    navController: NavController
 ) {
     var text by remember {
         mutableStateOf("")
@@ -90,11 +89,20 @@ fun CommunitySearchBar(
     var active by remember {
         mutableStateOf(false)
     }
+    var searches = remember{
+        mutableStateListOf(
+            "Plastik Daur",
+            "Sampah Organik"
+        )
+    }
 
     SearchBar(
         query = text,
         onQueryChange = { text = it },
-        onSearch = { active = false },
+        onSearch = {
+            searches.add(text)
+            active = false
+                   },
         active = active,
         onActiveChange = { active = it },
         leadingIcon = {
@@ -151,40 +159,70 @@ fun CommunitySearchBar(
             .clip(RoundedCornerShape(36.dp))
     ) {
         LazyColumn {
-            items(posts, key = { it.id }) {
-                Row(
-                    modifier = modifier.padding(16.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.History,
-                        contentDescription = null,
-                        tint = Color(0xFF434343),
-                        modifier = Modifier.size(24.dp)
-                    )
-                    Spacer(modifier = modifier.padding(8.dp))
-                    Column {
-                        Text(
-                            text = it.text,
-                            style = MaterialTheme.typography.bodySmall,
-                            color = Color(0xFF434343)
+            // TODO: Fix search display bug as "androidx.compose..."
+            if (text.isNotEmpty()) {
+                items(searches) {
+                    Row(
+                        modifier = modifier.padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.History,
+                            contentDescription = null,
+                            tint = Color(0xFF434343),
+                            modifier = Modifier.size(24.dp)
                         )
                         Spacer(modifier = Modifier.padding(8.dp))
-                        LazyRow {
-                            items(4) {
-                                Image(
-                                    painter = painterResource(id = R.drawable.pot_handuk_2),
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .size(100.dp)
-                                        .clip(RoundedCornerShape(8.dp)),
-                                    contentScale = ContentScale.Crop
-                                )
-                                Spacer(modifier = Modifier.padding(8.dp))
+                        Text(
+                            text = searches.toString(),
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color(0xFF434343)
+                            )
+                    }
+                }
+            } else {
+                items(count = 5) {
+                    Row(
+                        modifier = modifier.padding(16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+//                    Icon(
+//                        imageVector = Icons.Default.History,
+//                        contentDescription = null,
+//                        tint = Color(0xFF434343),
+//                        modifier = Modifier.size(24.dp)
+//                    )
+//                    Spacer(modifier = modifier.padding(8.dp))
+                        Column {
+                            Text(
+                                text = "Pengolahan Limbah Plastik",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = Color(0xFF434343)
+                            )
+                            Spacer(modifier = Modifier.padding(0.dp))
+                            Text(
+                                text = "Tampilkan",
+                                style = MaterialTheme.typography.bodySmall,
+                                textDecoration = TextDecoration.Underline,
+                                color = Color(0xFF434343)
+                            )
+                            Spacer(modifier = Modifier.padding(2.dp))
+                            LazyRow {
+                                items(4) {
+                                    Image(
+                                        painter = painterResource(id = R.drawable.pot_handuk_2),
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .size(100.dp)
+                                            .clip(RoundedCornerShape(8.dp)),
+                                        contentScale = ContentScale.Crop
+                                    )
+                                    Spacer(modifier = Modifier.padding(8.dp))
+                                }
                             }
                         }
-                    }
 
+                    }
                 }
             }
         }

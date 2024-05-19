@@ -77,6 +77,50 @@ object DataSource {
             true,
             1900000,
             1660680212000
-        )
+        ),
+        CommunityPost(
+            5,
+            communityPostUser()[0],
+            "Pot daur ulang ini sangat bagus dan berkualitas sekali, tidak kalah dengan yang baru",
+            R.drawable.pot_handuk_2,
+            1700,
+            10000,
+            true,
+            1900000,
+            997342535
+        ),
+        CommunityPost(
+            6,
+            communityPostUser()[0],
+            "Pot daur ulang ini sangat bagus dan berkualitas sekali, tidak kalah dengan yang baru",
+            R.drawable.pot_handuk_2,
+            1700,
+            10000,
+            true,
+            1900000,
+            997342535
+        ),
+        CommunityPost(
+            7,
+            communityPostUser()[0],
+            "Pot daur ulang ini sangat bagus dan berkualitas sekali, tidak kalah dengan yang baru",
+            R.drawable.pot_handuk_2,
+            1700,
+            10000,
+            true,
+            1900000,
+            997342535
+        ),
+        CommunityPost(
+            8,
+            communityPostUser()[0],
+            "Pot daur ulang ini sangat bagus dan berkualitas sekali, tidak kalah dengan yang baru",
+            R.drawable.pot_handuk_2,
+            1700,
+            10000,
+            true,
+            1900000,
+            997342535
+        ),
     )
 }

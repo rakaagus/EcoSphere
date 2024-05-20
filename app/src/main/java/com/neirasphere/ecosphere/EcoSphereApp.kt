@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.FloatingActionButtonDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Book
@@ -52,8 +51,6 @@ import com.neirasphere.ecosphere.ui.screen.splashscreen.SplashScreen
 import com.neirasphere.ecosphere.ui.theme.BlackColor
 import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 import com.neirasphere.ecosphere.ui.theme.containerColor
-import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.FabPosition
 import androidx.compose.ui.res.painterResource
 import androidx.compose.material.FloatingActionButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -90,7 +87,9 @@ fun EcoSphereApp(
                         colors = IconButtonDefaults.iconButtonColors(
                             containerColor = PrimaryColor
                         ),
-                        modifier = Modifier.size(48.dp).shadow(8.dp, CircleShape)
+                        modifier = Modifier
+                            .size(48.dp)
+                            .shadow(8.dp, CircleShape)
                     ) {
                         Icon(
                             imageVector = Icons.Default.Add,
@@ -107,19 +106,37 @@ fun EcoSphereApp(
                 Screen.ProfileScreen.route -> {
                     CenterTopAppBar(navController = navController, title = null)
                 }
+
                 Screen.CommunityScreen.route -> {
                     CommunityAppBar(navController = navController)
+                }
+
                 Screen.EditProfileScreen.route -> {
-                    CenterTopAppBar(navController = navController, title = R.string.title_page_edit_profile)
+                    CenterTopAppBar(
+                        navController = navController,
+                        title = R.string.title_page_edit_profile
+                    )
                 }
+
                 Screen.EducationScreen.route -> {
-                    CenterTopAppBar(navController = navController, title = R.string.title_page_education)
+                    CenterTopAppBar(
+                        navController = navController,
+                        title = R.string.title_page_education
+                    )
                 }
+
                 Screen.VerificationEmailScreen.route -> {
-                    CenterTopAppBar(navController = navController, title = R.string.title_page_verif_eamil)
+                    CenterTopAppBar(
+                        navController = navController,
+                        title = R.string.title_page_verif_eamil
+                    )
                 }
+
                 Screen.ChangePasswordScreen.route -> {
-                    CenterTopAppBar(navController = navController, title = R.string.title_page_change_password)
+                    CenterTopAppBar(
+                        navController = navController,
+                        title = R.string.title_page_change_password
+                    )
                 }
             }
         },
@@ -165,11 +182,15 @@ fun EcoSphereApp(
                         type = NavType.LongType
                     }
                 )
-            ){
+            ) {
                 val id = it.arguments?.getLong("educationId") ?: 1
                 EducationDetailScreen(
                     onClickDetail = { firstEducationId ->
-                        navController.navigate(Screen.SecondEducationDetailScreen.createRoute(firstEducationId))
+                        navController.navigate(
+                            Screen.SecondEducationDetailScreen.createRoute(
+                                firstEducationId
+                            )
+                        )
                     },
                     educationId = id
                 )
@@ -180,11 +201,15 @@ fun EcoSphereApp(
                         type = NavType.LongType
                     }
                 )
-            ){
+            ) {
                 val id = it.arguments?.getLong("firstEducationId") ?: 1
                 SecondEducationDetailScreen(
                     onClickDetail = { secondEducationId ->
-                        navController.navigate(Screen.ThirdEducationDetailScreen.createRoute(secondEducationId))
+                        navController.navigate(
+                            Screen.ThirdEducationDetailScreen.createRoute(
+                                secondEducationId
+                            )
+                        )
                     },
                     firstEducationId = id,
                     navController = navController
@@ -196,11 +221,15 @@ fun EcoSphereApp(
                         type = NavType.LongType
                     }
                 )
-            ){
+            ) {
                 val id = it.arguments?.getLong("secondEducationId") ?: 1
                 ThirdEducationDetailScreen(
                     onClickDetail = { thirdEducationId ->
-                        navController.navigate(Screen.FourthEducationDetailScreen.createRoute(thirdEducationId))
+                        navController.navigate(
+                            Screen.FourthEducationDetailScreen.createRoute(
+                                thirdEducationId
+                            )
+                        )
                     },
                     secondEducationId = id,
                     navController = navController
@@ -212,11 +241,15 @@ fun EcoSphereApp(
                         type = NavType.LongType
                     }
                 )
-            ){
+            ) {
                 val id = it.arguments?.getLong("thirdEducationId") ?: 1
                 FourthEducationDetailScreen(
                     onClickDetail = { fourthEducationId ->
-                        navController.navigate(Screen.FifthEducationDetailScreen.createRoute(fourthEducationId))
+                        navController.navigate(
+                            Screen.FifthEducationDetailScreen.createRoute(
+                                fourthEducationId
+                            )
+                        )
                     },
                     thirdEducationId = id,
                     navController = navController
@@ -228,11 +261,11 @@ fun EcoSphereApp(
                         type = NavType.LongType
                     }
                 )
-            ){
+            ) {
                 val id = it.arguments?.getLong("fourthEducationId") ?: 1
-                FifthEducationDetailScreen(fourthEducationId = id, navController = navController )
+                FifthEducationDetailScreen(fourthEducationId = id, navController = navController)
             }
-            composable(Screen.EducationDoneScreen.route){
+            composable(Screen.EducationDoneScreen.route) {
                 EducationDone(navController = navController)
             }
             composable(Screen.MapScreen.route) {}
@@ -243,13 +276,13 @@ fun EcoSphereApp(
             composable(Screen.ProfileScreen.route) {
                 ProfileScreen(navController = navController)
             }
-            composable(Screen.EditProfileScreen.route){
+            composable(Screen.EditProfileScreen.route) {
                 EditProfileScreen(navController = navController)
             }
-            composable(Screen.ChangePasswordScreen.route){
+            composable(Screen.ChangePasswordScreen.route) {
                 ChangePasswordScreen(navController = navController)
             }
-            composable(Screen.VerificationEmailScreen.route){
+            composable(Screen.VerificationEmailScreen.route) {
                 VerificationEmailScreen(navController = navController)
             }
         }

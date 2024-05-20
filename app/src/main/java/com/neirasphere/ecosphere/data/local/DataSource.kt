@@ -129,7 +129,6 @@ object DataSource {
             997342535
         ),
     )
-}
 
     fun fifthEduList() : List<FifthEducationData> = listOf(
         FifthEducationData(

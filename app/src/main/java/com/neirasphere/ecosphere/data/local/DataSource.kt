@@ -2,6 +2,8 @@ package com.neirasphere.ecosphere.data.local
 
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.model.CategoryLearn
+import com.neirasphere.ecosphere.model.CommunityPost
+import com.neirasphere.ecosphere.model.User
 import com.neirasphere.ecosphere.model.EducationData
 import com.neirasphere.ecosphere.model.FifthEducationData
 import com.neirasphere.ecosphere.model.FirstEducationData
@@ -27,6 +29,107 @@ object DataSource {
             R.drawable.item_home_3
         )
     )
+
+    fun communityPostUser(): List<User> = listOf(
+        User(
+            1,
+            "Indah Nur Lailatul",
+            "indahnurlailatul11",
+            R.drawable.example_image_user
+        )
+    )
+
+    fun communityPostData(): List<CommunityPost> = listOf(
+        CommunityPost(
+            1,
+            communityPostUser()[0],
+            "Aku kemarin bikin pot dari handuk bekas hasilnya bagus banget",
+            R.drawable.pot_handuk_2,
+            1700,
+            20000,
+            true,
+            1900000,
+            1660680212000
+        ),
+        CommunityPost(
+            2,
+            communityPostUser()[0],
+            "Aku kemarin bikin pot dari handuk bekas hasilnya bagus banget",
+            R.drawable.pot_handuk_2,
+            1700,
+            20000,
+            true,
+            1900000,
+            1660680212000
+        ),
+        CommunityPost(
+            3,
+            communityPostUser()[0],
+            "Aku kemarin bikin pot dari handuk bekas hasilnya bagus banget",
+            R.drawable.pot_handuk_2,
+            1700,
+            20000,
+            true,
+            1900000,
+            1660680212000
+        ),
+        CommunityPost(
+            4,
+            communityPostUser()[0],
+            "Aku kemarin bikin pot dari handuk bekas hasilnya bagus banget",
+            R.drawable.pot_handuk_2,
+            1700,
+            20000,
+            true,
+            1900000,
+            1660680212000
+        ),
+        CommunityPost(
+            5,
+            communityPostUser()[0],
+            "Pot daur ulang ini sangat bagus dan berkualitas sekali, tidak kalah dengan yang baru",
+            R.drawable.pot_handuk_2,
+            1700,
+            10000,
+            true,
+            1900000,
+            997342535
+        ),
+        CommunityPost(
+            6,
+            communityPostUser()[0],
+            "Pot daur ulang ini sangat bagus dan berkualitas sekali, tidak kalah dengan yang baru",
+            R.drawable.pot_handuk_2,
+            1700,
+            10000,
+            true,
+            1900000,
+            997342535
+        ),
+        CommunityPost(
+            7,
+            communityPostUser()[0],
+            "Pot daur ulang ini sangat bagus dan berkualitas sekali, tidak kalah dengan yang baru",
+            R.drawable.pot_handuk_2,
+            1700,
+            10000,
+            true,
+            1900000,
+            997342535
+        ),
+        CommunityPost(
+            8,
+            communityPostUser()[0],
+            "Pot daur ulang ini sangat bagus dan berkualitas sekali, tidak kalah dengan yang baru",
+            R.drawable.pot_handuk_2,
+            1700,
+            10000,
+            true,
+            1900000,
+            997342535
+        ),
+    )
+}
 
     fun fifthEduList() : List<FifthEducationData> = listOf(
         FifthEducationData(

@@ -159,9 +159,8 @@ fun CommunitySearchBar(
             .clip(RoundedCornerShape(36.dp))
     ) {
         LazyColumn {
-            // TODO: Fix search display bug as "androidx.compose..."
             if (text.isNotEmpty()) {
-                items(searches) {
+                items(searches) { search ->
                     Row(
                         modifier = modifier.padding(16.dp),
                         verticalAlignment = Alignment.CenterVertically
@@ -174,7 +173,7 @@ fun CommunitySearchBar(
                         )
                         Spacer(modifier = Modifier.padding(8.dp))
                         Text(
-                            text = searches.toString(),
+                            text = search,
                             style = MaterialTheme.typography.bodySmall,
                             color = Color(0xFF434343)
                             )

@@ -52,6 +52,26 @@ import com.neirasphere.ecosphere.ui.screen.splashscreen.SplashScreen
 import com.neirasphere.ecosphere.ui.theme.BlackColor
 import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 import com.neirasphere.ecosphere.ui.theme.containerColor
+import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.FabPosition
+import androidx.compose.ui.res.painterResource
+import androidx.compose.material.FloatingActionButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.text.font.FontWeight
+import com.neirasphere.ecosphere.ui.components.CenterTopAppBar
+import com.neirasphere.ecosphere.ui.screen.profile.ProfileScreen
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
+import com.neirasphere.ecosphere.ui.screen.auth.changepassword.ChangePasswordScreen
+import com.neirasphere.ecosphere.ui.screen.auth.verificationemail.VerificationEmailScreen
+import com.neirasphere.ecosphere.ui.screen.education.EducationDetailScreen
+import com.neirasphere.ecosphere.ui.screen.education.EducationDone
+import com.neirasphere.ecosphere.ui.screen.education.EducationScreen
+import com.neirasphere.ecosphere.ui.screen.education.FifthEducationDetailScreen
+import com.neirasphere.ecosphere.ui.screen.education.FourthEducationDetailScreen
+import com.neirasphere.ecosphere.ui.screen.education.SecondEducationDetailScreen
+import com.neirasphere.ecosphere.ui.screen.education.ThirdEducationDetailScreen
+import com.neirasphere.ecosphere.ui.screen.profile.edit.EditProfileScreen
 
 @Composable
 fun EcoSphereApp(
@@ -84,18 +104,27 @@ fun EcoSphereApp(
         },
         topBar = {
             when (currentRoute) {
-                Screen.SplashScreen.route, Screen.OnboardingScreen.route, Screen.LoginScreen.route, Screen.RegisterScreen.route -> {}
                 Screen.ProfileScreen.route -> {
                     CenterTopAppBar(navController = navController, title = null)
                 }
                 Screen.CommunityScreen.route -> {
                     CommunityAppBar(navController = navController)
+                Screen.EditProfileScreen.route -> {
+                    CenterTopAppBar(navController = navController, title = R.string.title_page_edit_profile)
+                }
+                Screen.EducationScreen.route -> {
+                    CenterTopAppBar(navController = navController, title = R.string.title_page_education)
+                }
+                Screen.VerificationEmailScreen.route -> {
+                    CenterTopAppBar(navController = navController, title = R.string.title_page_verif_eamil)
+                }
+                Screen.ChangePasswordScreen.route -> {
+                    CenterTopAppBar(navController = navController, title = R.string.title_page_change_password)
                 }
             }
         },
         bottomBar = {
             when (currentRoute) {
-                Screen.SplashScreen.route, Screen.OnboardingScreen.route, Screen.LoginScreen.route, Screen.RegisterScreen.route -> {}
                 Screen.HomeScreen.route, Screen.EducationScreen.route, Screen.MapScreen.route, Screen.CommunityScreen.route -> {
                     BottomAppBar(navController = navController)
                 }
@@ -104,7 +133,7 @@ fun EcoSphereApp(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.HomeScreen.route,
+            startDestination = Screen.SplashScreen.route,
             modifier = modifier.padding(innerPadding)
         ) {
 
@@ -123,7 +152,89 @@ fun EcoSphereApp(
             composable(Screen.HomeScreen.route) {
                 HomeScreen(navController = navController)
             }
-            composable(Screen.EducationScreen.route) {}
+            composable(Screen.EducationScreen.route) {
+                EducationScreen(
+                    onClickDetail = { educationId ->
+                        navController.navigate(Screen.EducationDetailScreen.createRoute(educationId))
+                    }
+                )
+            }
+            composable(Screen.EducationDetailScreen.route,
+                arguments = listOf(
+                    navArgument("educationId") {
+                        type = NavType.LongType
+                    }
+                )
+            ){
+                val id = it.arguments?.getLong("educationId") ?: 1
+                EducationDetailScreen(
+                    onClickDetail = { firstEducationId ->
+                        navController.navigate(Screen.SecondEducationDetailScreen.createRoute(firstEducationId))
+                    },
+                    educationId = id
+                )
+            }
+            composable(Screen.SecondEducationDetailScreen.route,
+                arguments = listOf(
+                    navArgument("firstEducationId") {
+                        type = NavType.LongType
+                    }
+                )
+            ){
+                val id = it.arguments?.getLong("firstEducationId") ?: 1
+                SecondEducationDetailScreen(
+                    onClickDetail = { secondEducationId ->
+                        navController.navigate(Screen.ThirdEducationDetailScreen.createRoute(secondEducationId))
+                    },
+                    firstEducationId = id,
+                    navController = navController
+                )
+            }
+            composable(Screen.ThirdEducationDetailScreen.route,
+                arguments = listOf(
+                    navArgument("secondEducationId") {
+                        type = NavType.LongType
+                    }
+                )
+            ){
+                val id = it.arguments?.getLong("secondEducationId") ?: 1
+                ThirdEducationDetailScreen(
+                    onClickDetail = { thirdEducationId ->
+                        navController.navigate(Screen.FourthEducationDetailScreen.createRoute(thirdEducationId))
+                    },
+                    secondEducationId = id,
+                    navController = navController
+                )
+            }
+            composable(Screen.FourthEducationDetailScreen.route,
+                arguments = listOf(
+                    navArgument("thirdEducationId") {
+                        type = NavType.LongType
+                    }
+                )
+            ){
+                val id = it.arguments?.getLong("thirdEducationId") ?: 1
+                FourthEducationDetailScreen(
+                    onClickDetail = { fourthEducationId ->
+                        navController.navigate(Screen.FifthEducationDetailScreen.createRoute(fourthEducationId))
+                    },
+                    thirdEducationId = id,
+                    navController = navController
+                )
+            }
+            composable(Screen.FifthEducationDetailScreen.route,
+                arguments = listOf(
+                    navArgument("fourthEducationId") {
+                        type = NavType.LongType
+                    }
+                )
+            ){
+                val id = it.arguments?.getLong("fourthEducationId") ?: 1
+                FifthEducationDetailScreen(fourthEducationId = id, navController = navController )
+            }
+            composable(Screen.EducationDoneScreen.route){
+                EducationDone(navController = navController)
+            }
             composable(Screen.MapScreen.route) {}
             composable(Screen.CommunityScreen.route) {
                 CommunityScreen(navController = navController)
@@ -131,6 +242,15 @@ fun EcoSphereApp(
             composable(Screen.ClassifyScreen.route) {}
             composable(Screen.ProfileScreen.route) {
                 ProfileScreen(navController = navController)
+            }
+            composable(Screen.EditProfileScreen.route){
+                EditProfileScreen(navController = navController)
+            }
+            composable(Screen.ChangePasswordScreen.route){
+                ChangePasswordScreen(navController = navController)
+            }
+            composable(Screen.VerificationEmailScreen.route){
+                VerificationEmailScreen(navController = navController)
             }
         }
     }
@@ -213,7 +333,9 @@ fun BottomAppBar(
                     },
                     label = {
                         Text(
-                            text = item.title
+                            text = item.title, style = MaterialTheme.typography.bodySmall.copy(
+                                fontWeight = FontWeight.Bold
+                            )
                         )
                     },
                     colors = customColors

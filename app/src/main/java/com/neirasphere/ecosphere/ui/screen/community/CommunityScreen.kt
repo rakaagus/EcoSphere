@@ -2,6 +2,7 @@ package com.neirasphere.ecosphere.ui.screen.community
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,6 +15,7 @@ import com.neirasphere.ecosphere.model.CommunityPost
 import com.neirasphere.ecosphere.ui.components.MagicTabItem
 import com.neirasphere.ecosphere.ui.components.MagicTabLayout
 import com.neirasphere.ecosphere.ui.components.PostLayout
+import com.neirasphere.ecosphere.ui.navigation.Screen
 import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 
 @OptIn(ExperimentalPagerApi::class)
@@ -35,7 +37,7 @@ fun CommunityScreen(
             title = "Terbaru"
         ) {
             TabItem(
-                item = DataSource.communityPostData().sortedBy { it.timestamp },
+                item = DataSource.communityPostData().sortedBy { it.timeDiff() },
                 navController = navController
             )
         }
@@ -49,15 +51,17 @@ fun CommunityScreen(
 
 @Composable
 fun TabItem(
-    item: List<CommunityPost>,
+    item: List<CommunityPost> = DataSource.communityPostData(),
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
         modifier = modifier.padding(bottom = 0.dp)
     ) {
-        items(item.size) { index ->
-            PostLayout(post = item[index], navController)
+        items(item, key = { it.id }) {
+            PostLayout(post = it, navController = navController) { postId ->
+                navController.navigate(Screen.DetailPostScreen.route + "/${postId}")
+            }
             Divider()
         }
     }

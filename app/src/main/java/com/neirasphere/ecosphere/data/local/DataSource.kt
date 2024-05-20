@@ -43,7 +43,7 @@ object DataSource {
             20000,
             true,
             1900000,
-            1660680212000
+            "2024-05-19 18:59:00"
         ),
         CommunityPost(
             2,
@@ -54,7 +54,7 @@ object DataSource {
             20000,
             true,
             1900000,
-            1660680212000
+            "2024-05-19 18:59:00"
         ),
         CommunityPost(
             3,
@@ -65,7 +65,7 @@ object DataSource {
             20000,
             true,
             1900000,
-            1660680212000
+            "2024-05-19 18:59:00"
         ),
         CommunityPost(
             4,
@@ -76,7 +76,7 @@ object DataSource {
             20000,
             true,
             1900000,
-            1660680212000
+            "2024-05-19 18:59:00"
         ),
         CommunityPost(
             5,
@@ -87,7 +87,7 @@ object DataSource {
             10000,
             true,
             1900000,
-            997342535
+            "2024-05-20 18:59:00"
         ),
         CommunityPost(
             6,
@@ -98,7 +98,7 @@ object DataSource {
             10000,
             true,
             1900000,
-            997342535
+            "2024-05-20 18:59:00"
         ),
         CommunityPost(
             7,
@@ -109,7 +109,7 @@ object DataSource {
             10000,
             true,
             1900000,
-            997342535
+            "2024-05-20 18:59:00"
         ),
         CommunityPost(
             8,
@@ -120,7 +120,7 @@ object DataSource {
             10000,
             true,
             1900000,
-            997342535
+            "2024-05-20 18:59:00"
         ),
     )
 }

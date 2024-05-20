@@ -33,18 +33,24 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.neirasphere.ecosphere.ui.components.CenterTopAppBar
 import com.neirasphere.ecosphere.ui.components.CommunityAppBar
+import com.neirasphere.ecosphere.ui.components.PostingBottomBar
 import com.neirasphere.ecosphere.ui.navigation.NavigationItem
 import com.neirasphere.ecosphere.ui.navigation.Screen
 import com.neirasphere.ecosphere.ui.screen.auth.login.LoginScreen
 import com.neirasphere.ecosphere.ui.screen.auth.register.RegisterScreen
 import com.neirasphere.ecosphere.ui.screen.community.CommunityScreen
+import com.neirasphere.ecosphere.ui.screen.community.DetailPostScreen
+import com.neirasphere.ecosphere.ui.screen.community.DummyDetailPostScreen
+import com.neirasphere.ecosphere.ui.screen.community.PostingScreen
 import com.neirasphere.ecosphere.ui.screen.home.HomeScreen
 import com.neirasphere.ecosphere.ui.screen.onboarding.OnboardingScreen
 import com.neirasphere.ecosphere.ui.screen.profile.ProfileScreen
@@ -66,11 +72,13 @@ fun EcoSphereApp(
             when (currentRoute) {
                 Screen.CommunityScreen.route -> {
                     IconButton(
-                        onClick = { /*TODO*/ },
+                        onClick = { navController.navigate(Screen.PostingScreen.route) },
                         colors = IconButtonDefaults.iconButtonColors(
                             containerColor = PrimaryColor
                         ),
-                        modifier = Modifier.size(48.dp).shadow(8.dp, CircleShape)
+                        modifier = Modifier
+                            .size(48.dp)
+                            .shadow(8.dp, CircleShape)
                     ) {
                         Icon(
                             imageVector = Icons.Default.Add,
@@ -98,6 +106,9 @@ fun EcoSphereApp(
                 Screen.SplashScreen.route, Screen.OnboardingScreen.route, Screen.LoginScreen.route, Screen.RegisterScreen.route -> {}
                 Screen.HomeScreen.route, Screen.EducationScreen.route, Screen.MapScreen.route, Screen.CommunityScreen.route -> {
                     BottomAppBar(navController = navController)
+                }
+                Screen.PostingScreen.route -> {
+                    PostingBottomBar()
                 }
             }
         },
@@ -127,6 +138,21 @@ fun EcoSphereApp(
             composable(Screen.MapScreen.route) {}
             composable(Screen.CommunityScreen.route) {
                 CommunityScreen(navController = navController)
+            }
+            composable(
+                Screen.DetailPostScreen.route + "/{postId}",
+                arguments = listOf(navArgument("postId") { type = NavType.IntType })
+            ) {
+                navBackStackEntry -> DetailPostScreen(
+                    navController = navController,
+                    postId = navBackStackEntry.arguments?.getInt("postId")
+                )
+            }
+            composable(Screen.PostingScreen.route) {
+                PostingScreen(navController = navController)
+            }
+            composable(Screen.DummyDetailPostScreen.route) {
+                DummyDetailPostScreen(navController = navController)
             }
             composable(Screen.ClassifyScreen.route) {}
             composable(Screen.ProfileScreen.route) {

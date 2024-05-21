@@ -58,6 +58,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.text.font.FontWeight
 import com.neirasphere.ecosphere.ui.screen.auth.changepassword.ChangePasswordScreen
 import com.neirasphere.ecosphere.ui.screen.auth.verificationemail.VerificationEmailScreen
+import com.neirasphere.ecosphere.ui.screen.classification.ClassificationScreen
 import com.neirasphere.ecosphere.ui.screen.community.CommunityScreen
 import com.neirasphere.ecosphere.ui.screen.community.DetailPostScreen
 import com.neirasphere.ecosphere.ui.screen.community.DummyDetailPostScreen
@@ -74,6 +75,10 @@ import com.neirasphere.ecosphere.ui.screen.interactivemap.confirmMaps.ConfirmMap
 import com.neirasphere.ecosphere.ui.screen.interactivemap.detailtps.DetailTpsScreen
 import com.neirasphere.ecosphere.ui.screen.interactivemap.search.SearchMapScreen
 import com.neirasphere.ecosphere.ui.screen.profile.edit.EditProfileScreen
+import com.neirasphere.ecosphere.ui.screen.recycle.FirstRecycleScreen
+import com.neirasphere.ecosphere.ui.screen.recycle.RecycleDone
+import com.neirasphere.ecosphere.ui.screen.recycle.RecycleScreen
+import com.neirasphere.ecosphere.ui.screen.recycle.SecondRecycleScreen
 
 @Composable
 fun EcoSphereApp(
@@ -350,6 +355,52 @@ fun EcoSphereApp(
             }
             composable(Screen.EditProfileScreen.route) {
                 EditProfileScreen(navController = navController)
+            }
+
+            composable(Screen.ChangePasswordScreen.route) {
+                ChangePasswordScreen(navController = navController)
+            }
+            composable(Screen.VerificationEmailScreen.route) {
+                VerificationEmailScreen(navController = navController)
+            }
+
+            composable(Screen.RecycleScreen.route) {
+                RecycleScreen(
+                    onClickDetail = { recycleCategoryId ->
+                        navController.navigate(Screen.FirstRecycleDetailScreen.createRoute(recycleCategoryId))
+                    }
+                )
+            }
+            composable(Screen.FirstRecycleDetailScreen.route,
+                arguments = listOf(
+                    navArgument("recycleCategoryId") {
+                        type = NavType.LongType
+                    }
+                )
+            ){
+                val id : Long = it.arguments?.getLong("recycleCategoryId") ?: 1
+                FirstRecycleScreen(
+                    recycleCategoryId = id,
+                    onClickDetail = {firstCategoryId ->
+                        navController.navigate(Screen.SecondRecycleScreen.createRoute(firstCategoryId))
+                    },
+                )
+            }
+            composable(Screen.SecondRecycleScreen.route,
+                arguments = listOf(
+                    navArgument("firstCategoryId") {
+                        type = NavType.IntType
+                    }
+                )
+            ){
+                val id : Int = it.arguments?.getInt("firstCategoryId") ?: 1
+                SecondRecycleScreen(
+                    firstRecycleCategoryId = id,
+                    navHostController = navController
+                )
+            }
+            composable(Screen.RecycleDoneScreen.route){
+                RecycleDone(navController = navController)
             }
         }
     }

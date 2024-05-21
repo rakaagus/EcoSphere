@@ -39,7 +39,14 @@ sealed class Screen(val route: String) {
     object DummyDetailPostScreen: Screen("dummy_detail_post_screen")
     object PostingScreen: Screen("posting_screen")
     object ClassifyScreen: Screen("classify_screen")
-
     object ChangePasswordScreen: Screen("change_password_screen")
     object VerificationEmailScreen: Screen("verification_email_screen")
+    object RecycleScreen: Screen("recycle_screen")
+    object FirstRecycleDetailScreen: Screen("first_recycle_detail_screen/{recycleCategoryId}"){
+        fun createRoute(recycleCategoryId: Long) = "first_recycle_detail_screen/$recycleCategoryId"
+    }
+    object SecondRecycleScreen: Screen("second_recycle_detail_screen/{firstCategoryId}"){
+        fun createRoute(firstCategoryId: Long) = "second_recycle_detail_screen/$firstCategoryId"
+    }
+    object RecycleDoneScreen: Screen("recycle_done_screen")
 }

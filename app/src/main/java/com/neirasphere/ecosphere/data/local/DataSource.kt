@@ -8,9 +8,13 @@ import com.neirasphere.ecosphere.model.User
 import com.neirasphere.ecosphere.model.EducationData
 import com.neirasphere.ecosphere.model.FifthEducationData
 import com.neirasphere.ecosphere.model.FirstEducationData
+import com.neirasphere.ecosphere.model.FirstRecycleData
 import com.neirasphere.ecosphere.model.FourthEducationData
+import com.neirasphere.ecosphere.model.RecycleCategoryData
 import com.neirasphere.ecosphere.model.MapData
 import com.neirasphere.ecosphere.model.SecondEducationData
+import com.neirasphere.ecosphere.model.SecondRecycleData
+import com.neirasphere.ecosphere.model.Step
 import com.neirasphere.ecosphere.model.ThirdEducationData
 
 object DataSource {
@@ -571,6 +575,331 @@ object DataSource {
             "Sampah Residu",
             R.drawable.education5
         ),
-
         )
+
+
+    fun recycleCategory() : List<RecycleCategoryData> = listOf(
+        RecycleCategoryData(
+            1,
+            "Kertas",
+            R.drawable.recycle_1,
+            contentId = listOf(
+                1,2,3,4,
+            )
+        ),
+        RecycleCategoryData(
+            2,
+            "Logam",
+            R.drawable.recycle_2,
+            listOf(
+                5,2,3,4
+            )
+        ),
+        RecycleCategoryData(
+            3,
+            "Tekstil",
+            R.drawable.recycle_3,
+            listOf(
+                5,6,3,4
+            )
+        ),
+        RecycleCategoryData(
+            4,
+            "Karet",
+            R.drawable.recycle_4,
+            listOf(
+                5,6,7,8
+            )
+        ),
+        RecycleCategoryData(
+            5,
+            "Karton",
+            R.drawable.recycle_5,
+            listOf(
+                5,6,7,8
+            )
+        ),
+        RecycleCategoryData(
+            6,
+            "Kulit",
+            R.drawable.recycle_6,
+            listOf(
+                5,6,7,8
+            )
+        ),
+        RecycleCategoryData(
+            7,
+            "Plastik",
+            R.drawable.recycle_7,
+            listOf(
+                5,6,7,8
+            )
+        ),
+        RecycleCategoryData(
+            8,
+            "Kaca",
+            R.drawable.recycle_8,
+            listOf(
+                5,6,7,8
+            )
+        ),
+        RecycleCategoryData(
+            9,
+            "Keramik",
+            R.drawable.recycle_9,
+            listOf(
+                5,6,7,8
+            )
+        ),
+        RecycleCategoryData(
+            10,
+            "Elektronik",
+            R.drawable.recycle_10,
+            listOf(
+                5,6,7,8
+            )
+        ),
+        RecycleCategoryData(
+            11,
+            "Minyak",
+            R.drawable.recycle_11,
+            listOf(
+                5,6,7,8
+            )
+        ),
+        RecycleCategoryData(
+            12,
+            "Baterai",
+            R.drawable.recycle_12,
+            listOf(
+                5,6,7,8
+            )
+        ),
+    )
+
+    fun categoryContentList(): List<FirstRecycleData> = listOf(
+        FirstRecycleData(
+            1,
+            "Origami",
+            "Updated 20 Apr",
+            R.drawable.paper_1
+        ),
+        FirstRecycleData(
+            2,
+            "Kotak Penyimpanan",
+            "Updated 19 Apr",
+            R.drawable.paper_2
+        ),
+        FirstRecycleData(
+            3,
+            "Buku Catatan",
+            "Updated 17 Apr",
+            R.drawable.paper_3
+        ),
+        FirstRecycleData(
+            4,
+            "Kartu Ucapan",
+            "Updated 15 Apr",
+            R.drawable.paper_4
+        ),
+        FirstRecycleData(
+            5,
+            "Logam",
+            "Updated 15 Apr",
+            R.drawable.paper_4
+        ),
+        FirstRecycleData(
+            6,
+            "Logam",
+            "Updated 15 Apr",
+            R.drawable.paper_4
+        ),
+        FirstRecycleData(
+            7,
+            "Logam",
+            "Updated 15 Apr",
+            R.drawable.paper_4
+        ),
+        FirstRecycleData(
+            8,
+            "Logam",
+            "Updated 15 Apr",
+            R.drawable.paper_4
+        ),
+    )
+
+    fun secondRecycleList(id : Int): SecondRecycleData{
+        return when (id){
+            1 -> SecondRecycleData.Content(
+                1,
+                "Langkah-langkah Membuat Origami dari Kertas Daur Ulang",
+                R.drawable.origami_1,
+                steps = listOf(
+                    Step(
+                        1,
+                        "Langkah 1: Persiapkan Bahan",
+                        "Ambil selembar kertas persegi dari bahan daur ulang yang kamu miliki. Pastikan kertas tersebut cukup besar dan memiliki ketebalan yang sesuai untuk memudahkan proses melipat.",
+                        R.drawable.origami_2,
+                    ),
+                    Step(
+                        2,
+                        "Langkah 2: Mulai Lipat",
+                        "Letakkan kertas di depan kamu dengan sisi berwarna (jika ada) menghadap ke bawah.\n" +
+                                "Lipat kertas menjadi dua secara diagonal untuk membentuk segitiga. Pastikan lipatan tersebut rapi dan tepat.",
+                        R.drawable.origami_3,
+                    ),
+                    Step(
+                        3,
+                        "Langkah 3: Bentuk Segitiga",
+                        "Buka kembali lipatan yang baru saja kamu buat, sehingga kembali membentuk persegi panjang.\n" +
+                                "Lipat kertas menjadi dua secara diagonal lagi, tetapi kali ini lipatlah ke arah yang berlawanan dari lipatan sebelumnya.",
+                        R.drawable.origami_4,
+                    ),
+                    Step(
+                        4,
+                        "Langkah 4: Lipat Ujung",
+                        "Lipat salah satu ujung segitiga ke titik tengah lipatan sebelumnya. Pastikan lipatan tersebut rapi dan lurus.\n" +
+                                "Lakukan langkah yang sama dengan ujung segitiga yang lain, sehingga keduanya bertemu di titik tengah.",
+                        R.drawable.origami_5,
+                    ),
+                    Step(
+                        5,
+                        "Langkah 5: Bentuk Kepala & Ekor",
+                        "Lipat ujung atas segitiga ke bawah sedikit untuk membentuk kepala.\n" +
+                                "Lipat ujung bawah segitiga ke atas sedikit untuk membentuk ekor dan origami kamu sudah selesai.",
+                        R.drawable.origami_6,
+                    ),
+                ),
+                "Source: liputan6.com/hot/read/4292405/6-cara-melipat-kertas-origami-berbagai-bentuk-yang-mudah-dilakukan?page=3",
+            )
+            2 -> SecondRecycleData.Content(
+                2,
+                "Langkah-langkah Membuat Kotak Penyimpanan dari Daur Ulang",
+                R.drawable.origami_1,
+                steps = listOf(
+                    Step(
+                        1,
+                        "Langkah 1: Persiapkan Bahan",
+                        "Ambil selembar kertas persegi dari bahan daur ulang yang kamu miliki. Pastikan kertas tersebut cukup besar dan memiliki ketebalan yang sesuai untuk memudahkan proses melipat.",
+                        R.drawable.origami_2,
+                    ),
+                    Step(
+                        2,
+                        "Langkah 2: Mulai Lipat",
+                        "Letakkan kertas di depan kamu dengan sisi berwarna (jika ada) menghadap ke bawah.\n" +
+                                "Lipat kertas menjadi dua secara diagonal untuk membentuk segitiga. Pastikan lipatan tersebut rapi dan tepat.",
+                        R.drawable.origami_3,
+                    ),
+                    Step(
+                        3,
+                        "Langkah 3: Bentuk Segitiga",
+                        "Buka kembali lipatan yang baru saja kamu buat, sehingga kembali membentuk persegi panjang.\n" +
+                                "Lipat kertas menjadi dua secara diagonal lagi, tetapi kali ini lipatlah ke arah yang berlawanan dari lipatan sebelumnya.",
+                        R.drawable.origami_4,
+                    ),
+                    Step(
+                        4,
+                        "Langkah 4: Lipat Ujung",
+                        "Lipat salah satu ujung segitiga ke titik tengah lipatan sebelumnya. Pastikan lipatan tersebut rapi dan lurus.\n" +
+                                "Lakukan langkah yang sama dengan ujung segitiga yang lain, sehingga keduanya bertemu di titik tengah.",
+                        R.drawable.origami_5,
+                    ),
+                    Step(
+                        5,
+                        "Langkah 5: Bentuk Kepala & Ekor",
+                        "Lipat ujung atas segitiga ke bawah sedikit untuk membentuk kepala.\n" +
+                                "Lipat ujung bawah segitiga ke atas sedikit untuk membentuk ekor dan origami kamu sudah selesai.",
+                        R.drawable.origami_6,
+                    ),
+                ),
+                "Source: liputan6.com/hot/read/4292405/6-cara-melipat-kertas-origami-berbagai-bentuk-yang-mudah-dilakukan?page=3",
+            )
+            3 -> SecondRecycleData.Content(
+                3,
+                "Langkah-langkah Membuat Buku Catatan dari Daur Ulang",
+                R.drawable.origami_1,
+                steps = listOf(
+                    Step(
+                        1,
+                        "Langkah 1: Persiapkan Bahan",
+                        "Ambil selembar kertas persegi dari bahan daur ulang yang kamu miliki. Pastikan kertas tersebut cukup besar dan memiliki ketebalan yang sesuai untuk memudahkan proses melipat.",
+                        R.drawable.origami_2,
+                    ),
+                    Step(
+                        2,
+                        "Langkah 2: Mulai Lipat",
+                        "Letakkan kertas di depan kamu dengan sisi berwarna (jika ada) menghadap ke bawah.\n" +
+                                "Lipat kertas menjadi dua secara diagonal untuk membentuk segitiga. Pastikan lipatan tersebut rapi dan tepat.",
+                        R.drawable.origami_3,
+                    ),
+                    Step(
+                        3,
+                        "Langkah 3: Bentuk Segitiga",
+                        "Buka kembali lipatan yang baru saja kamu buat, sehingga kembali membentuk persegi panjang.\n" +
+                                "Lipat kertas menjadi dua secara diagonal lagi, tetapi kali ini lipatlah ke arah yang berlawanan dari lipatan sebelumnya.",
+                        R.drawable.origami_4,
+                    ),
+                    Step(
+                        4,
+                        "Langkah 4: Lipat Ujung",
+                        "Lipat salah satu ujung segitiga ke titik tengah lipatan sebelumnya. Pastikan lipatan tersebut rapi dan lurus.\n" +
+                                "Lakukan langkah yang sama dengan ujung segitiga yang lain, sehingga keduanya bertemu di titik tengah.",
+                        R.drawable.origami_5,
+                    ),
+                    Step(
+                        5,
+                        "Langkah 5: Bentuk Kepala & Ekor",
+                        "Lipat ujung atas segitiga ke bawah sedikit untuk membentuk kepala.\n" +
+                                "Lipat ujung bawah segitiga ke atas sedikit untuk membentuk ekor dan origami kamu sudah selesai.",
+                        R.drawable.origami_6,
+                    ),
+                ),
+                "Source: liputan6.com/hot/read/4292405/6-cara-melipat-kertas-origami-berbagai-bentuk-yang-mudah-dilakukan?page=3",
+            )
+            4 -> SecondRecycleData.Content(
+                4,
+                "Langkah-langkah Membuat Kartu Ucapan dari Daur Ulang",
+                R.drawable.origami_1,
+                steps = listOf(
+                    Step(
+                        1,
+                        "Langkah 1: Persiapkan Bahan",
+                        "Ambil selembar kertas persegi dari bahan daur ulang yang kamu miliki. Pastikan kertas tersebut cukup besar dan memiliki ketebalan yang sesuai untuk memudahkan proses melipat.",
+                        R.drawable.origami_2,
+                    ),
+                    Step(
+                        2,
+                        "Langkah 2: Mulai Lipat",
+                        "Letakkan kertas di depan kamu dengan sisi berwarna (jika ada) menghadap ke bawah.\n" +
+                                "Lipat kertas menjadi dua secara diagonal untuk membentuk segitiga. Pastikan lipatan tersebut rapi dan tepat.",
+                        R.drawable.origami_3,
+                    ),
+                    Step(
+                        3,
+                        "Langkah 3: Bentuk Segitiga",
+                        "Buka kembali lipatan yang baru saja kamu buat, sehingga kembali membentuk persegi panjang.\n" +
+                                "Lipat kertas menjadi dua secara diagonal lagi, tetapi kali ini lipatlah ke arah yang berlawanan dari lipatan sebelumnya.",
+                        R.drawable.origami_4,
+                    ),
+                    Step(
+                        4,
+                        "Langkah 4: Lipat Ujung",
+                        "Lipat salah satu ujung segitiga ke titik tengah lipatan sebelumnya. Pastikan lipatan tersebut rapi dan lurus.\n" +
+                                "Lakukan langkah yang sama dengan ujung segitiga yang lain, sehingga keduanya bertemu di titik tengah.",
+                        R.drawable.origami_5,
+                    ),
+                    Step(
+                        5,
+                        "Langkah 5: Bentuk Kepala & Ekor",
+                        "Lipat ujung atas segitiga ke bawah sedikit untuk membentuk kepala.\n" +
+                                "Lipat ujung bawah segitiga ke atas sedikit untuk membentuk ekor dan origami kamu sudah selesai.",
+                        R.drawable.origami_6,
+                    ),
+                ),
+                "Source: liputan6.com/hot/read/4292405/6-cara-melipat-kertas-origami-berbagai-bentuk-yang-mudah-dilakukan?page=3",
+            )
+            else -> throw IllegalArgumentException("Unknown type: $id")
+        }
+    }
+
 }

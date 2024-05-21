@@ -59,6 +59,9 @@ import androidx.compose.ui.text.font.FontWeight
 import com.neirasphere.ecosphere.ui.screen.auth.changepassword.ChangePasswordScreen
 import com.neirasphere.ecosphere.ui.screen.auth.verificationemail.VerificationEmailScreen
 import com.neirasphere.ecosphere.ui.screen.community.CommunityScreen
+import com.neirasphere.ecosphere.ui.screen.community.DetailPostScreen
+import com.neirasphere.ecosphere.ui.screen.community.DummyDetailPostScreen
+import com.neirasphere.ecosphere.ui.screen.community.PostingScreen
 import com.neirasphere.ecosphere.ui.screen.education.EducationDetailScreen
 import com.neirasphere.ecosphere.ui.screen.education.EducationDone
 import com.neirasphere.ecosphere.ui.screen.education.EducationScreen
@@ -154,6 +157,7 @@ fun EcoSphereApp(
                 Screen.HomeScreen.route, Screen.EducationScreen.route, Screen.MapScreen.route, Screen.CommunityScreen.route -> {
                     BottomAppBar(navController = navController)
                 }
+
                 Screen.PostingScreen.route -> {
                     PostingBottomBar()
                 }
@@ -162,7 +166,7 @@ fun EcoSphereApp(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.MapScreen.route,
+            startDestination = Screen.SplashScreen.route,
             modifier = modifier.padding(innerPadding)
         ) {
             /*Splash & Onboarding Route*/
@@ -180,10 +184,10 @@ fun EcoSphereApp(
             composable(Screen.RegisterScreen.route) {
                 RegisterScreen(navController = navController)
             }
-            composable(Screen.ChangePasswordScreen.route){
+            composable(Screen.ChangePasswordScreen.route) {
                 ChangePasswordScreen(navController = navController)
             }
-            composable(Screen.VerificationEmailScreen.route){
+            composable(Screen.VerificationEmailScreen.route) {
                 VerificationEmailScreen(navController = navController)
             }
 
@@ -206,11 +210,15 @@ fun EcoSphereApp(
                         type = NavType.LongType
                     }
                 )
-            ){
+            ) {
                 val id = it.arguments?.getLong("educationId") ?: 1
                 EducationDetailScreen(
                     onClickDetail = { firstEducationId ->
-                        navController.navigate(Screen.SecondEducationDetailScreen.createRoute(firstEducationId))
+                        navController.navigate(
+                            Screen.SecondEducationDetailScreen.createRoute(
+                                firstEducationId
+                            )
+                        )
                     },
                     educationId = id
                 )
@@ -221,11 +229,15 @@ fun EcoSphereApp(
                         type = NavType.LongType
                     }
                 )
-            ){
+            ) {
                 val id = it.arguments?.getLong("firstEducationId") ?: 1
                 SecondEducationDetailScreen(
                     onClickDetail = { secondEducationId ->
-                        navController.navigate(Screen.ThirdEducationDetailScreen.createRoute(secondEducationId))
+                        navController.navigate(
+                            Screen.ThirdEducationDetailScreen.createRoute(
+                                secondEducationId
+                            )
+                        )
                     },
                     firstEducationId = id,
                     navController = navController
@@ -237,11 +249,15 @@ fun EcoSphereApp(
                         type = NavType.LongType
                     }
                 )
-            ){
+            ) {
                 val id = it.arguments?.getLong("secondEducationId") ?: 1
                 ThirdEducationDetailScreen(
                     onClickDetail = { thirdEducationId ->
-                        navController.navigate(Screen.FourthEducationDetailScreen.createRoute(thirdEducationId))
+                        navController.navigate(
+                            Screen.FourthEducationDetailScreen.createRoute(
+                                thirdEducationId
+                            )
+                        )
                     },
                     secondEducationId = id,
                     navController = navController
@@ -253,11 +269,15 @@ fun EcoSphereApp(
                         type = NavType.LongType
                     }
                 )
-            ){
+            ) {
                 val id = it.arguments?.getLong("thirdEducationId") ?: 1
                 FourthEducationDetailScreen(
                     onClickDetail = { fourthEducationId ->
-                        navController.navigate(Screen.FifthEducationDetailScreen.createRoute(fourthEducationId))
+                        navController.navigate(
+                            Screen.FifthEducationDetailScreen.createRoute(
+                                fourthEducationId
+                            )
+                        )
                     },
                     thirdEducationId = id,
                     navController = navController
@@ -269,11 +289,11 @@ fun EcoSphereApp(
                         type = NavType.LongType
                     }
                 )
-            ){
+            ) {
                 val id = it.arguments?.getLong("fourthEducationId") ?: 1
-                FifthEducationDetailScreen(fourthEducationId = id, navController = navController )
+                FifthEducationDetailScreen(fourthEducationId = id, navController = navController)
             }
-            composable(Screen.EducationDoneScreen.route){
+            composable(Screen.EducationDoneScreen.route) {
                 EducationDone(navController = navController)
             }
 
@@ -290,20 +310,35 @@ fun EcoSphereApp(
                         type = NavType.LongType
                     }
                 )
-            ){
+            ) {
                 val id = it.arguments?.getLong("tpsId") ?: 1
                 DetailTpsScreen(tpsId = id, navController = navController)
             }
-            composable(Screen.ConfirmMapScreen.route){
+            composable(Screen.ConfirmMapScreen.route) {
                 ConfirmMapScreen(navController = navController)
             }
-            composable(Screen.SearchMapScreen.route){
+            composable(Screen.SearchMapScreen.route) {
                 SearchMapScreen(navController = navController)
             }
 
             /*Community Route*/
             composable(Screen.CommunityScreen.route) {
                 CommunityScreen(navController = navController)
+            }
+            composable(Screen.PostingScreen.route) {
+                PostingScreen(navController = navController)
+            }
+            composable(
+                Screen.DetailPostScreen.route + "/{postId}",
+                arguments = listOf(navArgument("postId") { type = NavType.IntType })
+            ) { navBackStackEntry ->
+                DetailPostScreen(
+                    navController = navController,
+                    postId = navBackStackEntry.arguments?.getInt("postId")
+                )
+            }
+            composable(Screen.DummyDetailPostScreen.route) {
+                DummyDetailPostScreen(navController = navController)
             }
 
             /*Classify Route*/
@@ -313,7 +348,7 @@ fun EcoSphereApp(
             composable(Screen.ProfileScreen.route) {
                 ProfileScreen(navController = navController)
             }
-            composable(Screen.EditProfileScreen.route){
+            composable(Screen.EditProfileScreen.route) {
                 EditProfileScreen(navController = navController)
             }
         }

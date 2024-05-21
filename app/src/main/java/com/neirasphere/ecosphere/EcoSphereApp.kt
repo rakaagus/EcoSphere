@@ -347,7 +347,9 @@ fun EcoSphereApp(
             }
 
             /*Classify Route*/
-            composable(Screen.ClassifyScreen.route) {}
+            composable(Screen.ClassifyScreen.route) {
+                ClassificationScreen(navController = navController)
+            }
 
             /*Profile Route*/
             composable(Screen.ProfileScreen.route) {

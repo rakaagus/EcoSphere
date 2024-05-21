@@ -17,6 +17,8 @@ flowLayoutVersion = "0.27.1"
 systemUi = "0.27.0"
 supportAnnotationsVersion = "28.0.0"
 materialVersion = "1.12.0"
+playServicesMaps = "18.2.0"
+mapsCompose = "2.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -49,6 +51,11 @@ accompanist-flow-layout = {group = "com.google.accompanist", name = "accompanist
 
 #statubar
 accompanist-system-ui = {group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref="systemUi"}
+
+# Google Maps
+maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }
+play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
+
 support-annotations = { group = "com.android.support", name = "support-annotations", version.ref = "supportAnnotationsVersion" }
 material = { group = "com.google.android.material", name = "material", version.ref = "materialVersion" }
 [plugins]

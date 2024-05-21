@@ -74,6 +74,10 @@ dependencies {
     /*StatusBar*/
     implementation(libs.accompanist.system.ui)
 
+    /*Compose Map*/
+    implementation(libs.maps.compose)
+    implementation(libs.play.services.maps)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

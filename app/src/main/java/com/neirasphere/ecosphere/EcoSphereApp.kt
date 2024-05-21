@@ -66,6 +66,8 @@ import com.neirasphere.ecosphere.ui.screen.education.FourthEducationDetailScreen
 import com.neirasphere.ecosphere.ui.screen.education.SecondEducationDetailScreen
 import com.neirasphere.ecosphere.ui.screen.education.ThirdEducationDetailScreen
 import com.neirasphere.ecosphere.ui.screen.interactivemap.MapScreen
+import com.neirasphere.ecosphere.ui.screen.interactivemap.confirmMaps.ConfirmMapScreen
+import com.neirasphere.ecosphere.ui.screen.interactivemap.search.SearchMapScreen
 import com.neirasphere.ecosphere.ui.screen.profile.edit.EditProfileScreen
 
 @Composable
@@ -136,6 +138,13 @@ fun EcoSphereApp(
                         title = R.string.title_page_change_password
                     )
                 }
+
+                Screen.SearchMapScreen.route -> {
+                    CenterTopAppBar(
+                        navController = navController,
+                        title = R.string.title_search_page
+                    )
+                }
             }
         },
         bottomBar = {
@@ -151,7 +160,7 @@ fun EcoSphereApp(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.SplashScreen.route,
+            startDestination = Screen.ConfirmMapScreen.route,
             modifier = modifier.padding(innerPadding)
         ) {
             /*Splash & Onboarding Route*/
@@ -271,8 +280,12 @@ fun EcoSphereApp(
                 MapScreen(navController = navController)
             }
             composable(Screen.DetailTpsScreen.route){}
-            composable(Screen.ConfirmMapScreen.route){}
-            composable(Screen.SearchMapScreen.route){}
+            composable(Screen.ConfirmMapScreen.route){
+                ConfirmMapScreen(navController = navController)
+            }
+            composable(Screen.SearchMapScreen.route){
+                SearchMapScreen(navController = navController)
+            }
 
             /*Community Route*/
             composable(Screen.CommunityScreen.route) {}

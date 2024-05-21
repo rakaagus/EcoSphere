@@ -67,8 +67,10 @@ import com.google.maps.android.compose.MarkerState
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.di.Injection
 import com.neirasphere.ecosphere.model.MapData
+import com.neirasphere.ecosphere.model.SearchModel
 import com.neirasphere.ecosphere.ui.MapViewModelFactory
 import com.neirasphere.ecosphere.ui.common.UiState
+import com.neirasphere.ecosphere.ui.components.SearchMapComponent
 import com.neirasphere.ecosphere.ui.theme.NeutralColorWhite
 import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 
@@ -276,26 +278,6 @@ fun MapSearchBar(
 }
 
 @Composable
-fun SearchMapComponent(
-    title: String,
-    desc: String,
-    modifier: Modifier = Modifier
-) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        modifier = modifier.padding(horizontal = 16.dp, vertical = 10.dp)
-    ) {
-        Icon(imageVector = Icons.Filled.LocationOn, contentDescription = "", tint = Color.Black)
-        Spacer(modifier = Modifier.width(5.dp))
-        Column {
-            Text(text = title, style = MaterialTheme.typography.bodyMedium, color = Color.Black)
-            Text(text = desc, style = MaterialTheme.typography.bodySmall, color = Color(0xFF969696))
-            Divider()
-        }
-    }
-}
-
-@Composable
 fun TpsCard(
     data: MapData,
     modifier: Modifier = Modifier
@@ -375,8 +357,3 @@ fun TpsCard(
         }
     }
 }
-
-data class SearchModel(
-    val title: String,
-    val desc: String
-)

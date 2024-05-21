@@ -35,10 +35,13 @@ import androidx.compose.ui.unit.dp
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.model.CategoryLearn
 import com.neirasphere.ecosphere.model.EducationData
+import com.neirasphere.ecosphere.model.FirstRecycleData
+import com.neirasphere.ecosphere.model.RecycleCategoryData
 import com.neirasphere.ecosphere.ui.theme.BlackColor
 import com.neirasphere.ecosphere.ui.theme.NeutralColorGrey
 import com.neirasphere.ecosphere.ui.theme.NeutralColorWhite
 import com.neirasphere.ecosphere.ui.theme.PrimaryColor
+import com.neirasphere.ecosphere.ui.theme.TextColorSc
 
 @Composable
 fun HomeCardClassify(
@@ -230,6 +233,99 @@ fun EducationCard(
             Text(
                 text = educationData.title,
                 style = MaterialTheme.typography.labelMedium,
+            )
+        }
+    }
+}
+
+@Composable
+fun FirstRecycleCard(
+    firstRecycleData: FirstRecycleData,
+    onClickDetail: (Long) -> Unit,
+    modifier: Modifier = Modifier,
+){
+    Card(
+        shape = RoundedCornerShape(10.dp),
+        colors = CardDefaults.cardColors(NeutralColorWhite),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(12.dp)
+            .clickable {
+                onClickDetail(firstRecycleData.id.toLong())
+            }
+    ){
+        Row (
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.padding(start = 4.dp, end = 12.dp)
+        ){
+            Image(
+                painter = painterResource(id = firstRecycleData.image),
+                contentDescription = firstRecycleData.title,
+                modifier = Modifier
+                    .size(80.dp)
+                    .padding(8.dp)
+            )
+            Column (
+                modifier = Modifier
+                    .padding(start = 8.dp, bottom = 8.dp)
+
+            ){
+                Text(
+                    text = firstRecycleData.title,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = BlackColor,
+                    modifier = Modifier.padding(top = 4.dp, bottom = 4.dp)
+                )
+                Text(
+                    text = firstRecycleData.updated,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = TextColorSc,
+                    modifier = Modifier.padding(top = 4.dp, bottom = 4.dp)
+                )
+            }
+            Spacer(modifier = Modifier.weight(0.7f))
+            Image(
+                painterResource(id = R.drawable.icon_right_outline),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(24.dp)
+            )
+        }
+    }
+}
+@Composable
+fun RecycleCategoryCard(
+    recycleCategoryData : RecycleCategoryData,
+    onClickDetail : (Long) -> Unit,
+    modifier : Modifier = Modifier
+){
+    Card(
+        shape = RoundedCornerShape(10.dp),
+        colors = CardDefaults.cardColors(NeutralColorWhite),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
+        modifier = modifier
+            .fillMaxWidth()
+            .clickable {
+                onClickDetail(recycleCategoryData.id)
+            }
+
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+        ) {
+            Image(
+                painter = painterResource(id = recycleCategoryData.image),
+                contentDescription = recycleCategoryData.title,
+                modifier = Modifier
+                    .size(64.dp)
+                    .padding(12.dp)
+            )
+            Text(
+                text = recycleCategoryData.title,
+                style = MaterialTheme.typography.labelSmall,
             )
         }
     }

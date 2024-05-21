@@ -52,5 +52,29 @@
     <string name="item_header_5">Free Up Space</string>
     <string name="item_header_6">Report a Problem</string>
     <string name="item_header_7">Log out</string>
+
     <string name="title_detail_post">Postingan</string>
+
+
+    <!--Edit Profile-->
+    <string name="title_page_edit_profile">Edit Profil</string>
+    <string name="edit_sec_title_1">Name</string>
+    <string name="edit_sec_title_2">Email</string>
+    <string name="edit_sec_title_3">Date of birth</string>
+    <string name="edit_sec_title_4">Password</string>
+    <string name="edit_sec_title_5">Location</string>
+    <string name="form_edit_label_1">Your Name</string>
+    <string name="form_edit_date">Your Birh Day</string>
+    <string name="form_edit_loc">Your Location</string>
+
+    <!--Education-->
+    <string name="title_page_education">Edukasi</string>
+
+    <!--verification email-->
+    <string name="title_page_verif_eamil">Verifikasi Email</string>
+
+    <!--Change password-->
+    <string name="title_page_change_password">Akun Personal</string>
+    <string name="change_pass_header_title">Masukkan Password Baru Kamu Disini :</string>
+    <string name="edit_sec_title_6">Konfirmasi Password</string>
 </resources>

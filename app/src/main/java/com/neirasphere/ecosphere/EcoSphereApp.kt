@@ -46,10 +46,6 @@ import com.neirasphere.ecosphere.ui.navigation.NavigationItem
 import com.neirasphere.ecosphere.ui.navigation.Screen
 import com.neirasphere.ecosphere.ui.screen.auth.login.LoginScreen
 import com.neirasphere.ecosphere.ui.screen.auth.register.RegisterScreen
-import com.neirasphere.ecosphere.ui.screen.community.CommunityScreen
-import com.neirasphere.ecosphere.ui.screen.community.DetailPostScreen
-import com.neirasphere.ecosphere.ui.screen.community.DummyDetailPostScreen
-import com.neirasphere.ecosphere.ui.screen.community.PostingScreen
 import com.neirasphere.ecosphere.ui.screen.home.HomeScreen
 import com.neirasphere.ecosphere.ui.screen.onboarding.OnboardingScreen
 import com.neirasphere.ecosphere.ui.screen.profile.ProfileScreen
@@ -57,16 +53,16 @@ import com.neirasphere.ecosphere.ui.screen.splashscreen.SplashScreen
 import com.neirasphere.ecosphere.ui.theme.BlackColor
 import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 import com.neirasphere.ecosphere.ui.theme.containerColor
-import androidx.compose.ui.res.painterResource
 import androidx.compose.material.FloatingActionButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.text.font.FontWeight
-import com.neirasphere.ecosphere.ui.components.CenterTopAppBar
-import com.neirasphere.ecosphere.ui.screen.profile.ProfileScreen
-import androidx.navigation.navArgument
 import com.neirasphere.ecosphere.ui.screen.auth.changepassword.ChangePasswordScreen
 import com.neirasphere.ecosphere.ui.screen.auth.verificationemail.VerificationEmailScreen
 import com.neirasphere.ecosphere.ui.screen.classification.ClassificationScreen
+import com.neirasphere.ecosphere.ui.screen.community.CommunityScreen
+import com.neirasphere.ecosphere.ui.screen.community.DetailPostScreen
+import com.neirasphere.ecosphere.ui.screen.community.DummyDetailPostScreen
+import com.neirasphere.ecosphere.ui.screen.community.PostingScreen
 import com.neirasphere.ecosphere.ui.screen.education.EducationDetailScreen
 import com.neirasphere.ecosphere.ui.screen.education.EducationDone
 import com.neirasphere.ecosphere.ui.screen.education.EducationScreen
@@ -74,6 +70,10 @@ import com.neirasphere.ecosphere.ui.screen.education.FifthEducationDetailScreen
 import com.neirasphere.ecosphere.ui.screen.education.FourthEducationDetailScreen
 import com.neirasphere.ecosphere.ui.screen.education.SecondEducationDetailScreen
 import com.neirasphere.ecosphere.ui.screen.education.ThirdEducationDetailScreen
+import com.neirasphere.ecosphere.ui.screen.interactivemap.MapScreen
+import com.neirasphere.ecosphere.ui.screen.interactivemap.confirmMaps.ConfirmMapScreen
+import com.neirasphere.ecosphere.ui.screen.interactivemap.detailtps.DetailTpsScreen
+import com.neirasphere.ecosphere.ui.screen.interactivemap.search.SearchMapScreen
 import com.neirasphere.ecosphere.ui.screen.profile.edit.EditProfileScreen
 import com.neirasphere.ecosphere.ui.screen.recycle.FirstRecycleScreen
 import com.neirasphere.ecosphere.ui.screen.recycle.RecycleDone
@@ -148,6 +148,13 @@ fun EcoSphereApp(
                         title = R.string.title_page_change_password
                     )
                 }
+
+                Screen.SearchMapScreen.route -> {
+                    CenterTopAppBar(
+                        navController = navController,
+                        title = R.string.title_search_page
+                    )
+                }
             }
         },
         bottomBar = {
@@ -155,6 +162,7 @@ fun EcoSphereApp(
                 Screen.HomeScreen.route, Screen.EducationScreen.route, Screen.MapScreen.route, Screen.CommunityScreen.route -> {
                     BottomAppBar(navController = navController)
                 }
+
                 Screen.PostingScreen.route -> {
                     PostingBottomBar()
                 }
@@ -166,22 +174,34 @@ fun EcoSphereApp(
             startDestination = Screen.SplashScreen.route,
             modifier = modifier.padding(innerPadding)
         ) {
-
+            /*Splash & Onboarding Route*/
             composable(Screen.SplashScreen.route) {
                 SplashScreen(navController = navController)
             }
             composable(Screen.OnboardingScreen.route) {
                 OnboardingScreen(navController = navController)
             }
+
+            /*Auth Route*/
             composable(Screen.LoginScreen.route) {
                 LoginScreen(navController = navController)
             }
             composable(Screen.RegisterScreen.route) {
                 RegisterScreen(navController = navController)
             }
+            composable(Screen.ChangePasswordScreen.route) {
+                ChangePasswordScreen(navController = navController)
+            }
+            composable(Screen.VerificationEmailScreen.route) {
+                VerificationEmailScreen(navController = navController)
+            }
+
+            /*Home Screen Route*/
             composable(Screen.HomeScreen.route) {
                 HomeScreen(navController = navController)
             }
+
+            /*Education Route*/
             composable(Screen.EducationScreen.route) {
                 EducationScreen(
                     onClickDetail = { educationId ->
@@ -281,34 +301,62 @@ fun EcoSphereApp(
             composable(Screen.EducationDoneScreen.route) {
                 EducationDone(navController = navController)
             }
-            composable(Screen.MapScreen.route) {}
-            composable(Screen.CommunityScreen.route) {
-                CommunityScreen(navController = navController)
+
+            /*Map Route*/
+            composable(Screen.MapScreen.route) {
+                MapScreen(clickToDetailTps = { tpsId ->
+                    navController.navigate(Screen.DetailTpsScreen.createRoute(tpsId))
+                })
             }
             composable(
-                Screen.DetailPostScreen.route + "/{postId}",
-                arguments = listOf(navArgument("postId") { type = NavType.IntType })
-            ) {
-                navBackStackEntry -> DetailPostScreen(
-                    navController = navController,
-                    postId = navBackStackEntry.arguments?.getInt("postId")
+                Screen.DetailTpsScreen.route,
+                arguments = listOf(
+                    navArgument("tpsId") {
+                        type = NavType.LongType
+                    }
                 )
+            ) {
+                val id = it.arguments?.getLong("tpsId") ?: 1
+                DetailTpsScreen(tpsId = id, navController = navController)
+            }
+            composable(Screen.ConfirmMapScreen.route) {
+                ConfirmMapScreen(navController = navController)
+            }
+            composable(Screen.SearchMapScreen.route) {
+                SearchMapScreen(navController = navController)
+            }
+
+            /*Community Route*/
+            composable(Screen.CommunityScreen.route) {
+                CommunityScreen(navController = navController)
             }
             composable(Screen.PostingScreen.route) {
                 PostingScreen(navController = navController)
             }
+            composable(
+                Screen.DetailPostScreen.route + "/{postId}",
+                arguments = listOf(navArgument("postId") { type = NavType.IntType })
+            ) { navBackStackEntry ->
+                DetailPostScreen(
+                    navController = navController,
+                    postId = navBackStackEntry.arguments?.getInt("postId")
+                )
+            }
             composable(Screen.DummyDetailPostScreen.route) {
                 DummyDetailPostScreen(navController = navController)
             }
-            composable(Screen.ClassifyScreen.route) {
-                ClassificationScreen(navController = navController)
-            }
+
+            /*Classify Route*/
+            composable(Screen.ClassifyScreen.route) {}
+
+            /*Profile Route*/
             composable(Screen.ProfileScreen.route) {
                 ProfileScreen(navController = navController)
             }
             composable(Screen.EditProfileScreen.route) {
                 EditProfileScreen(navController = navController)
             }
+
             composable(Screen.ChangePasswordScreen.route) {
                 ChangePasswordScreen(navController = navController)
             }
@@ -354,7 +402,6 @@ fun EcoSphereApp(
             composable(Screen.RecycleDoneScreen.route){
                 RecycleDone(navController = navController)
             }
-
         }
     }
 }

@@ -80,4 +80,10 @@
 
     <!--Search Map-->
     <string name="title_search_page">Enter Your Location</string>
+
+    <!--TPs Detail-->
+    <string name="title_tps_detail_desc">Description</string>
+    <string name="title_tps_detail_open">Jam Buka TPS :</string>
+    <string name="title_tps_detail_fasil">Fasilitas :</string>
+    <string name="title_tps_detail_available_trash">Fasilitas :</string>
 </resources>

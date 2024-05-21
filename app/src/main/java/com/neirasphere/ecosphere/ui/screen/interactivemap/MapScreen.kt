@@ -76,7 +76,7 @@ import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 
 @Composable
 fun MapScreen(
-    navController: NavController,
+    clickToDetailTps: (Long) -> Unit,
     viewModel: MapViewModel = viewModel(
         factory = MapViewModelFactory(Injection.provideMapRepository())
     ),
@@ -108,6 +108,7 @@ fun MapScreen(
                     modifier = modifier.fillMaxSize()
                 ) {
                     MapContent(
+                        clickToDetailTps = clickToDetailTps,
                         cameraState = cameraPositionState,
                         mapStyle = properties,
                         mapSetting = uiSettings,
@@ -121,6 +122,7 @@ fun MapScreen(
 
 @Composable
 fun MapContent(
+    clickToDetailTps: (Long) -> Unit,
     mapData: List<MapData>,
     cameraState: CameraPositionState,
     mapStyle: MapProperties,
@@ -148,7 +150,7 @@ fun MapContent(
             contentPadding = PaddingValues(16.dp),
         ) {
             items(mapData) {
-                TpsCard(it)
+                TpsCard(it, clickToDetailTps = clickToDetailTps)
             }
         }
     }
@@ -280,13 +282,16 @@ fun MapSearchBar(
 @Composable
 fun TpsCard(
     data: MapData,
+    clickToDetailTps: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Card(
         shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(NeutralColorWhite),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-        modifier = modifier.size(width = 227.dp, height = 191.dp)
+        modifier = modifier.size(width = 227.dp, height = 191.dp).clickable {
+            clickToDetailTps(data.id)
+        }
     ) {
         Column(
         ) {

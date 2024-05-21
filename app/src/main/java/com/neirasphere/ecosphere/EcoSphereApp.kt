@@ -58,6 +58,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.text.font.FontWeight
 import com.neirasphere.ecosphere.ui.screen.auth.changepassword.ChangePasswordScreen
 import com.neirasphere.ecosphere.ui.screen.auth.verificationemail.VerificationEmailScreen
+import com.neirasphere.ecosphere.ui.screen.community.CommunityScreen
 import com.neirasphere.ecosphere.ui.screen.education.EducationDetailScreen
 import com.neirasphere.ecosphere.ui.screen.education.EducationDone
 import com.neirasphere.ecosphere.ui.screen.education.EducationScreen
@@ -67,6 +68,7 @@ import com.neirasphere.ecosphere.ui.screen.education.SecondEducationDetailScreen
 import com.neirasphere.ecosphere.ui.screen.education.ThirdEducationDetailScreen
 import com.neirasphere.ecosphere.ui.screen.interactivemap.MapScreen
 import com.neirasphere.ecosphere.ui.screen.interactivemap.confirmMaps.ConfirmMapScreen
+import com.neirasphere.ecosphere.ui.screen.interactivemap.detailtps.DetailTpsScreen
 import com.neirasphere.ecosphere.ui.screen.interactivemap.search.SearchMapScreen
 import com.neirasphere.ecosphere.ui.screen.profile.edit.EditProfileScreen
 
@@ -160,7 +162,7 @@ fun EcoSphereApp(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.ConfirmMapScreen.route,
+            startDestination = Screen.MapScreen.route,
             modifier = modifier.padding(innerPadding)
         ) {
             /*Splash & Onboarding Route*/
@@ -277,9 +279,21 @@ fun EcoSphereApp(
 
             /*Map Route*/
             composable(Screen.MapScreen.route) {
-                MapScreen(navController = navController)
+                MapScreen(clickToDetailTps = { tpsId ->
+                    navController.navigate(Screen.DetailTpsScreen.createRoute(tpsId))
+                })
             }
-            composable(Screen.DetailTpsScreen.route){}
+            composable(
+                Screen.DetailTpsScreen.route,
+                arguments = listOf(
+                    navArgument("tpsId") {
+                        type = NavType.LongType
+                    }
+                )
+            ){
+                val id = it.arguments?.getLong("tpsId") ?: 1
+                DetailTpsScreen(tpsId = id, navController = navController)
+            }
             composable(Screen.ConfirmMapScreen.route){
                 ConfirmMapScreen(navController = navController)
             }
@@ -288,7 +302,9 @@ fun EcoSphereApp(
             }
 
             /*Community Route*/
-            composable(Screen.CommunityScreen.route) {}
+            composable(Screen.CommunityScreen.route) {
+                CommunityScreen(navController = navController)
+            }
 
             /*Classify Route*/
             composable(Screen.ClassifyScreen.route) {}

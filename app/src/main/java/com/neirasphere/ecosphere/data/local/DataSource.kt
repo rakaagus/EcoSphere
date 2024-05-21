@@ -1,5 +1,6 @@
 package com.neirasphere.ecosphere.data.local
 
+import com.google.android.gms.maps.model.LatLng
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.model.CategoryLearn
 import com.neirasphere.ecosphere.model.CommunityPost
@@ -8,10 +9,120 @@ import com.neirasphere.ecosphere.model.EducationData
 import com.neirasphere.ecosphere.model.FifthEducationData
 import com.neirasphere.ecosphere.model.FirstEducationData
 import com.neirasphere.ecosphere.model.FourthEducationData
+import com.neirasphere.ecosphere.model.MapData
 import com.neirasphere.ecosphere.model.SecondEducationData
 import com.neirasphere.ecosphere.model.ThirdEducationData
 
 object DataSource {
+
+    fun tpsMapData(): List<MapData> = listOf(
+        MapData(
+            id = 1,
+            latLong = LatLng(-7.873, 110.320),
+            title = "Tpst Piyungan",
+            description = "TPS utama di daerah Puyungan dengan fasilitas pemrosesan sampah modern, termasuk pemilahan sampah organik dan anorganik, serta fasilitas daur ulang. TPS ini dilengkapi dengan teknologi ramah lingkungan untuk mengurangi emisi gas rumah kaca.",
+            openLocation = listOf(
+                "Senin - Jumat: 07:00 - 17:00",
+                "Sabtu: 08:00 - 16:00",
+                "Minggu: Tutup"
+            ),
+            detailLocation = "Jalan Raya Puyungan No. 1, Desa Puyungan, Kabupaten Bantul, Yogyakarta.",
+            rating = 4.5,
+            facilities = listOf(
+                "Area pemilahan sampah",
+                "Fasilitas daur ulang",
+                "Pusat edukasi pengelolaan sampah",
+                "Alat berat untuk pemrosesan sampah",
+                "Sistem pengolahan air limbah"
+            ),
+            image = listOf(
+                R.drawable.puyungan_2,
+                R.drawable.puyungan_1,
+            ),
+            trashVariantAvailable = listOf(
+                "Sampah organik",
+                "Sampah anorganik",
+                "Sampah plastik",
+                "Kertas dan karton",
+                "Logam dan kaca"
+            )
+        ),
+        MapData(
+            id = 2,
+            latLong = LatLng(-7.865, 110.350),
+            title = "TPS 3R Brama Muda",
+            description = "TPS 3R (Reduce, Reuse, Recycle) Brama Muda merupakan fasilitas pengelolaan sampah yang berfokus pada pengurangan, penggunaan kembali, dan daur ulang. TPS ini melayani masyarakat sekitar dengan berbagai program pengelolaan sampah berkelanjutan dan edukasi lingkungan.",
+            openLocation = listOf(
+                "Senin - Jumat: 07:00 - 17:00",
+                "Sabtu: 08:00 - 16:00",
+                "Minggu: Tutup"
+            ),
+            detailLocation = "Jalan Lingkar Selatan No. 20, Desa Brama, Kabupaten Bantul, Yogyakarta.",
+            rating = 4.6,
+            facilities = listOf(
+                "Area pemilahan sampah",
+                "Fasilitas daur ulang",
+                "Pusat edukasi pengelolaan sampah",
+                "Alat berat untuk pemrosesan sampah",
+                "Sistem pengolahan air limbah",
+                "Komposter untuk pengolahan sampah organik",
+                "Bank sampah",
+                "Area pembuangan sementara"
+            ),
+            image = listOf(
+                R.drawable.brama_muda_1,
+                R.drawable.brama_muda_2,
+            ),
+            trashVariantAvailable = listOf(
+                "Sampah organik",
+                "Sampah anorganik",
+                "Sampah plastik",
+                "Kertas dan karton",
+                "Logam dan kaca",
+                "Sampah elektronik kecil (e-waste)",
+                "Sampah tekstil"
+            )
+        ),
+        MapData(
+            id = 3,
+            latLong = LatLng(-7.758, 110.381),
+            title = "TPST Condongcatur",
+            description = "TPST Condongcatur merupakan fasilitas pengolahan sampah terpadu yang melayani masyarakat sekitar dengan fokus pada pengurangan, penggunaan kembali, dan daur ulang sampah. TPST ini dilengkapi dengan teknologi modern untuk memproses sampah secara efisien dan ramah lingkungan. TPST ini juga berperan sebagai pusat edukasi dan pelatihan pengelolaan sampah bagi masyarakat.",
+            openLocation = listOf(
+                "Senin - Jumat: 07:00 - 17:00",
+                "Sabtu: 08:00 - 16:00",
+                "Minggu: 08:00 - 14:00"
+            ),
+            detailLocation = "Jalan Kaliurang Km. 5, Desa Condongcatur, Kabupaten Sleman, Yogyakarta.",
+            rating = 4.7,
+            facilities = listOf(
+                "Area pemilahan sampah",
+                "Fasilitas daur ulang",
+                "Pusat edukasi pengelolaan sampah",
+                "Alat berat untuk pemrosesan sampah",
+                "Sistem pengolahan air limbah",
+                "Mesin pencacah plastik",
+                "Bank sampah",
+                "Area pembuangan sementara",
+                "Taman edukasi lingkungan"
+            ),
+            image = listOf(
+                R.drawable.condongcatur_1,
+            ),
+            trashVariantAvailable = listOf(
+                "Sampah organik",
+                "Sampah anorganik",
+                "Sampah plastik",
+                "Kertas dan karton",
+                "Logam dan kaca",
+                "Sampah elektronik kecil (e-waste)",
+                "Sampah tekstil",
+                "Sampah rumah tangga",
+                "Sampah komersial"
+            )
+        ),
+    )
+
     fun categoryLearn(): List<CategoryLearn> = listOf(
         CategoryLearn(
             1,

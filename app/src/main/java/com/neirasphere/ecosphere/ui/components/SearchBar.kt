@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -16,7 +17,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -47,7 +50,7 @@ import com.neirasphere.ecosphere.ui.theme.NeutralColorWhite
 fun SearchBar(
     query: String,
     onQueryChange: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     SearchBar(
         query = query,
@@ -75,7 +78,6 @@ fun SearchBar(
         modifier = modifier
             .fillMaxWidth()
     ) {
-
     }
 }
 
@@ -229,6 +231,26 @@ fun CommunitySearchBar(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun SearchMapComponent(
+    title: String,
+    desc: String,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier.padding(horizontal = 16.dp, vertical = 10.dp)
+    ) {
+        Icon(imageVector = Icons.Filled.LocationOn, contentDescription = "", tint = Color.Black)
+        Spacer(modifier = Modifier.width(5.dp))
+        Column {
+            Text(text = title, style = MaterialTheme.typography.bodyMedium, color = Color.Black)
+            Text(text = desc, style = MaterialTheme.typography.bodySmall, color = Color(0xFF969696))
+            Divider()
         }
     }
 }

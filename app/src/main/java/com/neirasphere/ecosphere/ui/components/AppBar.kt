@@ -16,8 +16,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Divider
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.ArrowBackIosNew
+import androidx.compose.material.icons.filled.Gif
+import androidx.compose.material.icons.filled.GraphicEq
+import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.Mic
+import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.Photo
 import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -106,25 +114,50 @@ fun CommunityAppBar(
         Row(
             modifier = Modifier.padding(horizontal = 16.dp)
         ) {
-//            IconButton(
-//                onClick = {
-//                    navController.navigateUp()
-//                },
-//                colors = IconButtonDefaults.iconButtonColors(
-//                    containerColor = PrimaryColor
-//                ),
-//                modifier = Modifier.size(34.dp)
-//            ) {
-//                Icon(
-//                    imageVector = Icons.Default.ArrowBackIosNew,
-//                    contentDescription = "Back",
-//                    tint = Color.White,
-//                    modifier = Modifier.size(18.dp)
-//                )
-//            }
             CommunitySearchBar(navController = navController)
         }
 
+    }
+}
+
+@Composable
+fun PostingBottomBar(
+    modifier: Modifier = Modifier
+) {
+    Column {
+        Row(
+            modifier = modifier
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(
+                imageVector = Icons.Default.Language,
+                contentDescription = null
+            )
+            Spacer(modifier = Modifier.padding(8.dp))
+            Text(
+                text = "Semua orang dapat membalas",
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
+        Divider()
+        Row(
+            modifier = modifier
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(imageVector = Icons.Default.Mic, contentDescription = "Mic")
+            Spacer(modifier = Modifier.padding(8.dp))
+            Icon(imageVector = Icons.Default.GraphicEq, contentDescription = "Audio")
+            Spacer(modifier = Modifier.padding(8.dp))
+            Icon(imageVector = Icons.Outlined.Photo, contentDescription = "Photo")
+            Spacer(modifier = Modifier.padding(8.dp))
+            Icon(imageVector = Icons.Default.Gif, contentDescription = "GIF")
+            Spacer(modifier = Modifier.padding(8.dp))
+            Icon(imageVector = Icons.AutoMirrored.Filled.List, contentDescription = "List")
+            Spacer(modifier = Modifier.padding(8.dp))
+            Icon(imageVector = Icons.Outlined.LocationOn, contentDescription = "Audio")
+        }
     }
 }
 

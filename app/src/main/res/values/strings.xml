@@ -53,6 +53,9 @@
     <string name="item_header_6">Report a Problem</string>
     <string name="item_header_7">Log out</string>
 
+    <string name="title_detail_post">Postingan</string>
+
+
     <!--Edit Profile-->
     <string name="title_page_edit_profile">Edit Profil</string>
     <string name="edit_sec_title_1">Name</string>

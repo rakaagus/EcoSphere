@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.ui.theme.NeutralColorGrey
+import com.neirasphere.ecosphere.ui.theme.NeutralColorWhite
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,7 +72,8 @@ fun SearchBar(
                 color = Color(0xFFC1C1C1)
             )
         },
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier
+            .fillMaxWidth()
     ) {
 
     }
@@ -121,6 +123,10 @@ fun CommunitySearchBar(
                 )
             }
         },
+        colors = SearchBarDefaults.colors(
+            containerColor = NeutralColorWhite,
+            dividerColor = Color(0xFF434343)
+        ),
         trailingIcon = {
             if (active) {
                 Icon(
@@ -144,9 +150,6 @@ fun CommunitySearchBar(
                 )
             }
         },
-        colors = SearchBarDefaults.colors(
-            containerColor = NeutralColorGrey
-        ),
         placeholder = {
             Text(
                 text = "Cari di sini",
@@ -158,7 +161,9 @@ fun CommunitySearchBar(
             .fillMaxWidth()
             .clip(RoundedCornerShape(36.dp))
     ) {
-        LazyColumn {
+        LazyColumn(
+            modifier = modifier
+        ) {
             if (text.isNotEmpty()) {
                 items(searches) { search ->
                     Row(

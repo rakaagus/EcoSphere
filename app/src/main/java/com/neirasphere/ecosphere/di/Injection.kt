@@ -1,6 +1,7 @@
 package com.neirasphere.ecosphere.di
 
 import com.neirasphere.ecosphere.data.LearnRepository
+import com.neirasphere.ecosphere.data.MapRepository
 import com.neirasphere.ecosphere.data.local.EducationRepository
 
 object Injection {
@@ -9,5 +10,9 @@ object Injection {
     }
     fun provideEducationRepository(): EducationRepository {
         return EducationRepository.getInstance()
+    }
+
+    fun provideMapRepository(): MapRepository {
+        return MapRepository.getInstance()
     }
 }

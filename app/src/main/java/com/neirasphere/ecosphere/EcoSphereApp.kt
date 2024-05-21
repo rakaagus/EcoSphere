@@ -63,7 +63,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.text.font.FontWeight
 import com.neirasphere.ecosphere.ui.components.CenterTopAppBar
 import com.neirasphere.ecosphere.ui.screen.profile.ProfileScreen
-import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import com.neirasphere.ecosphere.ui.screen.auth.changepassword.ChangePasswordScreen
 import com.neirasphere.ecosphere.ui.screen.auth.verificationemail.VerificationEmailScreen

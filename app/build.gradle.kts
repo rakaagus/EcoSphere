@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.googleKsp)
+    alias(libs.plugins.dagger.hilt.android)
+    alias(libs.plugins.kotlin.parcelize)
 }
 
 android {
@@ -77,6 +80,17 @@ dependencies {
     /*Compose Map*/
     implementation(libs.maps.compose)
     implementation(libs.play.services.maps)
+
+    /*Room Implements*/
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
+
+    /*Hilt Impl*/
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+    ksp(libs.androidx.hilt.compiler)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -20,7 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.neirasphere.ecosphere.model.SearchModel
+import com.neirasphere.ecosphere.domain.model.SearchModel
 import com.neirasphere.ecosphere.ui.components.SearchBar
 import com.neirasphere.ecosphere.ui.components.SearchMapComponent
 
@@ -31,19 +31,19 @@ fun SearchMapScreen(
 ) {
     var dataSearch = remember {
         mutableStateListOf(
-            SearchModel(
+            com.neirasphere.ecosphere.domain.model.SearchModel(
                 "TPST Piyungan",
                 "Ngablak, Sitimulyo, Kabupaten Ba..."
             ),
-            SearchModel(
+            com.neirasphere.ecosphere.domain.model.SearchModel(
                 "TPST Piyungan",
                 "Ngablak, Sitimulyo, Kabupaten Ba..."
             ),
-            SearchModel(
+            com.neirasphere.ecosphere.domain.model.SearchModel(
                 "TPST Piyungan",
                 "Ngablak, Sitimulyo, Kabupaten Ba..."
             ),
-            SearchModel(
+            com.neirasphere.ecosphere.domain.model.SearchModel(
                 "TPST Piyungan",
                 "Ngablak, Sitimulyo, Kabupaten Ba..."
             ),
@@ -60,7 +60,7 @@ fun SearchMapScreen(
 
 @Composable
 fun SearchMapContent(
-    data: List<SearchModel>,
+    data: List<com.neirasphere.ecosphere.domain.model.SearchModel>,
     modifier: Modifier = Modifier
 ) {
     SearchBar(query = "", onQueryChange = {}, modifier = modifier.padding(horizontal = 16.dp))

@@ -38,11 +38,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.neirasphere.ecosphere.model.CommunityPost
+import com.neirasphere.ecosphere.domain.model.CommunityPost
 
 @Composable
 fun PostLayout(
-    post: CommunityPost,
+    post: com.neirasphere.ecosphere.domain.model.CommunityPost,
     navController: NavController,
     onItemClicked: (Int) -> Unit
 ) {
@@ -116,7 +116,7 @@ fun PostLayout(
 
 @Composable
 fun PostAvatarAndInfo(
-    post: CommunityPost,
+    post: com.neirasphere.ecosphere.domain.model.CommunityPost,
     modifier: Modifier = Modifier,
     navController: NavController
 ) {
@@ -151,7 +151,7 @@ fun PostAvatarAndInfo(
 }
 
 @Composable
-fun PostAndImage(post: CommunityPost, modifier: Modifier = Modifier) {
+fun PostAndImage(post: com.neirasphere.ecosphere.domain.model.CommunityPost, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         Text(
             text = post.text,
@@ -175,7 +175,7 @@ fun PostAndImage(post: CommunityPost, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun PostActions(post: CommunityPost, modifier: Modifier = Modifier) {
+fun PostActions(post: com.neirasphere.ecosphere.domain.model.CommunityPost, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .padding(top = 8.dp),

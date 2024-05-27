@@ -30,7 +30,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
 import com.neirasphere.ecosphere.di.Injection
-import com.neirasphere.ecosphere.model.FirstRecycleData
+import com.neirasphere.ecosphere.domain.model.FirstRecycleData
 import com.neirasphere.ecosphere.ui.RecycleViewModelFactory
 import com.neirasphere.ecosphere.ui.common.UiState
 import com.neirasphere.ecosphere.ui.components.FirstRecycleCard
@@ -108,7 +108,7 @@ fun FirstRecycleContent(
             }
 
             is UiState.Success -> {
-                val data = (firstRecycleState as UiState.Success<List<FirstRecycleData>>).data
+                val data = (firstRecycleState as UiState.Success<List<com.neirasphere.ecosphere.domain.model.FirstRecycleData>>).data
 
                 LazyColumn(
                     modifier = Modifier

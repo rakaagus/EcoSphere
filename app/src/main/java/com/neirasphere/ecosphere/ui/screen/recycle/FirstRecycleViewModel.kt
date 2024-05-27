@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neirasphere.ecosphere.data.RecycleRepository
-import com.neirasphere.ecosphere.model.FirstRecycleData
-import com.neirasphere.ecosphere.model.RecycleCategoryData
+import com.neirasphere.ecosphere.domain.model.FirstRecycleData
+import com.neirasphere.ecosphere.domain.model.RecycleCategoryData
 import com.neirasphere.ecosphere.ui.common.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,11 +16,11 @@ import kotlinx.coroutines.launch
 class FirstRecycleViewModel(
     private val repository: RecycleRepository
 ): ViewModel() {
-    private val _firstRecycleState : MutableStateFlow<UiState<List<FirstRecycleData>>> = MutableStateFlow(
+    private val _firstRecycleState : MutableStateFlow<UiState<List<com.neirasphere.ecosphere.domain.model.FirstRecycleData>>> = MutableStateFlow(
         UiState.Loading
     )
 
-    val firstRecycleState : StateFlow<UiState<List<FirstRecycleData>>>
+    val firstRecycleState : StateFlow<UiState<List<com.neirasphere.ecosphere.domain.model.FirstRecycleData>>>
         get() = _firstRecycleState
 
     fun getFirstRecycle(contentId: Long) {

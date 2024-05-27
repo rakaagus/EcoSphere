@@ -1,13 +1,13 @@
-package com.neirasphere.ecosphere.model
+package com.neirasphere.ecosphere.domain.model
 
 sealed class SecondRecycleData{
     data class Content (
         val id : Long,
         val title : String,
         val image : Int,
-        val steps : List<Step>,
+        val steps : List<com.neirasphere.ecosphere.domain.model.Step>,
         val source : String,
-    ) : SecondRecycleData()
+    ) : com.neirasphere.ecosphere.domain.model.SecondRecycleData()
 }
 
 data class Step(

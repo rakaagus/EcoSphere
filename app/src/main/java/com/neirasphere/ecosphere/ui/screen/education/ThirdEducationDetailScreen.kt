@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.neirasphere.ecosphere.di.Injection
-import com.neirasphere.ecosphere.model.ThirdEducationData
+import com.neirasphere.ecosphere.domain.model.ThirdEducationData
 import com.neirasphere.ecosphere.ui.EducationViewModelFactory
 import com.neirasphere.ecosphere.ui.common.UiState
 import com.neirasphere.ecosphere.ui.components.ButtonEducation
@@ -81,7 +81,7 @@ fun ThirdEducationDetailContent (
 
 @Composable
 fun ThirdEducationContent(
-    thirdEducationData: ThirdEducationData,
+    thirdEducationData: com.neirasphere.ecosphere.domain.model.ThirdEducationData,
     modifier: Modifier = Modifier
 ){
     Column(

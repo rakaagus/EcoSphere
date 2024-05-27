@@ -2,8 +2,8 @@ package com.neirasphere.ecosphere.ui.screen.education
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.neirasphere.ecosphere.data.local.EducationRepository
-import com.neirasphere.ecosphere.model.EducationData
+import com.neirasphere.ecosphere.data.EducationRepository
+import com.neirasphere.ecosphere.domain.model.EducationData
 import com.neirasphere.ecosphere.ui.common.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,11 +13,11 @@ import kotlinx.coroutines.launch
 class EducationViewModel (
     private val repository: EducationRepository
 ): ViewModel() {
-    private val _education : MutableStateFlow<UiState<List<EducationData>>> = MutableStateFlow(
+    private val _education : MutableStateFlow<UiState<List<com.neirasphere.ecosphere.domain.model.EducationData>>> = MutableStateFlow(
         UiState.Loading
     )
 
-    val education : StateFlow<UiState<List<EducationData>>>
+    val education : StateFlow<UiState<List<com.neirasphere.ecosphere.domain.model.EducationData>>>
         get() = _education
 
     fun getEducation(){

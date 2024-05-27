@@ -1,7 +1,7 @@
 package com.neirasphere.ecosphere.data
 
 import com.neirasphere.ecosphere.data.local.DataSource
-import com.neirasphere.ecosphere.model.CategoryLearn
+import com.neirasphere.ecosphere.domain.model.CategoryLearn
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
@@ -10,7 +10,7 @@ class LearnRepository {
         1,2,3
     )
 
-    private val learnHome = mutableListOf<CategoryLearn>()
+    private val learnHome = mutableListOf<com.neirasphere.ecosphere.domain.model.CategoryLearn>()
 
     init {
         if(learnHome.isEmpty()){
@@ -22,7 +22,7 @@ class LearnRepository {
         }
     }
 
-    fun getAllHomeLearnCategory(): Flow<List<CategoryLearn>> =  flowOf(learnHome)
+    fun getAllHomeLearnCategory(): Flow<List<com.neirasphere.ecosphere.domain.model.CategoryLearn>> =  flowOf(learnHome)
 
     companion object{
         @Volatile

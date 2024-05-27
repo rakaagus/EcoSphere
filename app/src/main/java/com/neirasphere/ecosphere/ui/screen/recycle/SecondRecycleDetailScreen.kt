@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.neirasphere.ecosphere.di.Injection
-import com.neirasphere.ecosphere.model.SecondRecycleData
-import com.neirasphere.ecosphere.model.Step
+import com.neirasphere.ecosphere.domain.model.SecondRecycleData
+import com.neirasphere.ecosphere.domain.model.Step
 import com.neirasphere.ecosphere.ui.RecycleViewModelFactory
 import com.neirasphere.ecosphere.ui.common.UiState
 import com.neirasphere.ecosphere.ui.components.ButtonAuth
@@ -63,7 +63,7 @@ fun SecondRecycleContent(
             }
 
             is UiState.Success -> {
-                val data = (secondRecycleState as UiState.Success<List<SecondRecycleData>>).data
+                val data = (secondRecycleState as UiState.Success<List<com.neirasphere.ecosphere.domain.model.SecondRecycleData>>).data
 
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
@@ -71,7 +71,7 @@ fun SecondRecycleContent(
                 ) {
                     items(data) { item ->
                         SecondRecycleDetailContent(
-                            secondRecycleData = item as SecondRecycleData.Content,
+                            secondRecycleData = item as com.neirasphere.ecosphere.domain.model.SecondRecycleData.Content,
                             navHostController = navHostController,
                         )
                     }
@@ -83,7 +83,7 @@ fun SecondRecycleContent(
 
 @Composable
 fun SecondRecycleDetailContent(
-    secondRecycleData: SecondRecycleData.Content,
+    secondRecycleData: com.neirasphere.ecosphere.domain.model.SecondRecycleData.Content,
     navHostController: NavHostController,
     modifier: Modifier = Modifier,
 ){
@@ -119,7 +119,7 @@ fun SecondRecycleDetailContent(
 
 @Composable
 fun StepItem(
-    step : Step,
+    step : com.neirasphere.ecosphere.domain.model.Step,
     modifier: Modifier = Modifier,
 ){
     Column(

@@ -2,21 +2,18 @@ package com.neirasphere.ecosphere.data
 
 import com.neirasphere.ecosphere.data.local.DataSource
 import com.neirasphere.ecosphere.data.local.DataSource.secondRecycleList
-import com.neirasphere.ecosphere.data.local.EducationRepository
-import com.neirasphere.ecosphere.model.FirstEducationData
-import com.neirasphere.ecosphere.model.FirstRecycleData
-import com.neirasphere.ecosphere.model.RecycleCategoryData
-import com.neirasphere.ecosphere.model.SecondRecycleData
+import com.neirasphere.ecosphere.domain.model.FirstRecycleData
+import com.neirasphere.ecosphere.domain.model.RecycleCategoryData
+import com.neirasphere.ecosphere.domain.model.SecondRecycleData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
-import java.lang.IllegalArgumentException
 
 class RecycleRepository {
 
-    private val recycleCategory = mutableListOf<RecycleCategoryData>()
-    private val firstRecycle = mutableListOf<FirstRecycleData>()
-    private val secondRecycle = mutableListOf<SecondRecycleData>()
+    private val recycleCategory = mutableListOf<com.neirasphere.ecosphere.domain.model.RecycleCategoryData>()
+    private val firstRecycle = mutableListOf<com.neirasphere.ecosphere.domain.model.FirstRecycleData>()
+    private val secondRecycle = mutableListOf<com.neirasphere.ecosphere.domain.model.SecondRecycleData>()
 
 
     init{
@@ -31,13 +28,13 @@ class RecycleRepository {
 //        }
     }
 
-    fun getAllRecycleCategory() : Flow<List<RecycleCategoryData>> = flowOf(recycleCategory)
+    fun getAllRecycleCategory() : Flow<List<com.neirasphere.ecosphere.domain.model.RecycleCategoryData>> = flowOf(recycleCategory)
 
-    fun getAllFirstRecycleList(): List<FirstRecycleData> {
+    fun getAllFirstRecycleList(): List<com.neirasphere.ecosphere.domain.model.FirstRecycleData> {
         return firstRecycle
     }
 
-    fun getFirstRecycleListByCategoryId(categoryId: Long): Flow<List<FirstRecycleData>> = flow {
+    fun getFirstRecycleListByCategoryId(categoryId: Long): Flow<List<com.neirasphere.ecosphere.domain.model.FirstRecycleData>> = flow {
         val category = DataSource.recycleCategory().find { it.id == categoryId }
         val filteredList = category?.contentId?.let { contentIds ->
             DataSource.categoryContentList().filter { it.id in contentIds }
@@ -45,7 +42,7 @@ class RecycleRepository {
         emit(filteredList)
     }
 
-    fun getSecondRecycleListById(id: Int): Flow<List<SecondRecycleData>> = flow {
+    fun getSecondRecycleListById(id: Int): Flow<List<com.neirasphere.ecosphere.domain.model.SecondRecycleData>> = flow {
         val data = secondRecycleList(id)
         secondRecycle.addAll(listOf(data))
 

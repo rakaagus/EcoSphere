@@ -33,10 +33,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.neirasphere.ecosphere.R
-import com.neirasphere.ecosphere.model.CategoryLearn
-import com.neirasphere.ecosphere.model.EducationData
-import com.neirasphere.ecosphere.model.FirstRecycleData
-import com.neirasphere.ecosphere.model.RecycleCategoryData
+import com.neirasphere.ecosphere.domain.model.CategoryLearn
+import com.neirasphere.ecosphere.domain.model.EducationData
+import com.neirasphere.ecosphere.domain.model.FirstRecycleData
+import com.neirasphere.ecosphere.domain.model.RecycleCategoryData
 import com.neirasphere.ecosphere.ui.theme.BlackColor
 import com.neirasphere.ecosphere.ui.theme.NeutralColorGrey
 import com.neirasphere.ecosphere.ui.theme.NeutralColorWhite
@@ -153,7 +153,7 @@ fun HomeCardClassify(
 
 @Composable
 fun HomeCategoriesLearnCard(
-    categoriesLearn: CategoryLearn,
+    categoriesLearn: com.neirasphere.ecosphere.domain.model.CategoryLearn,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -196,7 +196,7 @@ private fun HomeCardClassifyPrev() {
 @Composable
 private fun HomeCategoriesLearnCardPrev() {
     HomeCategoriesLearnCard(
-        CategoryLearn(
+        com.neirasphere.ecosphere.domain.model.CategoryLearn(
             1, "Sampah Anorganik", R.drawable.item_home_1
         )
     )
@@ -205,7 +205,7 @@ private fun HomeCategoriesLearnCardPrev() {
 
 @Composable
 fun EducationCard(
-    educationData : EducationData,
+    educationData : com.neirasphere.ecosphere.domain.model.EducationData,
     onClickDetail : (Long) -> Unit,
     modifier : Modifier = Modifier
 ){
@@ -240,7 +240,7 @@ fun EducationCard(
 
 @Composable
 fun FirstRecycleCard(
-    firstRecycleData: FirstRecycleData,
+    firstRecycleData: com.neirasphere.ecosphere.domain.model.FirstRecycleData,
     onClickDetail: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ){
@@ -297,7 +297,7 @@ fun FirstRecycleCard(
 }
 @Composable
 fun RecycleCategoryCard(
-    recycleCategoryData : RecycleCategoryData,
+    recycleCategoryData : com.neirasphere.ecosphere.domain.model.RecycleCategoryData,
     onClickDetail : (Long) -> Unit,
     modifier : Modifier = Modifier
 ){

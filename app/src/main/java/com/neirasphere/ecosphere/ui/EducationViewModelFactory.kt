@@ -2,7 +2,7 @@ package com.neirasphere.ecosphere.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.neirasphere.ecosphere.data.local.EducationRepository
+import com.neirasphere.ecosphere.data.EducationRepository
 import com.neirasphere.ecosphere.ui.screen.education.EducationViewModel
 import com.neirasphere.ecosphere.ui.screen.education.FifthEducationViewModel
 import com.neirasphere.ecosphere.ui.screen.education.FirstEducationViewModel

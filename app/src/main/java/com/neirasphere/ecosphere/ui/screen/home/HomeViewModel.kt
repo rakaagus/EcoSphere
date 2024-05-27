@@ -3,7 +3,7 @@ package com.neirasphere.ecosphere.ui.screen.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neirasphere.ecosphere.data.LearnRepository
-import com.neirasphere.ecosphere.model.CategoryLearn
+import com.neirasphere.ecosphere.domain.model.CategoryLearn
 import com.neirasphere.ecosphere.ui.common.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -11,11 +11,11 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val repository: LearnRepository): ViewModel() {
-    private val _categoryLearn: MutableStateFlow<UiState<List<CategoryLearn>>> = MutableStateFlow(
+    private val _categoryLearn: MutableStateFlow<UiState<List<com.neirasphere.ecosphere.domain.model.CategoryLearn>>> = MutableStateFlow(
         UiState.Loading
     )
 
-    val categoryLearn: StateFlow<UiState<List<CategoryLearn>>>
+    val categoryLearn: StateFlow<UiState<List<com.neirasphere.ecosphere.domain.model.CategoryLearn>>>
         get() = _categoryLearn
 
 

@@ -1,4 +1,4 @@
-package com.neirasphere.ecosphere.model
+package com.neirasphere.ecosphere.domain.model
 
 data class SearchModel(
     val title: String,

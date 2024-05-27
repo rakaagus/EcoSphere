@@ -23,7 +23,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.di.Injection
-import com.neirasphere.ecosphere.model.FourthEducationData
+import com.neirasphere.ecosphere.domain.model.FourthEducationData
 import com.neirasphere.ecosphere.ui.EducationViewModelFactory
 import com.neirasphere.ecosphere.ui.ViewModelFactory
 import com.neirasphere.ecosphere.ui.common.UiState
@@ -87,7 +87,7 @@ fun FourthEducationDetailContent(
 
 @Composable
 fun FourthEducationContent(
-    fourthEducationData: FourthEducationData,
+    fourthEducationData: com.neirasphere.ecosphere.domain.model.FourthEducationData,
     modifier : Modifier = Modifier
 ){
     Column(

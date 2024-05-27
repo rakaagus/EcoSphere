@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.data.local.DataSource
-import com.neirasphere.ecosphere.model.CommunityPost
+import com.neirasphere.ecosphere.domain.model.CommunityPost
 import com.neirasphere.ecosphere.ui.components.CenterTopAppBar
 import com.neirasphere.ecosphere.ui.components.PostAvatarAndInfo
 import com.neirasphere.ecosphere.ui.navigation.Screen
@@ -76,7 +76,7 @@ fun DetailPostScreen(
 
 @Composable
 private fun DetailPostContent(
-    post: List<CommunityPost>,
+    post: List<com.neirasphere.ecosphere.domain.model.CommunityPost>,
     modifier: Modifier = Modifier,
     navController: NavController
 ) {

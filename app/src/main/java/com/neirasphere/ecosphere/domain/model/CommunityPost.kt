@@ -1,11 +1,11 @@
-package com.neirasphere.ecosphere.model
+package com.neirasphere.ecosphere.domain.model
 
 import java.text.SimpleDateFormat
 import java.util.Locale
 
 data class CommunityPost(
     val id: Int,
-    val user: User,
+    val user: com.neirasphere.ecosphere.domain.model.User,
     val text: String,
     val image: Int?,
     val comments: Int,

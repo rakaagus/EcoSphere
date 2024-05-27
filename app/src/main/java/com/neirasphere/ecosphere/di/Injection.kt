@@ -3,7 +3,7 @@ package com.neirasphere.ecosphere.di
 import com.neirasphere.ecosphere.data.LearnRepository
 import com.neirasphere.ecosphere.data.RecycleRepository
 import com.neirasphere.ecosphere.data.MapRepository
-import com.neirasphere.ecosphere.data.local.EducationRepository
+import com.neirasphere.ecosphere.data.EducationRepository
 
 object Injection {
     fun provideRepository(): LearnRepository{

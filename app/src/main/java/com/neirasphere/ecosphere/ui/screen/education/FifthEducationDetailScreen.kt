@@ -26,7 +26,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.di.Injection
-import com.neirasphere.ecosphere.model.FifthEducationData
+import com.neirasphere.ecosphere.domain.model.FifthEducationData
 import com.neirasphere.ecosphere.ui.EducationViewModelFactory
 import com.neirasphere.ecosphere.ui.ViewModelFactory
 import com.neirasphere.ecosphere.ui.common.UiState
@@ -85,7 +85,7 @@ fun FifthEducationDetailContent(
 
 @Composable
 fun FifthEducationContent(
-    fifthEducationData: FifthEducationData,
+    fifthEducationData: com.neirasphere.ecosphere.domain.model.FifthEducationData,
     modifier : Modifier = Modifier
 ){
     Column(

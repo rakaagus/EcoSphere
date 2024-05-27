@@ -1,4 +1,4 @@
-package com.neirasphere.ecosphere.model
+package com.neirasphere.ecosphere.domain.model
 
 import androidx.annotation.DrawableRes
 import com.google.android.gms.maps.model.LatLng

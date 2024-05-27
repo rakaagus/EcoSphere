@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.neirasphere.ecosphere.di.Injection
-import com.neirasphere.ecosphere.model.SecondEducationData
+import com.neirasphere.ecosphere.domain.model.SecondEducationData
 import com.neirasphere.ecosphere.ui.EducationViewModelFactory
 import com.neirasphere.ecosphere.ui.common.UiState
 import com.neirasphere.ecosphere.ui.components.ButtonEducation
@@ -79,7 +79,7 @@ fun SecondEducationDetailContent(
 
 @Composable
 fun SecondEducationContent(
-    secondEducationData: SecondEducationData,
+    secondEducationData: com.neirasphere.ecosphere.domain.model.SecondEducationData,
     modifier: Modifier = Modifier
 ){
     Column(

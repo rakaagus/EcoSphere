@@ -1,12 +1,12 @@
 package com.neirasphere.ecosphere.data
 
 import com.neirasphere.ecosphere.data.local.DataSource
-import com.neirasphere.ecosphere.model.MapData
+import com.neirasphere.ecosphere.domain.model.MapData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
 class MapRepository {
-    private val tpsData = mutableListOf<MapData>()
+    private val tpsData = mutableListOf<com.neirasphere.ecosphere.domain.model.MapData>()
 
     init {
         if (tpsData.isEmpty()){
@@ -16,9 +16,9 @@ class MapRepository {
         }
     }
 
-    fun getAllTpsData() : Flow<List<MapData>> = flowOf(tpsData)
+    fun getAllTpsData() : Flow<List<com.neirasphere.ecosphere.domain.model.MapData>> = flowOf(tpsData)
 
-    fun getDetailTps(tpsId: Long) : MapData {
+    fun getDetailTps(tpsId: Long) : com.neirasphere.ecosphere.domain.model.MapData {
         return tpsData.first {
             it.id == tpsId
         }

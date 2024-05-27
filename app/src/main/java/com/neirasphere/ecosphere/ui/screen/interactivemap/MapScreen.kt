@@ -66,8 +66,8 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.di.Injection
-import com.neirasphere.ecosphere.model.MapData
-import com.neirasphere.ecosphere.model.SearchModel
+import com.neirasphere.ecosphere.domain.model.MapData
+import com.neirasphere.ecosphere.domain.model.SearchModel
 import com.neirasphere.ecosphere.ui.MapViewModelFactory
 import com.neirasphere.ecosphere.ui.common.UiState
 import com.neirasphere.ecosphere.ui.components.SearchMapComponent
@@ -123,7 +123,7 @@ fun MapScreen(
 @Composable
 fun MapContent(
     clickToDetailTps: (Long) -> Unit,
-    mapData: List<MapData>,
+    mapData: List<com.neirasphere.ecosphere.domain.model.MapData>,
     cameraState: CameraPositionState,
     mapStyle: MapProperties,
     mapSetting: MapUiSettings,
@@ -170,19 +170,19 @@ fun MapSearchBar(
     }
     var dataSearch = remember {
         mutableStateListOf(
-            SearchModel(
+            com.neirasphere.ecosphere.domain.model.SearchModel(
                 "TPST Piyungan",
                 "Ngablak, Sitimulyo, Kabupaten Ba..."
             ),
-            SearchModel(
+            com.neirasphere.ecosphere.domain.model.SearchModel(
                 "TPST Piyungan",
                 "Ngablak, Sitimulyo, Kabupaten Ba..."
             ),
-            SearchModel(
+            com.neirasphere.ecosphere.domain.model.SearchModel(
                 "TPST Piyungan",
                 "Ngablak, Sitimulyo, Kabupaten Ba..."
             ),
-            SearchModel(
+            com.neirasphere.ecosphere.domain.model.SearchModel(
                 "TPST Piyungan",
                 "Ngablak, Sitimulyo, Kabupaten Ba..."
             ),
@@ -194,7 +194,7 @@ fun MapSearchBar(
         onQueryChange = { text = it },
         onSearch = {
             dataSearch.add(
-                SearchModel(
+                com.neirasphere.ecosphere.domain.model.SearchModel(
                     text,
                     text
                 )
@@ -281,7 +281,7 @@ fun MapSearchBar(
 
 @Composable
 fun TpsCard(
-    data: MapData,
+    data: com.neirasphere.ecosphere.domain.model.MapData,
     clickToDetailTps: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {

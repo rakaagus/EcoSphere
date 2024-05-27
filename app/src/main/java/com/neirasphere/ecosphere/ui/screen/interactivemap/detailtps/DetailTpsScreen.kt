@@ -58,8 +58,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.di.Injection
-import com.neirasphere.ecosphere.model.CommunityPost
-import com.neirasphere.ecosphere.model.MapData
+import com.neirasphere.ecosphere.domain.model.CommunityPost
+import com.neirasphere.ecosphere.domain.model.MapData
 import com.neirasphere.ecosphere.ui.MapViewModelFactory
 import com.neirasphere.ecosphere.ui.ViewModelFactory
 import com.neirasphere.ecosphere.ui.common.UiState
@@ -236,7 +236,7 @@ fun TabGallery(
 
 @Composable
 fun TabAbout(
-    dataTps: MapData,
+    dataTps: com.neirasphere.ecosphere.domain.model.MapData,
     modifier: Modifier = Modifier
 ) {
     Column(

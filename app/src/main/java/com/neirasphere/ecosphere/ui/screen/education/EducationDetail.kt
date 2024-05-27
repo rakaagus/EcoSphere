@@ -33,7 +33,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberImagePainter
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.di.Injection
-import com.neirasphere.ecosphere.model.FirstEducationData
+import com.neirasphere.ecosphere.domain.model.FirstEducationData
 import com.neirasphere.ecosphere.ui.EducationViewModelFactory
 import com.neirasphere.ecosphere.ui.ViewModelFactory
 import com.neirasphere.ecosphere.ui.common.UiState
@@ -134,7 +134,7 @@ fun FirstButtonEducation(
 
 @Composable
 fun FirstEducationContent(
-    firstEducationData: FirstEducationData,
+    firstEducationData: com.neirasphere.ecosphere.domain.model.FirstEducationData,
     modifier: Modifier = Modifier
 ){
     Column(

@@ -3,7 +3,6 @@ package com.neirasphere.ecosphere.ui.screen.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neirasphere.ecosphere.data.LearnRepository
-import com.neirasphere.ecosphere.domain.model.CategoryLearn
 import com.neirasphere.ecosphere.ui.common.UiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

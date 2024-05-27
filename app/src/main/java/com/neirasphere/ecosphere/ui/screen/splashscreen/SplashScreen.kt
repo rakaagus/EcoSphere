@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,22 +33,42 @@ import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.ui.navigation.Screen
 import com.neirasphere.ecosphere.ui.theme.TextColorSc
 import kotlinx.coroutines.delay
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.neirasphere.ecosphere.di.Injection
+import com.neirasphere.ecosphere.ui.OnboardingViewModelFactory
 
 @Composable
 fun SplashScreen(
     navController: NavHostController,
+    viewModel: SplashViewModel = viewModel(
+        factory = OnboardingViewModelFactory(Injection.provideAppRepo(LocalContext.current))
+    ),
     modifier: Modifier = Modifier
 ) {
     var startAnim by remember {
         mutableStateOf(false)
     }
 
+    val statusLogin = viewModel.getStatusOnboarding().collectAsState(initial = false)
+
     LaunchedEffect(key1 = true) {
         delay(1500)
         startAnim = true
         delay(2000)
-        navController.popBackStack()
-        navController.navigate(Screen.OnboardingScreen.route)
+
+        if(statusLogin.value){
+            navController.navigate(Screen.HomeScreen.route){
+                popUpTo(Screen.SplashScreen.route){
+                    inclusive = true
+                }
+            }
+        }else {
+            navController.navigate(Screen.OnboardingScreen.route){
+                popUpTo(Screen.SplashScreen.route){
+                    inclusive = true
+                }
+            }
+        }
     }
     SplashScreenAnimation(state = startAnim)
 }

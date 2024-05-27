@@ -1,7 +1,6 @@
 package com.neirasphere.ecosphere.ui.screen.onboarding
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,7 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -34,12 +33,18 @@ import com.neirasphere.ecosphere.ui.theme.NeutralColorWhite
 import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 import com.neirasphere.ecosphere.utils.OnboardingPage
 import kotlinx.coroutines.launch
-
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.neirasphere.ecosphere.di.Injection
+import com.neirasphere.ecosphere.ui.OnboardingViewModelFactory
+import com.neirasphere.ecosphere.ui.ViewModelFactory
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun OnboardingScreen(
     navController: NavHostController,
+    viewModel: OnboardingViewModel = viewModel(
+        factory = OnboardingViewModelFactory(Injection.provideAppRepo(LocalContext.current))
+    ),
     modifier: Modifier = Modifier
 ) {
     val page = listOf(
@@ -70,6 +75,7 @@ fun OnboardingScreen(
             onClick = {
                 scope.launch {
                     if(pagerState.currentPage == pagerState.pageCount - 1){
+                        viewModel.saveStatusOnboarding(true)
                         navController.popBackStack()
                         navController.navigate(Screen.LoginScreen.route)
                     }else {

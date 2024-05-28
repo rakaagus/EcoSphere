@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.neirasphere.ecosphere.di.Injection
@@ -31,9 +32,7 @@ fun FourthEducationDetailScreen(
     thirdEducationId : Long,
     navController: NavController,
     onClickDetail : (Long) -> Unit,
-    viewModel: FourthEducationViewModel = viewModel(
-        factory = EducationViewModelFactory(Injection.provideEducationRepository())
-    ),
+    viewModel: FourthEducationViewModel = hiltViewModel(),
     modifier : Modifier = Modifier,
 ){
     FourthEducationDetailContent(fourthEducationId = thirdEducationId, navController = navController, onClickDetail = onClickDetail, viewModel = viewModel )

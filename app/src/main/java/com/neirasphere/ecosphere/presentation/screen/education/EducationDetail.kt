@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.di.Injection
@@ -38,9 +39,7 @@ import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 fun EducationDetailScreen(
     educationId: Long,
     onClickDetail: (Long) -> Unit,
-    viewModel: FirstEducationViewModel = viewModel(
-        factory = EducationViewModelFactory(Injection.provideEducationRepository())
-    ),
+    viewModel: FirstEducationViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ){
     EducationDetailContent(educationId = educationId, onClickDetail = onClickDetail , viewModel = viewModel)

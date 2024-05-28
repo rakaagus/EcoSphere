@@ -29,16 +29,4 @@ class MapRepositoryImpl @Inject constructor(
             it.id == tpsId
         }
     }
-
-//    companion object{
-//        @Volatile
-//        private var instance: MapRepositoryImpl? = null
-//
-//        fun getInstance(): MapRepositoryImpl =
-//            instance ?: synchronized(this){
-//                MapRepositoryImpl().apply {
-//                    instance = this
-//                }
-//            }
-//    }
 }

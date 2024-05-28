@@ -25,6 +25,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.collectAsState
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 import com.neirasphere.ecosphere.R
@@ -38,9 +39,7 @@ import com.neirasphere.ecosphere.ui.theme.NeutralColorWhite
 @Composable
 fun EducationScreen(
     onClickDetail: (Long) -> Unit,
-    viewModel: EducationViewModel = viewModel(
-        factory = EducationViewModelFactory(Injection.provideEducationRepository())
-    ),
+    viewModel: EducationViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
 ){
     EducationContent(onClickDetail = onClickDetail, viewModel = viewModel, modifier = modifier)

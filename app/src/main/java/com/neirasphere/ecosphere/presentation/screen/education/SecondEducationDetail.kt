@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.neirasphere.ecosphere.di.Injection
@@ -31,9 +32,7 @@ fun SecondEducationDetailScreen(
     firstEducationId: Long,
     navController: NavController,
     onClickDetail : (Long) -> Unit,
-    viewModel: SecondEducationViewModel = viewModel(
-        factory = EducationViewModelFactory(Injection.provideEducationRepository())
-    ),
+    viewModel: SecondEducationViewModel = hiltViewModel(),
     modifier : Modifier = Modifier,
 ) {
     SecondEducationDetailContent(secEducationId = firstEducationId , onClickDetail = onClickDetail, navController = navController, viewModel = viewModel)

@@ -2,7 +2,7 @@ package com.neirasphere.ecosphere.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.neirasphere.ecosphere.data.EducationRepository
+import com.neirasphere.ecosphere.data.repository.EducationRepositoryImpl
 import com.neirasphere.ecosphere.presentation.screen.education.EducationViewModel
 import com.neirasphere.ecosphere.presentation.screen.education.FifthEducationViewModel
 import com.neirasphere.ecosphere.presentation.screen.education.FirstEducationViewModel
@@ -10,7 +10,7 @@ import com.neirasphere.ecosphere.presentation.screen.education.FourthEducationVi
 import com.neirasphere.ecosphere.presentation.screen.education.SecondEducationViewModel
 import com.neirasphere.ecosphere.presentation.screen.education.ThirdEducationViewModel
 
-class EducationViewModelFactory(val repository: EducationRepository): ViewModelProvider.NewInstanceFactory() {
+class EducationViewModelFactory(val repository: EducationRepositoryImpl): ViewModelProvider.NewInstanceFactory() {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if(modelClass.isAssignableFrom(EducationViewModel::class.java)) {
             return EducationViewModel(repository) as T

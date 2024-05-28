@@ -25,12 +25,8 @@ import com.neirasphere.ecosphere.presentation.components.HomeAppBar
 import com.neirasphere.ecosphere.presentation.components.HomeCardClassify
 import com.neirasphere.ecosphere.presentation.components.SearchBar
 import com.neirasphere.ecosphere.presentation.components.SectionTextColumn
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.neirasphere.ecosphere.di.Injection
-import com.neirasphere.ecosphere.presentation.ViewModelFactory
 import com.neirasphere.ecosphere.presentation.common.UiState
 import com.neirasphere.ecosphere.presentation.components.HomeCategoriesLearnCard
-import dagger.hilt.android.lifecycle.HiltViewModel
 
 @Composable
 fun HomeScreen(

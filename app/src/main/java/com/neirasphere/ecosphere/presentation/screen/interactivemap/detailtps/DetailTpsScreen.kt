@@ -47,11 +47,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.neirasphere.ecosphere.R
-import com.neirasphere.ecosphere.di.Injection
-import com.neirasphere.ecosphere.presentation.MapViewModelFactory
 import com.neirasphere.ecosphere.presentation.common.UiState
 import com.neirasphere.ecosphere.presentation.components.MagicTabItem
 import com.neirasphere.ecosphere.presentation.components.MagicTabLayout

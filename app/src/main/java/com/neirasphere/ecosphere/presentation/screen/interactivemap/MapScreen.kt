@@ -55,7 +55,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.rememberCameraPositionState
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.google.maps.android.compose.CameraPositionState
@@ -65,8 +64,6 @@ import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
-import com.neirasphere.ecosphere.di.Injection
-import com.neirasphere.ecosphere.presentation.MapViewModelFactory
 import com.neirasphere.ecosphere.presentation.common.UiState
 import com.neirasphere.ecosphere.presentation.components.SearchMapComponent
 import com.neirasphere.ecosphere.ui.theme.NeutralColorWhite

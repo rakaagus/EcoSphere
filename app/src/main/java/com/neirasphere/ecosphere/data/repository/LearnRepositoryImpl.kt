@@ -30,17 +30,4 @@ class LearnRepositoryImpl @Inject constructor(
 
 
     override fun getAllHomeLearnCategory(): Flow<List<CategoryLearn>> = flowOf(learnHome)
-
-
-//    companion object{
-//        @Volatile
-//        private var instance: LearnRepositoryImpl? = null
-//
-//        fun getInstance(): LearnRepositoryImpl =
-//            instance ?: synchronized(this){
-//                LearnRepositoryImpl().apply {
-//                    instance = this
-//                }
-//            }
-//    }
 }

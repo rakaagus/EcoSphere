@@ -51,6 +51,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.rememberCameraPositionState
@@ -74,9 +75,7 @@ import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 @Composable
 fun MapScreen(
     clickToDetailTps: (Long) -> Unit,
-    viewModel: MapViewModel = viewModel(
-        factory = MapViewModelFactory(Injection.provideMapRepository())
-    ),
+    viewModel: MapViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
     val yogyakartaLatlng = LatLng(-7.788451947965932, 110.36505903685487)
@@ -286,9 +285,11 @@ fun TpsCard(
         shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(NeutralColorWhite),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-        modifier = modifier.size(width = 227.dp, height = 191.dp).clickable {
-            clickToDetailTps(data.id)
-        }
+        modifier = modifier
+            .size(width = 227.dp, height = 191.dp)
+            .clickable {
+                clickToDetailTps(data.id)
+            }
     ) {
         Column(
         ) {

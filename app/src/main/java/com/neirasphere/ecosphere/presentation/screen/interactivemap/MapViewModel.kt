@@ -2,15 +2,19 @@ package com.neirasphere.ecosphere.presentation.screen.interactivemap
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.neirasphere.ecosphere.data.MapRepository
+import com.neirasphere.ecosphere.data.repository.MapRepositoryImpl
 import com.neirasphere.ecosphere.domain.model.MapData
+import com.neirasphere.ecosphere.domain.repository.MapRepository
 import com.neirasphere.ecosphere.presentation.common.UiState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MapViewModel(private val repository: MapRepository): ViewModel() {
+@HiltViewModel
+class MapViewModel @Inject constructor(private val repository: MapRepository): ViewModel() {
     private val _tpsUiState: MutableStateFlow<UiState<List<MapData>>> = MutableStateFlow(
         UiState.Loading
     )

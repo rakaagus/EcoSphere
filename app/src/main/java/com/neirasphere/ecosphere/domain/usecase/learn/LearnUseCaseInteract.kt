@@ -1,4 +1,4 @@
-package com.neirasphere.ecosphere.domain.usecase
+package com.neirasphere.ecosphere.domain.usecase.learn
 
 import com.neirasphere.ecosphere.domain.model.CategoryLearn
 import com.neirasphere.ecosphere.domain.repository.LearnRepository
@@ -9,7 +9,7 @@ import javax.inject.Singleton
 @Singleton
 class LearnUseCaseInteract @Inject constructor(
     private val learnRepository: LearnRepository
-) : LearnUseCase{
+) : LearnUseCase {
     override val homeCategoryLearn: List<Long> = learnRepository.homeCategoryLearn
 
     override val learnHome: MutableList<CategoryLearn> = learnRepository.learnHome

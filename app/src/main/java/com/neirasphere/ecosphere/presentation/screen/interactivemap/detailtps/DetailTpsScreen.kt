@@ -45,6 +45,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -60,9 +61,7 @@ import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 fun DetailTpsScreen(
     tpsId: Long,
     navController: NavController,
-    viewModel: DetailTpsViewModel = viewModel(
-        factory = MapViewModelFactory(Injection.provideMapRepository())
-    ),
+    viewModel: DetailTpsViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
     Column(

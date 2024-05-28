@@ -1,4 +1,4 @@
-package com.neirasphere.ecosphere.domain.usecase
+package com.neirasphere.ecosphere.domain.usecase.learn
 
 import com.neirasphere.ecosphere.domain.model.CategoryLearn
 import kotlinx.coroutines.flow.Flow

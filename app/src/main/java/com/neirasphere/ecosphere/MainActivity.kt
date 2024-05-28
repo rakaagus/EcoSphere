@@ -11,7 +11,9 @@ import androidx.compose.ui.graphics.Color
 import com.neirasphere.ecosphere.presentation.EcoSphereApp
 import com.neirasphere.ecosphere.presentation.SetStatusBarColor
 import com.neirasphere.ecosphere.ui.theme.EcoSphereProjectTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

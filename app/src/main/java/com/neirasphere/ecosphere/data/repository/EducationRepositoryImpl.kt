@@ -91,16 +91,4 @@ class EducationRepositoryImpl @Inject constructor(
             it.id == fifthEducationId
         }
     }
-
-//    companion object{
-//        @Volatile
-//        private var instance: EducationRepository? = null
-//
-//        fun getInstance(): EducationRepository =
-//            instance ?: synchronized(this){
-//                EducationRepository().apply {
-//                    instance = this
-//                }
-//            }
-//    }
 }

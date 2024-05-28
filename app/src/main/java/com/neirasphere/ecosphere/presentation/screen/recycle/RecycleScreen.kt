@@ -14,9 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.neirasphere.ecosphere.di.Injection
-import com.neirasphere.ecosphere.presentation.RecycleViewModelFactory
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.neirasphere.ecosphere.presentation.common.UiState
 import com.neirasphere.ecosphere.presentation.components.RecycleCategoryCard
 import com.neirasphere.ecosphere.presentation.components.SearchBar
@@ -24,9 +22,7 @@ import com.neirasphere.ecosphere.presentation.components.SearchBar
 @Composable
 fun RecycleScreen(
     onClickDetail: (Long) -> Unit,
-    viewModel: RecycleViewModel = viewModel(
-        factory = RecycleViewModelFactory(Injection.provideRecycleRepository())
-    ),
+    viewModel: RecycleViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
 ){
     RecycleContent(onClickDetail = onClickDetail, viewModel = viewModel)

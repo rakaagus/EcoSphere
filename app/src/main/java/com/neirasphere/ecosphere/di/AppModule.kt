@@ -6,6 +6,8 @@ import com.neirasphere.ecosphere.domain.usecase.learn.LearnUseCase
 import com.neirasphere.ecosphere.domain.usecase.learn.LearnUseCaseInteract
 import com.neirasphere.ecosphere.domain.usecase.map.MapUseCase
 import com.neirasphere.ecosphere.domain.usecase.map.MapUseCaseInteract
+import com.neirasphere.ecosphere.domain.usecase.recycle.RecycleUseCase
+import com.neirasphere.ecosphere.domain.usecase.recycle.RecycleUseCaseInteract
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -27,4 +29,8 @@ abstract class AppModule {
     @Binds
     @Singleton
     abstract fun bindEducationRepo(educationUseCaseInteract: EducationUseCaseInteract): EducationUseCase
+
+    @Binds
+    @Singleton
+    abstract fun bindRecycleRepo(recycleUseCaseInteract: RecycleUseCaseInteract): RecycleUseCase
 }

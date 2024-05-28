@@ -26,11 +26,8 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 
 import com.neirasphere.ecosphere.R
-import com.neirasphere.ecosphere.di.Injection
-import com.neirasphere.ecosphere.presentation.EducationViewModelFactory
 import com.neirasphere.ecosphere.presentation.common.UiState
 import com.neirasphere.ecosphere.presentation.components.EducationCard
 import com.neirasphere.ecosphere.ui.theme.NeutralColorGrey

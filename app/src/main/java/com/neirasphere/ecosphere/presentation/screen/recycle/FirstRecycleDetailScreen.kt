@@ -24,13 +24,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
-import com.neirasphere.ecosphere.di.Injection
-import com.neirasphere.ecosphere.presentation.RecycleViewModelFactory
 import com.neirasphere.ecosphere.presentation.common.UiState
 import com.neirasphere.ecosphere.presentation.components.FirstRecycleCard
 import com.neirasphere.ecosphere.ui.theme.InActiveColor
@@ -41,9 +39,7 @@ import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 fun FirstRecycleScreen(
     recycleCategoryId : Long,
     onClickDetail: (Long) -> Unit,
-    viewModel: FirstRecycleViewModel = viewModel(
-        factory = RecycleViewModelFactory(Injection.provideRecycleRepository())
-    ),
+    viewModel: FirstRecycleViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
 ){
     FirstRecycleContent(recycleCategoryId = recycleCategoryId, onClickDetail = onClickDetail, viewModel = viewModel)

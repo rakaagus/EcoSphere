@@ -17,11 +17,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import com.neirasphere.ecosphere.di.Injection
 import com.neirasphere.ecosphere.domain.model.SecondRecycleData
-import com.neirasphere.ecosphere.presentation.RecycleViewModelFactory
 import com.neirasphere.ecosphere.presentation.common.UiState
 import com.neirasphere.ecosphere.presentation.components.ButtonAuth
 import com.neirasphere.ecosphere.presentation.navigation.Screen
@@ -30,9 +28,7 @@ import com.neirasphere.ecosphere.presentation.navigation.Screen
 fun SecondRecycleScreen(
     firstRecycleCategoryId : Int,
     navHostController: NavHostController,
-    viewModel: SecondRecycleViewModel = viewModel(
-        factory = RecycleViewModelFactory(Injection.provideRecycleRepository())
-    ),
+    viewModel: SecondRecycleViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
 ){
     SecondRecycleContent(

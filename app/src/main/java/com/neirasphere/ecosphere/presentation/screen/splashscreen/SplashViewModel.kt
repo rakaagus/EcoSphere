@@ -1,10 +1,14 @@
 package com.neirasphere.ecosphere.presentation.screen.splashscreen
 
 import androidx.lifecycle.ViewModel
-import com.neirasphere.ecosphere.data.AppRepository
+import com.neirasphere.ecosphere.data.repository.AppRepositoryImpl
+import com.neirasphere.ecosphere.domain.repository.AppRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SplashViewModel(private val appRepository: AppRepository): ViewModel() {
+@HiltViewModel
+class SplashViewModel @Inject constructor(private val appRepository: AppRepository): ViewModel() {
 
-    fun getStatusOnboarding() = appRepository.getStatusOnboarding()
+    fun getStatusOnboarding() = appRepository.getStatusOnboardingUser()
 
 }

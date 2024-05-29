@@ -14,13 +14,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -33,17 +33,12 @@ import com.neirasphere.ecosphere.ui.theme.NeutralColorWhite
 import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 import com.neirasphere.ecosphere.utils.OnboardingPage
 import kotlinx.coroutines.launch
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.neirasphere.ecosphere.di.Injection
-import com.neirasphere.ecosphere.presentation.OnboardingViewModelFactory
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun OnboardingScreen(
     navController: NavHostController,
-    viewModel: OnboardingViewModel = viewModel(
-        factory = OnboardingViewModelFactory(Injection.provideAppRepo(LocalContext.current))
-    ),
+    viewModel: OnboardingViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
     val page = listOf(

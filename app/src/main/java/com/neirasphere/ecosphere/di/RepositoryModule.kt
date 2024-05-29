@@ -1,9 +1,11 @@
 package com.neirasphere.ecosphere.di
 
+import com.neirasphere.ecosphere.data.repository.AppRepositoryImpl
 import com.neirasphere.ecosphere.data.repository.EducationRepositoryImpl
 import com.neirasphere.ecosphere.data.repository.LearnRepositoryImpl
 import com.neirasphere.ecosphere.data.repository.MapRepositoryImpl
 import com.neirasphere.ecosphere.data.repository.RecycleRepositoryImpl
+import com.neirasphere.ecosphere.domain.repository.AppRepository
 import com.neirasphere.ecosphere.domain.repository.EducationRepository
 import com.neirasphere.ecosphere.domain.repository.LearnRepository
 import com.neirasphere.ecosphere.domain.repository.MapRepository
@@ -33,4 +35,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun provideRecycleRepo(recycleRepositoryImpl: RecycleRepositoryImpl): RecycleRepository
+
+    @Binds
+    @Singleton
+    abstract fun provideAppRepo(appRepositoryImpl: AppRepositoryImpl): AppRepository
 }

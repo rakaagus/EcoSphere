@@ -1,5 +1,7 @@
 package com.neirasphere.ecosphere.di
 
+import com.neirasphere.ecosphere.domain.usecase.appusecase.AppUseCase
+import com.neirasphere.ecosphere.domain.usecase.appusecase.AppUseCaseInteract
 import com.neirasphere.ecosphere.domain.usecase.education.EducationUseCase
 import com.neirasphere.ecosphere.domain.usecase.education.EducationUseCaseInteract
 import com.neirasphere.ecosphere.domain.usecase.learn.LearnUseCase
@@ -33,4 +35,8 @@ abstract class AppModule {
     @Binds
     @Singleton
     abstract fun bindRecycleRepo(recycleUseCaseInteract: RecycleUseCaseInteract): RecycleUseCase
+
+    @Binds
+    @Singleton
+    abstract fun bindAppRepo(appUseCaseInteract: AppUseCaseInteract) : AppUseCase
 }

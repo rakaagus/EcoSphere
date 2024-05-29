@@ -5,38 +5,29 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.preferencesDataStore
+import com.neirasphere.ecosphere.domain.preferences.AppPreferences
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
+import javax.inject.Singleton
 
-val Context.appDataStore: DataStore<Preferences> by preferencesDataStore(name = "AppSetting")
-class AppDataStore private constructor(private val appDataStore: DataStore<Preferences>){
-    private val statusOnboarding = booleanPreferencesKey(STATUS_ONBOARDING_KEY)
+@Singleton
+class AppDataStore @Inject constructor(private val appDataStore: DataStore<Preferences>) : AppPreferences{
+    override val statusOnboarding = booleanPreferencesKey(STATUS_ONBOARDING_KEY)
 
-    fun getStatusOnboardingUser(): Flow<Boolean> {
+    override fun getStatusOnboardingUser(): Flow<Boolean> {
         return appDataStore.data.map {
             it[statusOnboarding] ?: false
         }
     }
 
-    suspend fun saveStatusOnboardingUser(status: Boolean){
+    override suspend fun saveStatusOnboardingUser(status: Boolean){
         appDataStore.edit {
             it[this.statusOnboarding] = status
         }
     }
 
     companion object{
-        @Volatile
-        private var INSTANCE: AppDataStore? = null
-
         private const val STATUS_ONBOARDING_KEY = "statusOnboarding"
-
-        fun getInstance(dataStore: DataStore<Preferences>): AppDataStore{
-            return INSTANCE ?: synchronized(this){
-                val instance = AppDataStore(dataStore)
-                INSTANCE = instance
-                instance
-            }
-        }
     }
 }

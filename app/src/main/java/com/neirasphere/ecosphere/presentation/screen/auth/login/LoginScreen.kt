@@ -1,5 +1,6 @@
 package com.neirasphere.ecosphere.presentation.screen.auth.login
 
+import android.app.Activity
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -37,6 +38,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.Api.Client
@@ -50,6 +56,7 @@ import com.neirasphere.ecosphere.presentation.components.RoundedIconButton
 import com.neirasphere.ecosphere.presentation.navigation.Screen
 import com.neirasphere.ecosphere.ui.theme.BlackColor
 import com.neirasphere.ecosphere.utils.Constant.CLIENT
+import javax.security.auth.callback.Callback
 
 @Composable
 fun LoginScreen(
@@ -60,8 +67,12 @@ fun LoginScreen(
 
     val context = LocalContext.current
     val googleLoginState = viewModel.stateGoogle.value
+    val facebookLoginState = viewModel.stateFacebook.value
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    val callbackManager = remember {
+        CallbackManager.Factory.create()
+    }
 
     @Suppress("DEPRECATION")
     val launcher =
@@ -75,6 +86,28 @@ fun LoginScreen(
                 Toast.makeText(context, "it", Toast.LENGTH_LONG).show()
             }
         }
+
+    @Suppress("DEPRECATION")
+    val facebookLauncher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()){ result ->
+            callbackManager.onActivityResult(result.resultCode, result.resultCode, result.data)
+    }
+
+    LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult>{
+        override fun onCancel() {
+            Toast.makeText(context, "Facebook Sign-In cancelled", Toast.LENGTH_SHORT).show()
+        }
+
+        override fun onError(error: FacebookException) {
+            Toast.makeText(context, "Facebook Sign-In failed: ${error.message}", Toast.LENGTH_SHORT).show()
+        }
+
+        override fun onSuccess(result: LoginResult) {
+            result.accessToken.let {
+                viewModel.loginWithFacebook(it)
+            }
+        }
+    })
 
     Column(
         modifier = modifier
@@ -107,7 +140,9 @@ fun LoginScreen(
                 val googleLoginClient = GoogleSignIn.getClient(context, googleLogin)
                 launcher.launch(googleLoginClient.signInIntent)
             },
-            onLoginFacebookClick = {}
+            onLoginFacebookClick = {
+                LoginManager.getInstance().logInWithReadPermissions(context as Activity, listOf("email", "public_profile"))
+            }
         )
     }
 
@@ -171,7 +206,7 @@ fun LoginContent(
     ) {
         RoundedIconButton(imageId = R.drawable.image_google, onClick = onLoginGoogleClick)
         Spacer(modifier = Modifier.width(4.dp))
-        RoundedIconButton(imageId = R.drawable.image_facebook, onClick = { })
+        RoundedIconButton(imageId = R.drawable.image_facebook, onClick = onLoginFacebookClick)
     }
     Row(
         verticalAlignment = Alignment.CenterVertically,

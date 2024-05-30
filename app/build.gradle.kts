@@ -99,6 +99,7 @@ dependencies {
 
     /*Firebase Google*/
     implementation(libs.google.service)
+    implementation(libs.facebook.login)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

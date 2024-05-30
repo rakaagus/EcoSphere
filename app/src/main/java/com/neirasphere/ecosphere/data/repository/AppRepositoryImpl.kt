@@ -1,7 +1,9 @@
 package com.neirasphere.ecosphere.data.repository
 
+import com.facebook.AccessToken
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.AuthResult
+import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.neirasphere.ecosphere.data.preferences.AppDataStore
 import com.neirasphere.ecosphere.data.preferences.AuthDataStore
@@ -54,6 +56,19 @@ class AppRepositoryImpl @Inject constructor(
             emit(Result.Success(result))
         }.catch {
             emit(Result.Error(it.message.toString()))
+        }
+    }
+
+    override fun loginWithFacebook(credential: AccessToken): Flow<Result<AuthResult>> {
+        return flow {
+            emit(Result.Loading())
+            try {
+                val credential = FacebookAuthProvider.getCredential(credential.token)
+                val result = firebaseAuth.signInWithCredential(credential).await()
+                emit(Result.Success(result))
+            } catch (e: Exception) {
+                emit(Result.Error(e.message.toString()))
+            }
         }
     }
 

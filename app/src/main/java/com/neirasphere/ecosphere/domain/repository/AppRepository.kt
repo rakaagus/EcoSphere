@@ -1,6 +1,7 @@
 package com.neirasphere.ecosphere.domain.repository
 
 
+import com.facebook.AccessToken
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.AuthResult
 import com.neirasphere.ecosphere.data.Result
@@ -29,4 +30,6 @@ interface AppRepository {
     suspend fun deleteUserName()
 
     fun loginWithGoogle(credential: AuthCredential): Flow<Result<AuthResult>>
+
+    fun loginWithFacebook(credential: AccessToken): Flow<Result<AuthResult>>
 }

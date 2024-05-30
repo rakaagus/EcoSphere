@@ -46,6 +46,14 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAE0mzY3DpiujetH4R4loPoJH_XCqCcFZc"/>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="1623275655133899"/>
+
+        <meta-data
+            android:name="com.facebook.sdk.ClientToken"
+            android:value="d2879ac11f615e4db622a6b3d3eb0f37"/>
     </application>
 
 </manifest>

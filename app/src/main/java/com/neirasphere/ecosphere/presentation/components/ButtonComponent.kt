@@ -36,7 +36,6 @@ import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 @Composable
 fun ButtonAuth(
     label: String,
-    navHostController: NavHostController,
     click: () -> Unit,
     modifier: Modifier = Modifier
 ) {

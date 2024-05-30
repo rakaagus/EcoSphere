@@ -229,7 +229,6 @@ fun BottomSheetContent(
         )
         ButtonAuth(
             label = "Yuk, daur ulang di sini!",
-            navHostController = navController,
             click = { navController.navigate(Screen.RecycleScreen.route) })
 
     }

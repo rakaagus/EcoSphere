@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.googleKsp)
     alias(libs.plugins.dagger.hilt.android)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.googleGmsGoogleServices)
 }
 
 android {
@@ -67,6 +68,7 @@ dependencies {
     implementation(libs.androidx.lifecyle.viewModel)
     implementation(libs.io.coil.kt)
     implementation(libs.material)
+    implementation(libs.firebase.auth)
     testImplementation(libs.junit)
 
     /*pager*/
@@ -94,6 +96,9 @@ dependencies {
 
     /*DataStore*/
     implementation(libs.androidx.datastore.preferences)
+
+    /*Firebase Google*/
+    implementation(libs.google.service)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

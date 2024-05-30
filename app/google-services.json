@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "963338778211",
+    "project_id": "ecosphereproject-d6cab",
+    "storage_bucket": "ecosphereproject-d6cab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:963338778211:android:cba962412f5e4c2744aa56",
+        "android_client_info": {
+          "package_name": "com.neirasphere.ecosphere"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "963338778211-fvpsf3l52251bk1q2gpsnj9mqmuprmv7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.neirasphere.ecosphere",
+            "certificate_hash": "881ad062ba8f946a014094f1a50f3fafc0df3108"
+          }
+        },
+        {
+          "client_id": "963338778211-cqlje0la31k4ajutf68dhh24bulrb3be.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNqFQHZ5ncbw-2sPHSRUhDjPVxtxRY5U8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "963338778211-cqlje0la31k4ajutf68dhh24bulrb3be.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -24,6 +24,9 @@ roomRuntime = "2.5.2"
 hiltAndroid = "2.49"
 hiltCompiler = "1.2.0"
 datastorePreferences = "1.1.1"
+googleAuth = "21.2.0"
+googleServices = "4.4.1"
+firebaseAuth = "23.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -77,6 +80,8 @@ hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", ve
 
 # Datastore
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
+google-service = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "googleAuth"}
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
@@ -84,5 +89,6 @@ jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "k
 googleKsp = { id = "com.google.devtools.ksp", version.ref = "kpsVersion" }
 dagger-hilt-android = {id="com.google.dagger.hilt.android", version.ref = "hiltAndroid"}
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+googleGmsGoogleServices = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 
 

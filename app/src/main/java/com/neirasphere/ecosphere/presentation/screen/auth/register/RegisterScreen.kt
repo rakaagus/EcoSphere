@@ -65,7 +65,7 @@ fun RegisterContent(navController: NavHostController, modifier: Modifier = Modif
     Spacer(modifier = Modifier.height(17.dp))
     AuthForm(label = stringResource(id = R.string.title_password), value = "", onValueChange = { })
     Spacer(modifier = Modifier.height(24.dp))
-    ButtonAuth(label = "Sign Up", navHostController = navController, click = { /*TODO*/ })
+    ButtonAuth(label = "Sign Up", click = { /*TODO*/ })
     Spacer(modifier = Modifier.height(24.dp))
     AuthWith(string = R.string.continue_with)
     Row(

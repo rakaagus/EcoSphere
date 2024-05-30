@@ -107,7 +107,6 @@ fun SecondRecycleDetailContent(
         )
         ButtonAuth(
             label = "Done",
-            navHostController = navHostController,
             click = {navHostController.navigate(Screen.RecycleDoneScreen.route)})
     }
 }

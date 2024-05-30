@@ -22,7 +22,7 @@ import com.neirasphere.ecosphere.ui.theme.NeutralColorGrey
 fun AuthForm(
     label: String,
     value: String,
-    onValueChange: () -> Unit,
+    onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     TextField(

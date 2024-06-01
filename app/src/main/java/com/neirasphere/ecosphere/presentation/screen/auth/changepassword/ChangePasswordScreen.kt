@@ -17,9 +17,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.presentation.components.ButtonProfile
+import com.neirasphere.ecosphere.presentation.components.EditPasswordProfileForm
 import com.neirasphere.ecosphere.presentation.components.EditProfileForm
 import com.neirasphere.ecosphere.presentation.components.SectionTextColumn
 import com.neirasphere.ecosphere.ui.theme.BlackColor
+import com.neirasphere.ecosphere.utils.ActionKeyboard
 
 @Composable
 fun ChangePasswordScreen(navController: NavController, modifier: Modifier = Modifier) {
@@ -45,11 +47,11 @@ fun ChangePasswordContent(modifier: Modifier = Modifier) {
     )
     Spacer(modifier = Modifier.height(20.dp))
     SectionTextColumn(title = R.string.edit_sec_title_4) {
-        EditProfileForm(label = "Masukan Password", value = "", onValueChange = { })
+        EditPasswordProfileForm(label = "Masukan Password", value = "", keyboardAction = ActionKeyboard.NEXT,onValueChange = { })
     }
     Spacer(modifier = Modifier.height(15.dp))
     SectionTextColumn(title = R.string.edit_sec_title_6) {
-        EditProfileForm(label = "Masukan Password", value = "", onValueChange = { })
+        EditPasswordProfileForm(label = "Masukan Password", value = "", keyboardAction = ActionKeyboard.END,onValueChange = { })
     }
     ButtonProfile(
         label = "Simpan",

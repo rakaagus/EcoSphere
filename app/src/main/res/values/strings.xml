@@ -58,11 +58,12 @@
 
     <!--Edit Profile-->
     <string name="title_page_edit_profile">Edit Profil</string>
-    <string name="edit_sec_title_1">Name</string>
+    <string name="edit_sec_title_1">First Name</string>
     <string name="edit_sec_title_2">Email</string>
     <string name="edit_sec_title_3">Date of birth</string>
     <string name="edit_sec_title_4">Password</string>
     <string name="edit_sec_title_5">Location</string>
+    <string name="edit_sec_title_7">Last Name</string>
     <string name="form_edit_label_1">Your Name</string>
     <string name="form_edit_date">Your Birh Day</string>
     <string name="form_edit_loc">Your Location</string>

@@ -12,6 +12,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.neirasphere.ecosphere.R
@@ -100,14 +101,10 @@ fun ProfileContent(
                 title = R.string.item_header_6,
                 icon = R.drawable.icon_report,
                 navigateTo = { })
-            SectionProfile(
-                title = R.string.item_header_7,
-                icon = R.drawable.icon_logout,
-                navigateTo = { })
         }
     }
     ButtonProfile(
-        label = "Delete Account",
+        label = "Log out",
         modifier = Modifier.padding(vertical = 33.dp),
         isLogoutButton = true,
         click = {

@@ -52,10 +52,13 @@ import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.presentation.components.AuthForm
 import com.neirasphere.ecosphere.presentation.components.AuthWith
 import com.neirasphere.ecosphere.presentation.components.ButtonAuth
+import com.neirasphere.ecosphere.presentation.components.PasswordForm
 import com.neirasphere.ecosphere.presentation.components.RoundedIconButton
 import com.neirasphere.ecosphere.presentation.navigation.Screen
 import com.neirasphere.ecosphere.ui.theme.BlackColor
+import com.neirasphere.ecosphere.utils.ActionKeyboard
 import com.neirasphere.ecosphere.utils.Constant.CLIENT
+import com.neirasphere.ecosphere.utils.TypeKeyboard
 import javax.security.auth.callback.Callback
 
 @Composable
@@ -89,25 +92,30 @@ fun LoginScreen(
 
     @Suppress("DEPRECATION")
     val facebookLauncher =
-        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()){ result ->
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) { result ->
             callbackManager.onActivityResult(result.resultCode, result.resultCode, result.data)
-    }
-
-    LoginManager.getInstance().registerCallback(callbackManager, object : FacebookCallback<LoginResult>{
-        override fun onCancel() {
-            Toast.makeText(context, "Facebook Sign-In cancelled", Toast.LENGTH_SHORT).show()
         }
 
-        override fun onError(error: FacebookException) {
-            Toast.makeText(context, "Facebook Sign-In failed: ${error.message}", Toast.LENGTH_SHORT).show()
-        }
-
-        override fun onSuccess(result: LoginResult) {
-            result.accessToken.let {
-                viewModel.loginWithFacebook(it)
+    LoginManager.getInstance()
+        .registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+            override fun onCancel() {
+                Toast.makeText(context, "Facebook Sign-In cancelled", Toast.LENGTH_SHORT).show()
             }
-        }
-    })
+
+            override fun onError(error: FacebookException) {
+                Toast.makeText(
+                    context,
+                    "Facebook Sign-In failed: ${error.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            override fun onSuccess(result: LoginResult) {
+                result.accessToken.let {
+                    viewModel.loginWithFacebook(it)
+                }
+            }
+        })
 
     Column(
         modifier = modifier
@@ -120,28 +128,31 @@ fun LoginScreen(
             onEmailChange = { email = it },
             onPasswordChange = { password = it },
             onLoginClick = {
-               navController.navigate(Screen.HomeScreen.route){
-                   popUpTo(Screen.LoginScreen.route) {
-                       inclusive = true
-                   }
-               }
+                navController.navigate(Screen.HomeScreen.route) {
+                    popUpTo(Screen.LoginScreen.route) {
+                        inclusive = true
+                    }
+                }
             },
             moveToForgot = {},
             onRegisterClick = {
                 navController.navigate(Screen.RegisterScreen.route)
             },
             onLoginGoogleClick = {
-                 val googleLogin = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                     .requestEmail()
-                     .requestIdToken(CLIENT)
-                     .build()
+                val googleLogin = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .requestIdToken(CLIENT)
+                    .build()
 
                 @Suppress("DEPRECATION")
                 val googleLoginClient = GoogleSignIn.getClient(context, googleLogin)
                 launcher.launch(googleLoginClient.signInIntent)
             },
             onLoginFacebookClick = {
-                LoginManager.getInstance().logInWithReadPermissions(context as Activity, listOf("email", "public_profile"))
+                LoginManager.getInstance().logInWithReadPermissions(
+                    context as Activity,
+                    listOf("email", "public_profile")
+                )
             }
         )
     }
@@ -177,9 +188,19 @@ fun LoginContent(
             .fillMaxWidth()
             .padding(bottom = 36.dp)
     )
-    AuthForm(label = stringResource(id = R.string.title_email), value = email, onValueChange = onEmailChange)
+    AuthForm(
+        label = stringResource(id = R.string.title_email),
+        keyboardType = TypeKeyboard.EMAIL,
+        keyboardAction = ActionKeyboard.NEXT,
+        value = email,
+        onValueChange = onEmailChange
+    )
     Spacer(modifier = Modifier.height(10.dp))
-    AuthForm(label = stringResource(id = R.string.title_password), value = "", onValueChange = onPasswordChange)
+    PasswordForm(
+        label = stringResource(id = R.string.title_password),
+        value = password,
+        onValueChange = onPasswordChange
+    )
     Text(
         text = stringResource(id = R.string.title_forgot),
         style = MaterialTheme.typography.bodySmall.copy(
@@ -194,8 +215,10 @@ fun LoginContent(
                 moveToForgot()
             }
     )
-    ButtonAuth(label = "Login",
-        click = onLoginClick)
+    ButtonAuth(
+        label = "Login",
+        click = onLoginClick
+    )
     AuthWith(string = R.string.continue_with)
     Row(
         verticalAlignment = Alignment.CenterVertically,

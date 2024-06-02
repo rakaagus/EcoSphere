@@ -166,6 +166,7 @@ fun PostingBottomBar(
 fun CenterTopAppBar(
     navController: NavController,
     @StringRes title: Int? = null,
+    actionIcon: @Composable () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
 
@@ -205,7 +206,10 @@ fun CenterTopAppBar(
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = Color.White
-        )
+        ),
+        actions = {
+            actionIcon()
+        }
     )
 }
 

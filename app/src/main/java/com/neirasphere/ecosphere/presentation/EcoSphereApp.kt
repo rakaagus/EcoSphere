@@ -1,5 +1,7 @@
 package com.neirasphere.ecosphere.presentation
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -156,6 +158,19 @@ fun EcoSphereApp(
                         title = R.string.title_search_page
                     )
                 }
+
+                Screen.ClassifyScreen.route -> {
+                    CenterTopAppBar(navController = navController, title = null, actionIcon = {
+                        Image(
+                            painter = painterResource(id = R.drawable.icon_history_classify),
+                            contentDescription = "",
+                            modifier = Modifier.size(34.dp)
+                                .clickable {
+
+                                }
+                        )
+                    })
+                }
             }
         },
         bottomBar = {
@@ -172,7 +187,7 @@ fun EcoSphereApp(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.SplashScreen.route,
+            startDestination = Screen.HomeScreen.route,
             modifier = modifier.padding(innerPadding)
         ) {
             /*Splash & Onboarding Route*/
@@ -375,7 +390,11 @@ fun EcoSphereApp(
             composable(Screen.RecycleScreen.route) {
                 RecycleScreen(
                     onClickDetail = { recycleCategoryId ->
-                        navController.navigate(Screen.FirstRecycleDetailScreen.createRoute(recycleCategoryId))
+                        navController.navigate(
+                            Screen.FirstRecycleDetailScreen.createRoute(
+                                recycleCategoryId
+                            )
+                        )
                     }
                 )
             }
@@ -386,12 +405,16 @@ fun EcoSphereApp(
                         type = NavType.LongType
                     }
                 )
-            ){
-                val id : Long = it.arguments?.getLong("recycleCategoryId") ?: 1
+            ) {
+                val id: Long = it.arguments?.getLong("recycleCategoryId") ?: 1
                 FirstRecycleScreen(
                     recycleCategoryId = id,
-                    onClickDetail = {firstCategoryId ->
-                        navController.navigate(Screen.SecondRecycleScreen.createRoute(firstCategoryId))
+                    onClickDetail = { firstCategoryId ->
+                        navController.navigate(
+                            Screen.SecondRecycleScreen.createRoute(
+                                firstCategoryId
+                            )
+                        )
                     },
                 )
             }
@@ -402,14 +425,14 @@ fun EcoSphereApp(
                         type = NavType.IntType
                     }
                 )
-            ){
-                val id : Int = it.arguments?.getInt("firstCategoryId") ?: 1
+            ) {
+                val id: Int = it.arguments?.getInt("firstCategoryId") ?: 1
                 SecondRecycleScreen(
                     firstRecycleCategoryId = id,
                     navHostController = navController
                 )
             }
-            composable(Screen.RecycleDoneScreen.route){
+            composable(Screen.RecycleDoneScreen.route) {
                 RecycleDone(navController = navController)
             }
         }

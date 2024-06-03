@@ -10,5 +10,6 @@ import javax.inject.Inject
 class SplashViewModel @Inject constructor(private val appRepository: AppRepository): ViewModel() {
 
     fun getStatusOnboarding() = appRepository.getStatusOnboardingUser()
+    fun getIsLogin() = appRepository.isLoggedIn()
 
 }

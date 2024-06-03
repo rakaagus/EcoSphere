@@ -1,5 +1,6 @@
 [versions]
 agp = "8.3.2"
+converterGson = "2.9.0"
 facebookLogin = "14.1.0"
 kotlin = "1.9.0"
 coreKtx = "1.13.0"
@@ -9,9 +10,11 @@ espressoCore = "3.5.1"
 lifecycleRuntimeKtx = "2.7.0"
 activityCompose = "1.9.0"
 composeBom = "2023.08.00"
+loggingInterceptor = "5.0.0-alpha.6"
 navigationVersion = "2.7.7"
 materialCompose = "1.6.6"
 coilVersion = "2.6.0"
+retrofit = "2.9.0"
 veiwModelVersion = "2.7.0"
 accompanist_version = "0.24.2-alpha"
 flowLayoutVersion = "0.27.1"
@@ -31,6 +34,7 @@ firebaseAuth = "23.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 facebook-login = { module = "com.facebook.android:facebook-login", version.ref = "facebookLogin" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
@@ -63,9 +67,11 @@ accompanist-flow-layout = {group = "com.google.accompanist", name = "accompanist
 accompanist-system-ui = {group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref="systemUi"}
 
 # Google Maps
+logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "loggingInterceptor" }
 maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }
 play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
 
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 support-annotations = { group = "com.android.support", name = "support-annotations", version.ref = "supportAnnotationsVersion" }
 material = { group = "com.google.android.material", name = "material", version.ref = "materialVersion" }
 

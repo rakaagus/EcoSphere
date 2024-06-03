@@ -4,10 +4,14 @@ package com.neirasphere.ecosphere.domain.repository
 import com.facebook.AccessToken
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.AuthResult
+import com.neirasphere.ecosphere.ResultDefault
 import com.neirasphere.ecosphere.data.Result
+import com.neirasphere.ecosphere.data.remote.response.LoginResponse
 import kotlinx.coroutines.flow.Flow
 
 interface AppRepository {
+
+    fun login(email: String, password: String): Flow<ResultDefault<LoginResponse>>
 
     fun getStatusOnboardingUser(): Flow<Boolean>
 

@@ -101,6 +101,11 @@ dependencies {
     implementation(libs.google.service)
     implementation(libs.facebook.login)
 
+    /*Retrofit*/
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

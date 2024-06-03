@@ -6,10 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.facebook.AccessToken
 import com.google.firebase.auth.AuthCredential
+import com.neirasphere.ecosphere.ResultDefault
 import com.neirasphere.ecosphere.data.Result
 import com.neirasphere.ecosphere.domain.repository.AppRepository
 import com.neirasphere.ecosphere.presentation.screen.auth.common.LoginFirebaseState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,6 +27,9 @@ class LoginViewModel @Inject constructor(
 
     private val _stateFacebook = mutableStateOf(LoginFirebaseState())
     val stateFacebook: State<LoginFirebaseState> = _stateFacebook
+
+    private val _loginState = MutableStateFlow(LoginState())
+    val loginState = _loginState.asStateFlow()
 
     fun loginWithGoogle(credential: AuthCredential){
         viewModelScope.launch {
@@ -54,6 +61,36 @@ class LoginViewModel @Inject constructor(
                     }
                     is Result.Error -> {
                         _stateGoogle.value = LoginFirebaseState(error = result.message)
+                    }
+                }
+            }
+        }
+    }
+
+    fun login(email: String, password: String) = viewModelScope.launch {
+        repository.login(email, password).collect{ result ->
+            when(result){
+                is ResultDefault.Loading -> {
+                    _loginState.update {
+                        it.copy(
+                            isLoading = true
+                        )
+                    }
+                }
+                is ResultDefault.Success -> {
+                    _loginState.update {
+                        it.copy(
+                            isSuccess = true,
+                            isLoading = false
+                        )
+                    }
+                }
+                is ResultDefault.Error -> {
+                    _loginState.update {
+                        it.copy(
+                            isError = result.error,
+                            isConnectLoading = true
+                        )
                     }
                 }
             }

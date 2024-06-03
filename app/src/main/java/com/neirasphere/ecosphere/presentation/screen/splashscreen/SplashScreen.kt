@@ -41,17 +41,26 @@ fun SplashScreen(
         mutableStateOf(false)
     }
 
-    val statusLogin = viewModel.getStatusOnboarding().collectAsState(initial = false)
+    val statusOnboarding = viewModel.getStatusOnboarding().collectAsState(initial = false)
+    val isLogin = viewModel.getIsLogin().collectAsState(initial = false)
 
     LaunchedEffect(key1 = true) {
         delay(1500)
         startAnim = true
         delay(2000)
 
-        if(statusLogin.value){
-            navController.navigate(Screen.HomeScreen.route){
-                popUpTo(Screen.SplashScreen.route){
-                    inclusive = true
+        if(statusOnboarding.value){
+            if(isLogin.value){
+                navController.navigate(Screen.HomeScreen.route){
+                    popUpTo(Screen.SplashScreen.route){
+                        inclusive = true
+                    }
+                }
+            }else {
+                navController.navigate(Screen.LoginScreen.route){
+                    popUpTo(Screen.SplashScreen.route){
+                        inclusive = true
+                    }
                 }
             }
         }else {

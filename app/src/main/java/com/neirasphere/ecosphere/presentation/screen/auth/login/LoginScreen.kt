@@ -20,6 +20,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,6 +50,7 @@ import com.google.android.gms.common.api.Api.Client
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.neirasphere.ecosphere.R
+import com.neirasphere.ecosphere.ResultDefault
 import com.neirasphere.ecosphere.presentation.components.AuthForm
 import com.neirasphere.ecosphere.presentation.components.AuthWith
 import com.neirasphere.ecosphere.presentation.components.ButtonAuth
@@ -128,11 +130,7 @@ fun LoginScreen(
             onEmailChange = { email = it },
             onPasswordChange = { password = it },
             onLoginClick = {
-                navController.navigate(Screen.HomeScreen.route) {
-                    popUpTo(Screen.LoginScreen.route) {
-                        inclusive = true
-                    }
-                }
+                viewModel.login(email, password)
             },
             moveToForgot = {},
             onRegisterClick = {

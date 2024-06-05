@@ -13,11 +13,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,6 +41,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -294,5 +303,65 @@ fun RegisterContent(
             .clickable {
 
             })
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SuccessRegisterBs(
+    visible: Boolean,
+    onDismiss: () -> Unit,
+    navController: NavHostController,
+) {
+    val modalBottomSheetState = rememberModalBottomSheetState()
+
+    if (visible) {
+        ModalBottomSheet(
+            onDismissRequest = { onDismiss() },
+            sheetState = modalBottomSheetState,
+            dragHandle = { BottomSheetDefaults.DragHandle() },
+        ) {
+            SuccessLoginBsContent(navController = navController)
+        }
+    }
+}
+
+@Composable
+fun SuccessLoginBsContent(
+    navController: NavHostController,
+) {
+
+    val preloaderLottieComposition by rememberLottieComposition(
+        LottieCompositionSpec.RawRes(
+            R.raw.sucess_animation
+        )
+    )
+
+    val preloaderProgress by animateLottieCompositionAsState(
+        preloaderLottieComposition,
+        isPlaying = true
+    )
+
+    Column(
+        modifier = Modifier
+            .padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        LottieAnimation(
+            composition = preloaderLottieComposition,
+            progress = preloaderProgress,
+            modifier = Modifier.size(100.dp)
+        )
+        Text(
+            "Berhasil Login",
+            style = MaterialTheme.typography.labelSmall,
+            modifier = Modifier
+                .padding(top = 8.dp, bottom = 12.dp)
+                .align(Alignment.CenterHorizontally)
+        )
+        ButtonAuth(
+            label = "Login",
+            click = { navController.navigate(Screen.RecycleScreen.route) })
+
     }
 }

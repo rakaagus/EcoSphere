@@ -14,11 +14,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -31,14 +40,22 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -46,11 +63,9 @@ import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.Api.Client
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.GoogleAuthProvider
 import com.neirasphere.ecosphere.R
-import com.neirasphere.ecosphere.ResultDefault
 import com.neirasphere.ecosphere.presentation.components.AuthForm
 import com.neirasphere.ecosphere.presentation.components.AuthWith
 import com.neirasphere.ecosphere.presentation.components.ButtonAuth
@@ -58,11 +73,14 @@ import com.neirasphere.ecosphere.presentation.components.PasswordForm
 import com.neirasphere.ecosphere.presentation.components.RoundedIconButton
 import com.neirasphere.ecosphere.presentation.navigation.Screen
 import com.neirasphere.ecosphere.ui.theme.BlackColor
+import com.neirasphere.ecosphere.ui.theme.NeutralColorGrey
+import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 import com.neirasphere.ecosphere.utils.ActionKeyboard
 import com.neirasphere.ecosphere.utils.Constant.CLIENT
 import com.neirasphere.ecosphere.utils.TypeKeyboard
-import javax.security.auth.callback.Callback
 
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
     navController: NavHostController,
@@ -71,13 +89,16 @@ fun LoginScreen(
 ) {
 
     val context = LocalContext.current
-    val googleLoginState = viewModel.stateGoogle.value
-    val facebookLoginState = viewModel.stateFacebook.value
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     val callbackManager = remember {
         CallbackManager.Factory.create()
     }
+
+    val loginLoading = viewModel.loginState.collectAsState().value.isLoading
+    val loginSuccess = viewModel.loginState.collectAsState().value.isSuccess
+    var isLoadingDialogShow by remember { mutableStateOf(false) }
+    var isSuccessDialogShow by remember { mutableStateOf(false) }
 
     @Suppress("DEPRECATION")
     val launcher =
@@ -119,6 +140,20 @@ fun LoginScreen(
             }
         })
 
+    if (loginLoading) {
+        LoadingDialog(onDismissRequest = { isLoadingDialogShow = false })
+    }
+
+    if (loginSuccess) {
+        DialogLoginSuccess(onDismissRequest = { isSuccessDialogShow = false }, moveToHome = {
+            navController.navigate(Screen.HomeScreen.route) {
+                popUpTo(Screen.LoginScreen.route) {
+                    inclusive = true
+                }
+            }
+        })
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -132,7 +167,9 @@ fun LoginScreen(
             onLoginClick = {
                 viewModel.login(email, password)
             },
-            moveToForgot = {},
+            moveToForgot = {
+//                 isBottomSheetVisible = true
+            },
             onRegisterClick = {
                 navController.navigate(Screen.RegisterScreen.route)
             },
@@ -151,11 +188,12 @@ fun LoginScreen(
                     context as Activity,
                     listOf("email", "public_profile")
                 )
-            }
+            },
         )
     }
 
 }
+
 
 @Composable
 fun LoginContent(
@@ -168,7 +206,7 @@ fun LoginContent(
     onLoginClick: () -> Unit,
     moveToForgot: () -> Unit,
     onRegisterClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Image(
         painter = painterResource(id = R.drawable.happy_earth), contentDescription = "LoginImage",
@@ -261,8 +299,52 @@ fun LoginContent(
     }
 }
 
-//@Preview
-//@Composable
-//private fun LoginScreenPrev() {
-//    LoginScreen()
-//}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LoadingDialog(
+    onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    AlertDialog(onDismissRequest = { onDismissRequest() }) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = modifier
+        ) {
+            CircularProgressIndicator(
+                modifier = Modifier,
+                color = PrimaryColor,
+                trackColor = MaterialTheme.colorScheme.surfaceVariant
+            )
+        }
+    }
+}
+
+
+@Composable
+fun DialogLoginSuccess(
+    onDismissRequest: () -> Unit,
+    moveToHome: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    AlertDialog(
+        onDismissRequest = { onDismissRequest() },
+        text = {
+            Text(
+                text = "Yey, Berhasil Login",
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        },
+        confirmButton = {
+            TextButton(onClick = { moveToHome() }) {
+                Text(
+                    text = "Go to Home",
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        fontSize = 14.sp
+                    ),
+                    color = PrimaryColor
+                )
+            }
+        }
+    )
+}

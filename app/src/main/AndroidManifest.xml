@@ -19,6 +19,7 @@
         android:roundIcon="@drawable/ic_logo_app"
         android:supportsRtl="true"
         android:theme="@style/Theme.EcoSphereProject"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
 
         <provider

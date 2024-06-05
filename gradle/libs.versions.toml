@@ -31,6 +31,7 @@ datastorePreferences = "1.1.1"
 googleAuth = "21.2.0"
 googleServices = "4.4.1"
 firebaseAuth = "23.0.0"
+lottieCompose = "4.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -90,6 +91,9 @@ hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", ve
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences" }
 google-service = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "googleAuth"}
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
+
+# Lottie Animation
+lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

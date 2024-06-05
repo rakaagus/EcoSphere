@@ -1,5 +1,6 @@
 package com.neirasphere.ecosphere.di
 
+import com.neirasphere.ecosphere.data.remote.ApiClassifyService
 import com.neirasphere.ecosphere.data.remote.ApiService
 import dagger.Module
 import dagger.Provides
@@ -36,5 +37,16 @@ object NetworkModule {
             .client(client)
             .build()
             .create(ApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideApiClassifyService(client: OkHttpClient) : ApiClassifyService {
+        return Retrofit.Builder()
+            .baseUrl("https://neira-api.1hs5xuud6atv.us-south.codeengine.appdomain.cloud/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
+            .create(ApiClassifyService::class.java)
     }
 }

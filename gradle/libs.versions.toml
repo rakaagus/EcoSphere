@@ -32,6 +32,7 @@ googleAuth = "21.2.0"
 googleServices = "4.4.1"
 firebaseAuth = "23.0.0"
 lottieCompose = "4.0.0"
+runtimeLivedata = "1.6.7"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -94,6 +95,7 @@ firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version
 
 # Lottie Animation
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
+androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

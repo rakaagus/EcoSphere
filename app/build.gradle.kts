@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.io.coil.kt)
     implementation(libs.material)
     implementation(libs.firebase.auth)
+    implementation(libs.androidx.runtime.livedata)
     testImplementation(libs.junit)
 
     /*pager*/
@@ -108,6 +109,8 @@ dependencies {
 
     /*Lottie Animation*/
     implementation(libs.lottie.compose)
+
+    implementation ("com.google.accompanist:accompanist-permissions:0.34.0")
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

@@ -71,6 +71,9 @@
     <!--Education-->
     <string name="title_page_education">Edukasi</string>
 
+    <!--Education History -->
+    <string name="title_page_education_history">Riwayat Belajar</string>
+
     <!--verification email-->
     <string name="title_page_verif_eamil">Verifikasi Email</string>
 

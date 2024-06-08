@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -29,8 +30,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.domain.model.CategoryLearn
+import com.neirasphere.ecosphere.domain.model.EduHistory
+import com.neirasphere.ecosphere.presentation.screen.education.EduHistoryViewModel
 import com.neirasphere.ecosphere.ui.theme.BlackColor
 import com.neirasphere.ecosphere.ui.theme.NeutralColorGrey
 import com.neirasphere.ecosphere.ui.theme.NeutralColorWhite
@@ -197,20 +201,27 @@ private fun HomeCategoriesLearnCardPrev() {
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EducationCard(
     educationData : com.neirasphere.ecosphere.domain.model.EducationData,
     onClickDetail : (Long) -> Unit,
+    viewModel: EduHistoryViewModel = hiltViewModel(),
     modifier : Modifier = Modifier
 ){
     Card(shape = RoundedCornerShape(10.dp),
         colors = CardDefaults.cardColors(NeutralColorWhite),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         modifier = modifier
-            .fillMaxWidth()
-            .clickable {
-                onClickDetail(educationData.id)
-            }
+            .fillMaxWidth(),
+//            .clickable {
+//                onClickDetail(educationData.id)
+//            },
+        onClick = {
+            val eduHistory = EduHistory(educationData.id, educationData.title, educationData.image)
+            viewModel.addEduHistory(eduHistory)
+            onClickDetail(educationData.id)
+        }
 
     ) {
         Row(
@@ -320,6 +331,37 @@ fun RecycleCategoryCard(
             Text(
                 text = recycleCategoryData.title,
                 style = MaterialTheme.typography.labelSmall,
+            )
+        }
+    }
+}
+
+@Composable
+fun EduHistoryCard(
+    eduHistory: EduHistory,
+) {
+    Card(
+        shape = RoundedCornerShape(10.dp),
+        colors = CardDefaults.cardColors(NeutralColorWhite),
+        modifier = Modifier
+            .padding(4.dp)
+            .fillMaxWidth(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ){
+            Image(
+                painter = painterResource(id = eduHistory.image),
+                contentDescription = null,
+                modifier = Modifier.size(50.dp)
+            )
+            Text(
+                text = eduHistory.title,
+                style = MaterialTheme.typography.labelMedium,
             )
         }
     }

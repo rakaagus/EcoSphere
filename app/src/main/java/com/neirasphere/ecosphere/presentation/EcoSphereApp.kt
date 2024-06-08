@@ -66,6 +66,7 @@ import com.neirasphere.ecosphere.presentation.screen.community.CommunityScreen
 import com.neirasphere.ecosphere.presentation.screen.community.DetailPostScreen
 import com.neirasphere.ecosphere.presentation.screen.community.DummyDetailPostScreen
 import com.neirasphere.ecosphere.presentation.screen.community.PostingScreen
+import com.neirasphere.ecosphere.presentation.screen.education.EduHistoryScreen
 import com.neirasphere.ecosphere.presentation.screen.education.EducationDetailScreen
 import com.neirasphere.ecosphere.presentation.screen.education.EducationDone
 import com.neirasphere.ecosphere.presentation.screen.education.EducationScreen
@@ -138,6 +139,13 @@ fun EcoSphereApp(
                     )
                 }
 
+                Screen.EduHistoryScreen.route ->{
+                    CenterTopAppBar(
+                        navController = navController,
+                        title = R.string.title_page_education_history
+                    )
+                }
+
                 Screen.VerificationEmailScreen.route -> {
                     CenterTopAppBar(
                         navController = navController,
@@ -164,7 +172,8 @@ fun EcoSphereApp(
                         Image(
                             painter = painterResource(id = R.drawable.icon_history_classify),
                             contentDescription = "",
-                            modifier = Modifier.size(34.dp)
+                            modifier = Modifier
+                                .size(34.dp)
                                 .clickable {
 
                                 }
@@ -187,7 +196,7 @@ fun EcoSphereApp(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.SplashScreen.route,
+            startDestination = Screen.HomeScreen.route,
             modifier = modifier.padding(innerPadding)
         ) {
             /*Splash & Onboarding Route*/
@@ -222,7 +231,8 @@ fun EcoSphereApp(
                 EducationScreen(
                     onClickDetail = { educationId ->
                         navController.navigate(Screen.EducationDetailScreen.createRoute(educationId))
-                    }
+                    },
+                    navController = navController
                 )
             }
             composable(
@@ -321,6 +331,9 @@ fun EcoSphereApp(
             }
             composable(Screen.EducationDoneScreen.route) {
                 EducationDone(navController = navController)
+            }
+            composable(Screen.EduHistoryScreen.route) {
+                EduHistoryScreen()
             }
 
             /*Map Route*/

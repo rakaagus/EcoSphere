@@ -144,16 +144,6 @@ fun EditProfileContent(
             })
     }
     Spacer(modifier = Modifier.height(15.dp))
-    SectionTextColumnProfile(title = R.string.edit_sec_title_4) {
-        EditPasswordProfileForm(
-            label = stringResource(id = R.string.title_password),
-            value = password,
-            keyboardAction = ActionKeyboard.NEXT,
-            onValueChange = {
-                onPasswordChange(it)
-            })
-    }
-    Spacer(modifier = Modifier.height(15.dp))
     SectionTextColumnProfile(title = R.string.edit_sec_title_5) {
         EditProfileForm(
             label = stringResource(id = R.string.form_edit_loc),

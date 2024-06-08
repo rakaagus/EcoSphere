@@ -33,13 +33,33 @@ fun ProfileScreen(
             .fillMaxWidth()
             .verticalScroll(rememberScrollState())
     ) {
-        ProfileContent(navController = navController)
+        ProfileContent(
+            moveToEditProfile = {
+                navController.navigate(Screen.EditProfileScreen.route)
+            },
+            moveToSecurity = {},
+            moveToNotifSetting = {},
+            moveToChangePassword = {
+                navController.navigate(Screen.ChangePasswordScreen.route)
+            },
+            moveToHelpScreen = {},
+            moveToReport = {},
+            onLogoutClick = {},
+            clickFreeUp = {}
+        )
     }
 }
 
 @Composable
 fun ProfileContent(
-    navController: NavController,
+    moveToEditProfile: () -> Unit,
+    moveToSecurity: () -> Unit,
+    moveToNotifSetting: () -> Unit,
+    moveToChangePassword: () -> Unit,
+    moveToHelpScreen: () -> Unit,
+    clickFreeUp: () -> Unit,
+    moveToReport: () -> Unit,
+    onLogoutClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     HeaderProfile(
@@ -57,20 +77,26 @@ fun ProfileContent(
                 title = R.string.profile_title,
                 icon = R.drawable.accoun_user,
                 navigateTo = {
-                    navController.navigate(Screen.EditProfileScreen.route)
+                    moveToEditProfile()
+                })
+            SectionProfile(
+                title = R.string.item_header_3,
+                icon = R.drawable.icon_privacy,
+                navigateTo = {
+                    moveToChangePassword()
                 })
             SectionProfile(
                 title = R.string.item_header_1,
                 icon = R.drawable.icon_security,
-                navigateTo = { })
+                navigateTo = {
+                    moveToSecurity()
+                })
             SectionProfile(
                 title = R.string.item_header_2,
                 icon = R.drawable.icon_notification_profile,
-                navigateTo = { })
-            SectionProfile(
-                title = R.string.item_header_3,
-                icon = R.drawable.icon_privacy,
-                navigateTo = { })
+                navigateTo = {
+                    moveToNotifSetting()
+                })
         }
     }
     Spacer(modifier = Modifier.height(15.dp))
@@ -83,7 +109,9 @@ fun ProfileContent(
             SectionProfile(
                 title = R.string.item_header_4,
                 icon = R.drawable.icon_help,
-                navigateTo = { })
+                navigateTo = {
+                    moveToHelpScreen()
+                })
         }
     }
     Spacer(modifier = Modifier.height(15.dp))
@@ -96,11 +124,15 @@ fun ProfileContent(
             SectionProfile(
                 title = R.string.item_header_5,
                 icon = R.drawable.icon_waste,
-                navigateTo = { })
+                navigateTo = {
+                    clickFreeUp()
+                })
             SectionProfile(
                 title = R.string.item_header_6,
                 icon = R.drawable.icon_report,
-                navigateTo = { })
+                navigateTo = {
+                    moveToReport()
+                })
         }
     }
     ButtonProfile(
@@ -108,6 +140,6 @@ fun ProfileContent(
         modifier = Modifier.padding(vertical = 33.dp),
         isLogoutButton = true,
         click = {
-
+            onLogoutClick()
         })
 }

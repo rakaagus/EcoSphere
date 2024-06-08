@@ -117,7 +117,13 @@ fun EcoSphereApp(
         topBar = {
             when (currentRoute) {
                 Screen.ProfileScreen.route -> {
-                    CenterTopAppBar(navController = navController, title = null)
+                    CenterTopAppBar(onBackClick = {
+                        navController.navigate(Screen.HomeScreen.route) {
+                            popUpTo(Screen.ProfileScreen.route) {
+                                inclusive = true
+                            }
+                        }
+                    }, title = null)
                 }
 
                 Screen.CommunityScreen.route -> {
@@ -126,45 +132,70 @@ fun EcoSphereApp(
 
                 Screen.EditProfileScreen.route -> {
                     CenterTopAppBar(
-                        navController = navController,
+                        onBackClick = {
+                            navController.navigate(Screen.ProfileScreen.route) {
+                                popUpTo(Screen.EditProfileScreen.route) {
+                                    inclusive = true
+                                }
+                            }
+                        },
                         title = R.string.title_page_edit_profile
                     )
                 }
 
                 Screen.EducationScreen.route -> {
                     CenterTopAppBar(
-                        navController = navController,
+                        onBackClick = {
+                            navController.navigateUp()
+                        },
                         title = R.string.title_page_education
                     )
                 }
 
                 Screen.VerificationEmailScreen.route -> {
                     CenterTopAppBar(
-                        navController = navController,
+                        onBackClick = {
+                            navController.navigateUp()
+                        },
                         title = R.string.title_page_verif_eamil
                     )
                 }
 
                 Screen.ChangePasswordScreen.route -> {
                     CenterTopAppBar(
-                        navController = navController,
+                        onBackClick = {
+                            navController.navigate(Screen.ProfileScreen.route){
+                                popUpTo(Screen.ChangePasswordScreen.route){
+                                    inclusive = true
+                                }
+                            }
+                        },
                         title = R.string.title_page_change_password
                     )
                 }
 
                 Screen.SearchMapScreen.route -> {
                     CenterTopAppBar(
-                        navController = navController,
+                        onBackClick = {
+                            navController.navigateUp()
+                        },
                         title = R.string.title_search_page
                     )
                 }
 
                 Screen.ClassifyScreen.route -> {
-                    CenterTopAppBar(navController = navController, title = null, actionIcon = {
+                    CenterTopAppBar(onBackClick = {
+                        navController.navigate(Screen.HomeScreen.route){
+                            popUpTo(Screen.ClassifyScreen.route){
+                                inclusive = true
+                            }
+                        }
+                    }, title = null, actionIcon = {
                         Image(
                             painter = painterResource(id = R.drawable.icon_history_classify),
                             contentDescription = "",
-                            modifier = Modifier.size(34.dp)
+                            modifier = Modifier
+                                .size(34.dp)
                                 .clickable {
 
                                 }
@@ -187,7 +218,7 @@ fun EcoSphereApp(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.SplashScreen.route,
+            startDestination = Screen.ProfileScreen.route,
             modifier = modifier.padding(innerPadding)
         ) {
             /*Splash & Onboarding Route*/

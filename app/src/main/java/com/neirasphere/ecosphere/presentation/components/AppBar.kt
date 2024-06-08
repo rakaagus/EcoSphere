@@ -114,7 +114,13 @@ fun CommunityAppBar(
         Row(
             modifier = Modifier.padding(horizontal = 16.dp)
         ) {
-            CommunitySearchBar(navController = navController)
+            CommunitySearchBar(onBackClick = {
+                navController.navigate(Screen.HomeScreen.route){
+                    popUpTo(Screen.CommunityScreen.route){
+                        inclusive = true
+                    }
+                }
+            })
         }
 
     }
@@ -164,7 +170,7 @@ fun PostingBottomBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CenterTopAppBar(
-    navController: NavController,
+    onBackClick: () -> Unit,
     @StringRes title: Int? = null,
     actionIcon: @Composable () -> Unit = {},
     modifier: Modifier = Modifier
@@ -189,7 +195,7 @@ fun CenterTopAppBar(
         navigationIcon = {
             IconButton(
                 onClick = {
-                    navController.navigateUp()
+                    onBackClick()
                 },
                 colors = IconButtonDefaults.iconButtonColors(
                     containerColor = PrimaryColor

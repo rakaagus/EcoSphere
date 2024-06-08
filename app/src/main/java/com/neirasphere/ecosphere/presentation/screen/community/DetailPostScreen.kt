@@ -60,7 +60,13 @@ fun DetailPostScreen(
         modifier = modifier
             .fillMaxSize()
     ) {
-        CenterTopAppBar(navController = navController, title = R.string.title_detail_post)
+        CenterTopAppBar(onBackClick = {
+            navController.navigate(Screen.CommunityScreen.route) {
+                popUpTo(Screen.DetailPostScreen.route) {
+                    inclusive = true
+                }
+            }
+        }, title = R.string.title_detail_post)
         Column(
             modifier = modifier
                 .padding(16.dp)
@@ -86,7 +92,7 @@ private fun DetailPostContent(
         PostAvatarAndInfo(post = post[0], navController = navController)
         Column(
             modifier = modifier
-            .padding(vertical = 16.dp)
+                .padding(vertical = 16.dp)
         ) {
             Text(
                 text = post[0].text,

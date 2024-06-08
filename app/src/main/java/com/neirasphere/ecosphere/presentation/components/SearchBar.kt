@@ -84,8 +84,8 @@ fun SearchBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CommunitySearchBar(
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
-    navController: NavController
 ) {
     var text by remember {
         mutableStateOf("")
@@ -118,7 +118,7 @@ fun CommunitySearchBar(
                 )
             } else {
                 Icon(
-                    modifier = Modifier.clickable { navController.navigateUp() },
+                    modifier = Modifier.clickable { onBackClick() },
                     imageVector = Icons.Default.ArrowBackIosNew,
                     contentDescription = null,
                     tint = Color(0xFF434343)

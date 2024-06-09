@@ -46,6 +46,26 @@ fun SectionTextColumn(
 }
 
 @Composable
+fun SectionTextColumnMap(
+    title: String,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+    ) {
+        Text(
+            text = title, style = MaterialTheme.typography.bodyMedium.copy(
+                fontWeight = FontWeight.Bold
+            ), modifier = Modifier.padding(bottom = 15.dp)
+        )
+        content()
+    }
+}
+
+@Composable
 fun SectionTextColumnProfile(
     @StringRes title: Int,
     modifier: Modifier = Modifier,

@@ -218,7 +218,7 @@ fun EcoSphereApp(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.ProfileScreen.route,
+            startDestination = Screen.HomeScreen.route,
             modifier = modifier.padding(innerPadding)
         ) {
             /*Splash & Onboarding Route*/

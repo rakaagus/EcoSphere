@@ -1,5 +1,10 @@
 package com.neirasphere.ecosphere.presentation.screen.home
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.location.Geocoder
+import android.location.Location
+import android.os.Looper
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,15 +16,44 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
+import com.google.maps.android.compose.CameraPositionState
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MapProperties
+import com.google.maps.android.compose.MapType
+import com.google.maps.android.compose.MapUiSettings
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.presentation.components.HomeAppBar
 import com.neirasphere.ecosphere.presentation.components.HomeCardClassify
@@ -27,6 +61,9 @@ import com.neirasphere.ecosphere.presentation.components.SearchBar
 import com.neirasphere.ecosphere.presentation.components.SectionTextColumn
 import com.neirasphere.ecosphere.presentation.common.UiState
 import com.neirasphere.ecosphere.presentation.components.HomeCategoriesLearnCard
+import com.neirasphere.ecosphere.presentation.components.SectionTextColumnMap
+import com.neirasphere.ecosphere.presentation.navigation.Screen
+import java.util.Locale
 
 @Composable
 fun HomeScreen(
@@ -34,13 +71,72 @@ fun HomeScreen(
     viewModel: HomeViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
-    HomeContent(viewModel = viewModel, navController = navController, modifier = modifier)
+    var cityName by remember {
+        mutableStateOf("Fetching location...")
+    }
+
+    val yogyakartaLatlng = LatLng(-7.788451947965932, 110.36505903685487)
+    val context = LocalContext.current
+
+    var userLocation by remember { mutableStateOf<LatLng?>(null) }
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(userLocation ?: yogyakartaLatlng, 6f)
+    }
+
+    RequestLocationPermission(
+        onPermissionGranted = {
+            GetUserLocation {
+                userLocation = LatLng(it.latitude, it.longitude)
+            }
+        })
+
+    RequestLocationPermission(onPermissionGranted = {
+        GetUserLocation {
+            cityName = getCityName(context, it)
+        }
+    })
+
+    var properties by remember {
+        mutableStateOf(MapProperties(mapType = MapType.TERRAIN))
+    }
+
+    var uiSettings by remember {
+        mutableStateOf(MapUiSettings(zoomControlsEnabled = true))
+    }
+
+    LaunchedEffect(userLocation) {
+        userLocation?.let {
+            cameraPositionState.animate(
+                update = CameraUpdateFactory.newCameraPosition(
+                    CameraPosition(userLocation ?: yogyakartaLatlng, 12f, 0f, 0f)
+                ),
+                durationMs = 1000
+            )
+        }
+    }
+
+    HomeContent(
+        viewModel = viewModel,
+        moveToProfile = {
+            navController.navigate(Screen.ProfileScreen.route)
+        },
+        cityNameUser = cityName,
+        locationUser = userLocation,
+        cameraState = cameraPositionState,
+        mapStyle = properties,
+        mapSetting = uiSettings,
+    )
 }
 
 @Composable
 fun HomeContent(
     viewModel: HomeViewModel,
-    navController: NavController,
+    cityNameUser: String,
+    locationUser: LatLng?,
+    cameraState: CameraPositionState,
+    mapStyle: MapProperties,
+    mapSetting: MapUiSettings,
+    moveToProfile: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -48,7 +144,7 @@ fun HomeContent(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        HomeAppBar(name = "Erlin", location = "Cipayung, Bekasi", navController = navController)
+        HomeAppBar(name = "Erlin", location = cityNameUser, moveToProfile = moveToProfile)
         SearchBar(query = "", onQueryChange = {}, modifier = Modifier.padding(horizontal = 16.dp))
         HomeCardClassify("10", "20", "30")
         SectionTextColumn(title = R.string.section_one, modifier = Modifier.padding(top = 25.dp)) {
@@ -72,19 +168,102 @@ fun HomeContent(
                 }
             }
         }
-        SectionTextColumn(
-            title = R.string.section_two,
-            modifier = Modifier.padding(top = 25.dp, bottom = 20.dp)
+        SectionTextColumnMap(
+            title = "TPS Sekitar $cityNameUser",
+            modifier = Modifier.padding(top = 10.dp, bottom = 20.dp)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.map_image),
-                contentDescription = "Map",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(300.dp)
-                    .padding(horizontal = 16.dp)
-            )
+            GoogleMap(
+                modifier = modifier.fillMaxWidth()
+                    .height(250.dp)
+                    .clip(MaterialTheme.shapes.small),
+                cameraPositionState = cameraState,
+                properties = mapStyle,
+                uiSettings = mapSetting
+            ) {
+                locationUser?.let {
+                    Marker(
+                        state = MarkerState(it),
+                        title = "Your Location",
+                        icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)
+                    )
+                }
+            }
         }
+    }
+}
+
+@OptIn(ExperimentalPermissionsApi::class)
+@Composable
+fun RequestLocationPermission(
+    onPermissionGranted: @Composable () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    val permissionState = rememberMultiplePermissionsState(
+        permissions = listOf(
+            android.Manifest.permission.ACCESS_FINE_LOCATION,
+            android.Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+    )
+
+    LaunchedEffect(key1 = Unit) {
+        permissionState.launchMultiplePermissionRequest()
+    }
+
+    when {
+        permissionState.allPermissionsGranted -> {
+            onPermissionGranted()
+        }
+        else -> {
+
+        }
+    }
+}
+
+@SuppressLint("MissingPermission")
+@Composable
+fun GetUserLocation(
+    onLocationReceived: (Location) -> Unit,
+) {
+    val fusedLocationClient = LocationServices.getFusedLocationProviderClient(LocalContext.current)
+    val locationCallback = rememberUpdatedState(newValue = onLocationReceived)
+
+    DisposableEffect(key1 = Unit) {
+        val locationRequest = LocationRequest.create().apply {
+            interval = 10000
+            fastestInterval = 5000
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+
+        val locationListener = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                locationResult.lastLocation?.let { location ->
+                    locationCallback.value(location)
+                }
+            }
+        }
+
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            locationListener,
+            Looper.getMainLooper()
+        )
+        onDispose {
+            fusedLocationClient.removeLocationUpdates(locationListener)
+        }
+    }
+}
+
+fun getCityName(
+    context: Context,
+    location: Location
+) : String {
+    val geocoder = Geocoder(context, Locale.getDefault())
+    val address = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+    return if (!address.isNullOrEmpty()) {
+        address[0].locality ?: "Unknown City"
+    } else {
+        "Unknown City"
     }
 }
 

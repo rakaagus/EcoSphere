@@ -55,7 +55,7 @@ import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 
 @Composable
 fun HomeAppBar(
-    navController: NavController,
+    moveToProfile: () -> Unit,
     name: String,
     location: String,
     modifier: Modifier = Modifier
@@ -74,7 +74,7 @@ fun HomeAppBar(
                 .size(50.dp)
                 .clip(CircleShape)
                 .clickable {
-                    navController.navigate(Screen.ProfileScreen.route)
+                    moveToProfile()
                 }
         )
         Spacer(modifier = Modifier.width(16.dp))

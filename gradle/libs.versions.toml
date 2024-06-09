@@ -22,7 +22,8 @@ systemUi = "0.27.0"
 supportAnnotationsVersion = "28.0.0"
 materialVersion = "1.12.0"
 playServicesMaps = "18.2.0"
-mapsCompose = "2.0.0"
+playServiceLocation = "21.0.1"
+mapsCompose = "2.1.1"
 kpsVersion = "1.9.10-1.0.13"
 roomRuntime = "2.5.2"
 hiltAndroid = "2.49"
@@ -71,10 +72,14 @@ accompanist-system-ui = {group = "com.google.accompanist", name = "accompanist-s
 logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "loggingInterceptor" }
 maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }
 play-services-maps = { module = "com.google.android.gms:play-services-maps", version.ref = "playServicesMaps" }
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServiceLocation" }
 
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 support-annotations = { group = "com.android.support", name = "support-annotations", version.ref = "supportAnnotationsVersion" }
 material = { group = "com.google.android.material", name = "material", version.ref = "materialVersion" }
+
+# Permission
+google-accompanist = { module = "com.google.accompanist:accompanist-permissions", version = "0.30.1"}
 
 # Room
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }

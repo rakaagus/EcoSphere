@@ -71,6 +71,9 @@ dependencies {
     implementation(libs.firebase.auth)
     testImplementation(libs.junit)
 
+    /*Permission*/
+    implementation(libs.google.accompanist)
+
     /*pager*/
     implementation(libs.accompanist.pager)
     implementation(libs.accompanist.pager.indicator)
@@ -82,6 +85,7 @@ dependencies {
     /*Compose Map*/
     implementation(libs.maps.compose)
     implementation(libs.play.services.maps)
+    implementation(libs.play.services.location)
 
     /*Room Implements*/
     implementation(libs.androidx.room.runtime)

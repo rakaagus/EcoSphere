@@ -1,5 +1,12 @@
 package com.neirasphere.ecosphere.presentation.screen.interactivemap
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.location.Location
+import android.os.Looper
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -37,17 +44,21 @@ import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -57,6 +68,15 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.rememberCameraPositionState
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
@@ -78,8 +98,16 @@ fun MapScreen(
     val yogyakartaLatlng = LatLng(-7.788451947965932, 110.36505903685487)
 
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(yogyakartaLatlng, 12f)
+        position = CameraPosition.fromLatLngZoom(yogyakartaLatlng, 6f)
     }
+
+    var userLocation by remember { mutableStateOf<LatLng?>(null) }
+
+    RequestLocationPermission(onPermissionGranted = {
+        GetUserLocation {
+            userLocation = LatLng(it.latitude, it.longitude)
+        }
+    })
 
     var properties by remember {
         mutableStateOf(MapProperties(mapType = MapType.TERRAIN))
@@ -89,14 +117,33 @@ fun MapScreen(
         mutableStateOf(MapUiSettings(zoomControlsEnabled = true))
     }
 
+
     viewModel.tpsUiState.collectAsState(initial = UiState.Loading).value.let { uiState ->
         when (uiState) {
             is UiState.Loading -> {
                 viewModel.getAllTpsData()
             }
-
             is UiState.Error -> {}
             is UiState.Success -> {
+
+                LaunchedEffect(uiState.data, userLocation) {
+                    if(userLocation == null){
+                        val boundsBuilder = LatLngBounds.Builder()
+                        uiState.data.forEach { boundsBuilder.include(it.latLong) }
+                        val bounds = boundsBuilder.build()
+                        cameraPositionState.animate(
+                            update = CameraUpdateFactory.newLatLngBounds(bounds, 50)
+                        )
+                    }else {
+                        cameraPositionState.animate(
+                            update = CameraUpdateFactory.newCameraPosition(
+                                CameraPosition(userLocation!!, 12f, 0f, 0f)
+                            ),
+                            durationMs = 1000
+                        )
+                    }
+                }
+
                 Box(
                     modifier = modifier.fillMaxSize()
                 ) {
@@ -105,7 +152,8 @@ fun MapScreen(
                         cameraState = cameraPositionState,
                         mapStyle = properties,
                         mapSetting = uiSettings,
-                        mapData = uiState.data
+                        mapData = uiState.data,
+                        userLocation = userLocation
                     )
                 }
             }
@@ -120,6 +168,7 @@ fun MapContent(
     cameraState: CameraPositionState,
     mapStyle: MapProperties,
     mapSetting: MapUiSettings,
+    userLocation: LatLng?,
     modifier: Modifier = Modifier
 ) {
     GoogleMap(
@@ -132,6 +181,13 @@ fun MapContent(
             Marker(
                 state = MarkerState(it.latLong),
                 title = it.title
+            )
+        }
+        userLocation?.let {
+            Marker(
+                state = MarkerState(it),
+                title = "Your Location",
+                icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)
             )
         }
     }
@@ -354,6 +410,68 @@ fun TpsCard(
                     modifier = Modifier.size(14.dp)
                 )
             }
+        }
+    }
+}
+
+@OptIn(ExperimentalPermissionsApi::class)
+@Composable
+fun RequestLocationPermission(
+    onPermissionGranted: @Composable () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val context = LocalContext.current
+    val permissionState = rememberMultiplePermissionsState(
+        permissions = listOf(
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+    )
+
+    LaunchedEffect(key1 = Unit) {
+        permissionState.launchMultiplePermissionRequest()
+    }
+
+    when {
+        permissionState.allPermissionsGranted -> {
+            onPermissionGranted()
+        }
+        else -> {
+
+        }
+    }
+}
+
+@SuppressLint("MissingPermission")
+@Composable
+fun GetUserLocation(
+    onLocationReceived: (Location) -> Unit,
+) {
+    val fusedLocationClient = LocationServices.getFusedLocationProviderClient(LocalContext.current)
+    val locationCallback = rememberUpdatedState(newValue = onLocationReceived)
+
+    DisposableEffect(key1 = Unit) {
+        val locationRequest = LocationRequest.create().apply {
+            interval = 10000
+            fastestInterval = 5000
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
+
+        val locationListener = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                locationResult.lastLocation?.let { location ->
+                    locationCallback.value(location)
+                }
+            }
+        }
+
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            locationListener,
+            Looper.getMainLooper()
+        )
+        onDispose {
+            fusedLocationClient.removeLocationUpdates(locationListener)
         }
     }
 }

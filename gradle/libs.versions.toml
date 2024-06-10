@@ -106,7 +106,7 @@ androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtim
 # CameraX
 androidx-camera2 = { module = "androidx.camera:camera-camera2", version.ref ="cameraXVersion"}
 androidx-camera2-livecyle = { module = "androidx.camera:camera-lifecycle", version.ref ="cameraXVersion"}
-androidx-camera2-view = { module = "androidx.camera:camera-lifecycle", version.ref ="cameraXVersion"}
+androidx-camera2-view = { module = "androidx.camera:camera-view", version.ref ="cameraXVersion"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

@@ -39,6 +39,8 @@ sealed class Screen(val route: String) {
     object DetailPostScreen: Screen("detail_post_screen")
     object DummyDetailPostScreen: Screen("dummy_detail_post_screen")
     object PostingScreen: Screen("posting_screen")
+
+    object ClassificationResult : Screen("classification_result_screen")
     object ClassifyScreen: Screen("classify_screen")
     object ChangePasswordScreen: Screen("change_password_screen")
     object VerificationEmailScreen: Screen("verification_email_screen")

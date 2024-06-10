@@ -62,6 +62,7 @@ import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.presentation.screen.auth.changepassword.ChangePasswordScreen
 import com.neirasphere.ecosphere.presentation.screen.auth.verificationemail.VerificationEmailScreen
 import com.neirasphere.ecosphere.presentation.screen.classification.ClassificationScreen
+import com.neirasphere.ecosphere.presentation.screen.classification.result.ClassificationResultScreen
 import com.neirasphere.ecosphere.presentation.screen.community.CommunityScreen
 import com.neirasphere.ecosphere.presentation.screen.community.DetailPostScreen
 import com.neirasphere.ecosphere.presentation.screen.community.DummyDetailPostScreen
@@ -198,6 +199,26 @@ fun EcoSphereApp(
                     CenterTopAppBar(onBackClick = {
                         navController.navigate(Screen.HomeScreen.route){
                             popUpTo(Screen.ClassifyScreen.route){
+                                inclusive = true
+                            }
+                        }
+                    }, title = null, actionIcon = {
+                        Image(
+                            painter = painterResource(id = R.drawable.icon_history_classify),
+                            contentDescription = "",
+                            modifier = Modifier
+                                .size(34.dp)
+                                .clickable {
+
+                                }
+                        )
+                    })
+                }
+
+                Screen.ClassificationResult.route -> {
+                    CenterTopAppBar(onBackClick = {
+                        navController.navigate(Screen.HomeScreen.route){
+                            popUpTo(Screen.ClassificationResult.route){
                                 inclusive = true
                             }
                         }
@@ -418,6 +439,10 @@ fun EcoSphereApp(
                 ClassificationScreen(navController = navController)
             }
 
+            composable(Screen.ClassificationResult.route){
+                ClassificationResultScreen(navController = navController)
+            }
+
             /*Profile Route*/
             composable(Screen.ProfileScreen.route) {
                 ProfileScreen(navController = navController)
@@ -533,7 +558,7 @@ fun BottomAppBar(
                 if (index == 2) {
                     FloatingActionButton(
                         onClick = {
-                            navController.navigate(Screen.ClassifyScreen.route)
+                            navController.navigate(Screen.ClassificationResult.route)
                         },
                         backgroundColor = PrimaryColor,
                         elevation = FloatingActionButtonDefaults.elevation(0.dp),

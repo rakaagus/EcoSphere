@@ -1,11 +1,11 @@
-package com.neirasphere.ecosphere.data.dao
+package com.neirasphere.ecosphere.data.local
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.neirasphere.ecosphere.domain.model.EduHistory
+import com.neirasphere.ecosphere.data.local.entities.EduHistory
 import com.neirasphere.ecosphere.domain.repository.EduHistoryList
 import kotlinx.coroutines.flow.Flow
 

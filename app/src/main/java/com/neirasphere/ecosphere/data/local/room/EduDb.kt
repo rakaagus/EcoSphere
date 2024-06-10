@@ -1,9 +1,9 @@
-package com.neirasphere.ecosphere.data.network
+package com.neirasphere.ecosphere.data.local.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.neirasphere.ecosphere.data.dao.EduHistoryDao
-import com.neirasphere.ecosphere.domain.model.EduHistory
+import com.neirasphere.ecosphere.data.local.EduHistoryDao
+import com.neirasphere.ecosphere.data.local.entities.EduHistory
 
 @Database(
     entities = [EduHistory::class],

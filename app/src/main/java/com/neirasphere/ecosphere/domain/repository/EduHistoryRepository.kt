@@ -1,6 +1,6 @@
 package com.neirasphere.ecosphere.domain.repository
 
-import com.neirasphere.ecosphere.domain.model.EduHistory
+import com.neirasphere.ecosphere.data.local.entities.EduHistory
 import kotlinx.coroutines.flow.Flow
 
 typealias EduHistoryList = List<EduHistory>

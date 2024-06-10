@@ -80,7 +80,7 @@ support-annotations = { group = "com.android.support", name = "support-annotatio
 material = { group = "com.google.android.material", name = "material", version.ref = "materialVersion" }
 
 # Permission
-google-accompanist = { module = "com.google.accompanist:accompanist-permissions", version = "0.30.1"}
+google-accompanist = { module = "com.google.accompanist:accompanist-permissions", version = "0.34.0"}
 
 # Room
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }

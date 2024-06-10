@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.neirasphere.ecosphere.domain.model.EduHistory
+import com.neirasphere.ecosphere.data.local.entities.EduHistory
 import com.neirasphere.ecosphere.domain.repository.EduHistoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

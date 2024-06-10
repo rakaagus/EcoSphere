@@ -114,8 +114,6 @@ dependencies {
     /*Lottie Animation*/
     implementation(libs.lottie.compose)
 
-    implementation ("com.google.accompanist:accompanist-permissions:0.34.0")
-
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

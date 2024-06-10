@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.domain.model.CategoryLearn
-import com.neirasphere.ecosphere.domain.model.EduHistory
+import com.neirasphere.ecosphere.data.local.entities.EduHistory
 import com.neirasphere.ecosphere.presentation.screen.education.EduHistoryViewModel
 import com.neirasphere.ecosphere.ui.theme.BlackColor
 import com.neirasphere.ecosphere.ui.theme.NeutralColorGrey

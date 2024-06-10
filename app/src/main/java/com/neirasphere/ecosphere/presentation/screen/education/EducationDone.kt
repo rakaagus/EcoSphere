@@ -32,7 +32,6 @@ import com.neirasphere.ecosphere.ui.theme.BlackColor
 import com.neirasphere.ecosphere.ui.theme.NeutralColorWhite
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import com.neirasphere.ecosphere.domain.model.EduHistory
 
 
 @Composable

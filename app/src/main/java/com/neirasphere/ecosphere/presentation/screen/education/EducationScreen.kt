@@ -28,11 +28,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 
 import com.neirasphere.ecosphere.R
-import com.neirasphere.ecosphere.domain.model.EduHistory
 import com.neirasphere.ecosphere.presentation.common.UiState
 import com.neirasphere.ecosphere.presentation.components.EducationCard
 import com.neirasphere.ecosphere.presentation.navigation.Screen

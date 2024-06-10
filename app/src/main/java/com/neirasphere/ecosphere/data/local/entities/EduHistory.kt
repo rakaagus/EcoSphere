@@ -1,4 +1,4 @@
-package com.neirasphere.ecosphere.domain.model
+package com.neirasphere.ecosphere.data.local.entities
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -9,4 +9,4 @@ data class EduHistory(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val title: String,
     val image: Int,
-    )
+)

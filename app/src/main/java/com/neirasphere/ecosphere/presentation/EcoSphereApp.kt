@@ -155,7 +155,10 @@ fun EcoSphereApp(
 
                 Screen.EduHistoryScreen.route ->{
                     CenterTopAppBar(
-                        navController = navController,
+                        onBackClick = {
+                            navController.popBackStack()
+                            navController.navigateUp()
+                        },
                         title = R.string.title_page_education_history
                     )
                 }

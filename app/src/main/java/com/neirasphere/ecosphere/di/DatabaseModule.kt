@@ -5,7 +5,7 @@ import android.content.Context
 import androidx.room.Room
 import com.google.firebase.auth.FirebaseAuth
 import com.neirasphere.ecosphere.data.local.DataSource
-import com.neirasphere.ecosphere.data.network.EduDb
+import com.neirasphere.ecosphere.data.local.room.EduDb
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

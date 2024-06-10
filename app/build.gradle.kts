@@ -114,6 +114,11 @@ dependencies {
     /*Lottie Animation*/
     implementation(libs.lottie.compose)
 
+    /*CameraX*/
+    implementation(libs.androidx.camera2)
+    implementation(libs.androidx.camera2.livecyle)
+    implementation(libs.androidx.camera2.view)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

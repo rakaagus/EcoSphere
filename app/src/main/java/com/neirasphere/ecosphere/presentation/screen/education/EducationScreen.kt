@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -23,13 +24,18 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 
 import com.neirasphere.ecosphere.R
+import com.neirasphere.ecosphere.domain.model.EduHistory
 import com.neirasphere.ecosphere.presentation.common.UiState
 import com.neirasphere.ecosphere.presentation.components.EducationCard
+import com.neirasphere.ecosphere.presentation.navigation.Screen
 import com.neirasphere.ecosphere.ui.theme.NeutralColorGrey
 import com.neirasphere.ecosphere.ui.theme.NeutralColorWhite
 
@@ -38,15 +44,18 @@ fun EducationScreen(
     onClickDetail: (Long) -> Unit,
     viewModel: EducationViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
+    navController: NavHostController
 ){
-    EducationContent(onClickDetail = onClickDetail, viewModel = viewModel, modifier = modifier)
+    EducationContent(onClickDetail = onClickDetail, viewModel = viewModel, modifier = modifier, navController = navController)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EducationContent(
     onClickDetail: (Long) -> Unit,
     viewModel: EducationViewModel,
     modifier: Modifier = Modifier,
+    navController: NavHostController
 ){
     Column(
         modifier = modifier
@@ -69,6 +78,10 @@ fun EducationContent(
                         modifier = modifier
                             .fillMaxWidth()
                             .padding(top = 12.dp)
+                            .clickable {
+                                navController.navigate(Screen.EduHistoryScreen.route)
+                            }
+                        ,
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
@@ -106,7 +119,10 @@ fun EducationContent(
                         modifier = Modifier.height((690.dp))
                     ){
                         items(state.data){
-                            EducationCard(educationData = it, onClickDetail = onClickDetail)
+                            EducationCard(
+                                educationData = it,
+                                onClickDetail = onClickDetail
+                            )
                         }
                     }
                 }

@@ -66,6 +66,7 @@ import com.neirasphere.ecosphere.presentation.screen.community.CommunityScreen
 import com.neirasphere.ecosphere.presentation.screen.community.DetailPostScreen
 import com.neirasphere.ecosphere.presentation.screen.community.DummyDetailPostScreen
 import com.neirasphere.ecosphere.presentation.screen.community.PostingScreen
+import com.neirasphere.ecosphere.presentation.screen.education.EduHistoryScreen
 import com.neirasphere.ecosphere.presentation.screen.education.EducationDetailScreen
 import com.neirasphere.ecosphere.presentation.screen.education.EducationDone
 import com.neirasphere.ecosphere.presentation.screen.education.EducationScreen
@@ -149,6 +150,13 @@ fun EcoSphereApp(
                             navController.navigateUp()
                         },
                         title = R.string.title_page_education
+                    )
+                }
+
+                Screen.EduHistoryScreen.route ->{
+                    CenterTopAppBar(
+                        navController = navController,
+                        title = R.string.title_page_education_history
                     )
                 }
 
@@ -253,7 +261,8 @@ fun EcoSphereApp(
                 EducationScreen(
                     onClickDetail = { educationId ->
                         navController.navigate(Screen.EducationDetailScreen.createRoute(educationId))
-                    }
+                    },
+                    navController = navController
                 )
             }
             composable(
@@ -352,6 +361,9 @@ fun EcoSphereApp(
             }
             composable(Screen.EducationDoneScreen.route) {
                 EducationDone(navController = navController)
+            }
+            composable(Screen.EduHistoryScreen.route) {
+                EduHistoryScreen()
             }
 
             /*Map Route*/

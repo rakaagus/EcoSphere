@@ -32,6 +32,7 @@ import com.neirasphere.ecosphere.ui.theme.BlackColor
 import com.neirasphere.ecosphere.ui.theme.NeutralColorWhite
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import com.neirasphere.ecosphere.domain.model.EduHistory
 
 
 @Composable
@@ -67,7 +68,9 @@ fun EducationDone(
                 labelEdu = "Belajar lagi",
                 labelHome = "Nggak dulu",
                 onClickEdu = { navController.navigate(Screen.EducationScreen.route) },
-                onClickHome = { navController.navigate(Screen.HomeScreen.route) })
+                onClickHome = { navController.navigate(Screen.HomeScreen.route) }
+            )
+
         }
     }
 }
@@ -109,7 +112,7 @@ fun DoneButton(
                     .padding(horizontal = 8.dp)
                     .height(50.dp)
             ) {
-                androidx.compose.material3.Text(
+                Text(
                     text = labelEdu,
                     style = MaterialTheme.typography.bodyMedium,
                     color = NeutralColorWhite

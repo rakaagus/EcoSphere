@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.neirasphere.ecosphere.data.local.DataSource
+import com.neirasphere.ecosphere.domain.model.CommunityPost
 import com.neirasphere.ecosphere.presentation.components.MagicTabItem
 import com.neirasphere.ecosphere.presentation.components.MagicTabLayout
 import com.neirasphere.ecosphere.presentation.components.PostLayout
@@ -50,7 +51,7 @@ fun CommunityScreen(
 
 @Composable
 fun TabItem(
-    item: List<com.neirasphere.ecosphere.domain.model.CommunityPost> = DataSource.communityPostData(),
+    item: List<CommunityPost> = DataSource.communityPostData(),
     navController: NavController,
     modifier: Modifier = Modifier
 ) {

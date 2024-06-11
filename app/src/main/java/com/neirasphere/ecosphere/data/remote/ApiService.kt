@@ -1,5 +1,6 @@
 package com.neirasphere.ecosphere.data.remote
 
+import com.neirasphere.ecosphere.data.remote.response.CommunityResponse
 import com.neirasphere.ecosphere.data.remote.response.LoginResponse
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -13,5 +14,11 @@ interface ApiService {
         @Field("email") email: String,
         @Field("password") password: String
     ): LoginResponse
+
+    @FormUrlEncoded
+    @POST("community/")
+    suspend fun post(
+        @Field("content") content: String
+    ): CommunityResponse
 
 }

@@ -10,6 +10,7 @@ espressoCore = "3.5.1"
 lifecycleRuntimeKtx = "2.7.0"
 activityCompose = "1.9.0"
 composeBom = "2023.08.00"
+lifecycleViewmodelCompose = "2.8.1"
 loggingInterceptor = "5.0.0-alpha.6"
 navigationVersion = "2.7.7"
 materialCompose = "1.6.6"
@@ -38,6 +39,8 @@ cameraXVersion = "1.4.0-beta01"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleViewmodelCompose" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 facebook-login = { module = "com.facebook.android:facebook-login", version.ref = "facebookLogin" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -106,7 +109,7 @@ androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtim
 # CameraX
 androidx-camera2 = { module = "androidx.camera:camera-camera2", version.ref ="cameraXVersion"}
 androidx-camera2-livecyle = { module = "androidx.camera:camera-lifecycle", version.ref ="cameraXVersion"}
-androidx-camera2-view = { module = "androidx.camera:camera-lifecycle", version.ref ="cameraXVersion"}
+androidx-camera2-view = { module = "androidx.camera:camera-view", version.ref ="cameraXVersion"}
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

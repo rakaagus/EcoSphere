@@ -1,30 +1,20 @@
 package com.neirasphere.ecosphere.presentation.screen.classification
-import android.Manifest
-import android.content.ContentValues
-import android.content.Context
-import android.net.Uri
-import android.provider.MediaStore
+
+
 import android.util.Log
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
+import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material3.BottomSheetDefaults
-import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
@@ -32,155 +22,103 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
 import com.neirasphere.ecosphere.R
-import com.neirasphere.ecosphere.data.Result
 import com.neirasphere.ecosphere.data.remote.response.ClassifyResult
 import com.neirasphere.ecosphere.presentation.components.ButtonAuth
 import com.neirasphere.ecosphere.presentation.navigation.Screen
-import com.neirasphere.ecosphere.ui.theme.PrimaryColor
+import com.neirasphere.ecosphere.presentation.screen.classification.component.ShimmerImage
+import com.neirasphere.ecosphere.utils.shimmerEffect
+import kotlinx.coroutines.delay
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
-@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun ClassificationScreen(
+    navController: NavHostController,
+    file: File?,
     viewModel: ClassificationViewModel = hiltViewModel(),
-    navController : NavHostController,
+    modifier: Modifier = Modifier
 ) {
+
     val context = LocalContext.current
-    val imageUri = remember { mutableStateOf<Uri?>(null) }
-    val result by viewModel.result.observeAsState()
-    var classificationResponse by remember { mutableStateOf<ClassifyResult?>(null) }
+
     var isBottomSheetVisible by remember { mutableStateOf(false) }
+    var shimmerLoading by remember { mutableStateOf(true) }
+    val success = viewModel.state.collectAsState().value.success
+    val error = viewModel.state.collectAsState().value.error
+    var classificationResponse by remember { mutableStateOf<ClassifyResult?>(null) }
 
-    val cameraPermissionState = rememberPermissionState(Manifest.permission.CAMERA)
+    LaunchedEffect(key1 = Unit) {
+        delay(100)
+        if (file != null) {
+            viewModel.classifyTrash(file)
+        }
+    }
 
-    val cameraLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.TakePicture(),
-        onResult = { success ->
-            if (success) {
-                imageUri.value?.let { uri ->
-                    val file = uriToFile(uri, context)
-                    viewModel.classifyTrash(file)
+    if (success) {
+        viewModel.state.collectAsState().value.result.let {
+            classificationResponse = it
+        }
+        isBottomSheetVisible = true
+        shimmerLoading = false
+    }
+
+    if (error != null) {
+        viewModel.state.collectAsState().value.error.let {
+            Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier.fillMaxWidth()
+    ) {
+        ShimmerImage(isLoading = shimmerLoading) {
+            AsyncImage(
+                model = file,
+                contentDescription = "Image",
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(350.dp)
+                    .padding(horizontal = 16.dp)
+                    .clip(MaterialTheme.shapes.small)
+            )
+        }
+    }
+    if (isBottomSheetVisible) {
+        BottomSheet(
+            onDismiss = { isBottomSheetVisible = false },
+            file = file,
+            navController = navController,
+            classificationResponse = classificationResponse
+        ) {
+            isBottomSheetVisible = false
+            navController.navigate(Screen.CameraScreen.route) {
+                popUpTo(Screen.ClassifyScreen.route) {
+                    inclusive = true
                 }
             }
         }
-    )
-
-    LaunchedEffect(Unit) {
-        cameraPermissionState.launchPermissionRequest()
-    }
-
-    fun retakePhoto() {
-
-        imageUri.value = null
-        classificationResponse = null
-        isBottomSheetVisible = false
-        if (cameraPermissionState.status.isGranted) {
-            val uri = createImageUri(context)
-            imageUri.value = uri
-            cameraLauncher.launch(uri)
-        } else {
-            cameraPermissionState.launchPermissionRequest()
-        }
-    }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text("Letakkan barang Anda dalam bingkai pemindai",
-            style = MaterialTheme.typography.labelMedium,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .padding(12.dp)
-                .align(Alignment.CenterHorizontally)
-        )
-        Image(
-            painterResource(id = R.drawable.camera_frame),
-            contentDescription = null,
-            modifier = Modifier
-                .size(320.dp, 450.dp)
-                .padding(top = 22.dp, bottom = 30.dp)
-        )
-
-        Button(
-            onClick = {
-                val uri = createImageUri(context)
-                imageUri.value = uri
-                cameraLauncher.launch(uri)
-            },
-//            enabled = !isBottomSheetVisible,
-            modifier = Modifier
-                .size(80.dp)
-                .background(Color.White),
-            content = {
-                Icon(
-                    imageVector = Icons.Default.Camera,
-                    contentDescription = "Capture Image",
-                    tint = PrimaryColor,
-                )
-            }
-        )
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        when (result) {
-            is Result.Loading -> {
-                CircularProgressIndicator()
-            }
-            is Result.Success -> {
-                classificationResponse = (result as Result.Success<ClassifyResult>).data
-                isBottomSheetVisible = true
-            }
-            is Result.Error -> {
-                Text("Upload Failed: ${(result as Result.Error).message}")
-            }
-            else -> { Text("Upload a file to see the result") }
-        }
-    }
-
-    LaunchedEffect(isBottomSheetVisible) {
-        Log.d("ClassificationScreen", "isBottomSheetVisible: $isBottomSheetVisible")
-    }
-
-    if (isBottomSheetVisible) {
-        BottomSheet(
-            onDismiss = {
-                Log.d("BottomSheet", "Dismiss called")
-                isBottomSheetVisible = false
-            },
-            navController = navController,
-            imageUri = imageUri,
-            classificationResponse = classificationResponse,
-            onRetakePhoto = {
-                isBottomSheetVisible = false
-                retakePhoto() }
-        )
     }
 }
 
@@ -188,7 +126,7 @@ fun ClassificationScreen(
 @Composable
 fun BottomSheet(
     onDismiss: () -> Unit,
-    imageUri: MutableState<Uri?>,
+    file: File?,
     navController: NavHostController,
     classificationResponse: ClassifyResult?,
     onRetakePhoto: () -> Unit
@@ -208,7 +146,7 @@ fun BottomSheet(
     ) {
         BottomSheetContent(
             navController = navController,
-            imageUri = imageUri,
+            file = file,
             classificationResponse = classificationResponse,
             onRetakePhoto = onRetakePhoto,
             onDismiss = onDismiss,
@@ -220,11 +158,11 @@ fun BottomSheet(
 @Composable
 fun BottomSheetContent(
     navController: NavHostController,
-    imageUri : MutableState<Uri?>,
+    file: File?,
     classificationResponse: ClassifyResult?,
     onRetakePhoto: () -> Unit,
     onDismiss: () -> Unit,
-){
+) {
     Column(
         modifier = Modifier
             .padding(start = 12.dp, end = 12.dp, bottom = 12.dp)
@@ -237,20 +175,20 @@ fun BottomSheetContent(
                 .align(Alignment.CenterHorizontally)
                 .padding(12.dp)
         )
-        Row(){
-            Image(
-                painter = rememberAsyncImagePainter(imageUri.value),
-                contentDescription = null,
-                modifier = Modifier.size(84.dp),
+        Row() {
+            AsyncImage(
+                model = file, contentDescription = null,
+                modifier = Modifier.size(84.dp).clip(MaterialTheme.shapes.extraSmall),
                 contentScale = ContentScale.Crop,
             )
             Column(
                 modifier = Modifier
                     .align(Alignment.CenterVertically)
                     .padding(end = 12.dp)
-            ){
+            ) {
                 classificationResponse?.let {
-                    Text(it.classCategory ?: "NA",
+                    Text(
+                        it.classCategory ?: "NA",
                         style = MaterialTheme.typography.labelSmall,
                         modifier = Modifier.padding(start = 8.dp)
                     )
@@ -264,11 +202,13 @@ fun BottomSheetContent(
 //                    modifier = Modifier.padding(start = 8.dp)
 //                )
             }
-            Spacer(modifier = Modifier
-                .weight(1f)
+            Spacer(
+                modifier = Modifier
+                    .weight(1f)
             )
             //tambah logic utk retake photo
-            Image(painterResource(id = R.drawable.icon_refresh),
+            Image(
+                painterResource(id = R.drawable.icon_refresh),
                 contentDescription = null,
                 modifier = Modifier
                     .size(28.dp)
@@ -280,12 +220,14 @@ fun BottomSheetContent(
                     }
             )
         }
-        Text(text = "Deskripsi:",
+        Text(
+            text = "Deskripsi:",
             style = MaterialTheme.typography.labelSmall,
             modifier = Modifier.padding(top = 12.dp, bottom = 8.dp)
         )
         classificationResponse?.let {
-            Text("Description: ${it.description ?: ""}",
+            Text(
+                "Description: ${it.description ?: ""}",
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
             )
@@ -303,30 +245,13 @@ fun BottomSheetContent(
         )
         ButtonAuth(
             label = "Yuk, daur ulang di sini!",
-            click = { navController.navigate(Screen.RecycleScreen.route) })
+            click = {
+                navController.navigate(Screen.RecycleScreen.route) {
+                    popUpTo(Screen.ClassifyScreen.route) {
+                        inclusive = true
+                    }
+                }
+            })
 
     }
-}
-
-fun createImageUri(context: Context): Uri {
-    val contentResolver = context.contentResolver
-    val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
-    val fileName = "JPEG_$timeStamp.jpg"
-
-    val contentValues = ContentValues().apply {
-        put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
-        put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
-        put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/")
-    }
-
-    return contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)!!
-}
-
-fun uriToFile(uri: Uri, context: Context): File {
-    val contentResolver = context.contentResolver
-    val tempFile = File.createTempFile("temp_image", ".jpg", context.cacheDir)
-    tempFile.outputStream().use { outputStream ->
-        contentResolver.openInputStream(uri)?.copyTo(outputStream)
-    }
-    return tempFile
 }

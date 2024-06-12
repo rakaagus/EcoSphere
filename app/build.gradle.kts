@@ -106,6 +106,10 @@ dependencies {
     implementation(libs.google.service)
     implementation(libs.facebook.login)
 
+    /*LiveData*/
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+
     /*Retrofit*/
     implementation(libs.retrofit)
     implementation(libs.converter.gson)

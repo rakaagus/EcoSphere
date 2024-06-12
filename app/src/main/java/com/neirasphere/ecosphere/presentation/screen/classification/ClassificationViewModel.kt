@@ -1,46 +1,61 @@
 package com.neirasphere.ecosphere.presentation.screen.classification
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+
+
 import androidx.lifecycle.ViewModel
-import com.neirasphere.ecosphere.data.Result
-import com.neirasphere.ecosphere.data.remote.response.ClassifyResult
-import com.neirasphere.ecosphere.data.repository.ClassificationRepository
+import androidx.lifecycle.viewModelScope
+import com.neirasphere.ecosphere.data.ResultClassify
+import com.neirasphere.ecosphere.data.repository.ClassificationRepositoryImpl
+import com.neirasphere.ecosphere.domain.repository.ClassificationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody.Companion.asRequestBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
-class ClassificationViewModel @Inject constructor(private val classificationRepository: ClassificationRepository) : ViewModel() {
+class ClassificationViewModel @Inject constructor(
+    private val classificationRepository: ClassificationRepository
+) : ViewModel() {
 
-    private val _result = MutableLiveData<Result<ClassifyResult>>()
-    val result: LiveData<Result<ClassifyResult>> = _result
+    private val _state = MutableStateFlow(ClassificationState())
+    val state = _state.asStateFlow()
 
-    fun classifyTrash(file: File) {
-        _result.value = Result.Loading()
-
-        val requestFile = file.asRequestBody("image/*".toMediaTypeOrNull())
-        val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
-
-        classificationRepository.classifyTrash(body).enqueue(object :
-            Callback<ClassifyResult> {
-            override fun onResponse(call: Call<ClassifyResult>, response: Response<ClassifyResult>) {
-                if (response.isSuccessful) {
-                    _result.value = Result.Success(response.body()!!)
-                } else {
-                    _result.value = Result.Error("Upload failed: ${response.errorBody()?.string()}")
+    fun classifyTrash(file: File) = viewModelScope.launch {
+        classificationRepository.classifyTrash(file).collect{ result ->
+            when(result){
+                is ResultClassify.Error -> {
+                    _state.update {
+                        it.copy(
+                            loading = false,
+                            error = result.message
+                        )
+                    }
+                }
+                is ResultClassify.Loading -> {
+                    _state.update {
+                        it.copy(
+                            loading = true,
+                        )
+                    }
+                }
+                is ResultClassify.Success -> {
+                    _state.update {
+                        it.copy(
+                            loading = false,
+                            result = result.data,
+                            success = true
+                        )
+                    }
                 }
             }
-
-            override fun onFailure(call: Call<ClassifyResult>, t: Throwable) {
-                _result.value = Result.Error("Upload failed: ${t.message}")
-            }
-        })
+        }
+    }
+    fun resetState(){
+        _state.update {
+            ClassificationState()
+        }
     }
 }

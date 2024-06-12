@@ -58,9 +58,11 @@ import com.neirasphere.ecosphere.ui.theme.containerColor
 import androidx.compose.material.FloatingActionButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.text.font.FontWeight
+import androidx.navigation.navigation
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.presentation.screen.auth.changepassword.ChangePasswordScreen
 import com.neirasphere.ecosphere.presentation.screen.auth.verificationemail.VerificationEmailScreen
+import com.neirasphere.ecosphere.presentation.screen.classification.CameraScreen
 import com.neirasphere.ecosphere.presentation.screen.classification.ClassificationScreen
 import com.neirasphere.ecosphere.presentation.screen.community.CommunityScreen
 import com.neirasphere.ecosphere.presentation.screen.community.DetailPostScreen
@@ -83,6 +85,7 @@ import com.neirasphere.ecosphere.presentation.screen.recycle.FirstRecycleScreen
 import com.neirasphere.ecosphere.presentation.screen.recycle.RecycleDone
 import com.neirasphere.ecosphere.presentation.screen.recycle.RecycleScreen
 import com.neirasphere.ecosphere.presentation.screen.recycle.SecondRecycleScreen
+import java.io.File
 
 @Composable
 fun EcoSphereApp(
@@ -195,13 +198,15 @@ fun EcoSphereApp(
                 }
 
                 Screen.ClassifyScreen.route -> {
-                    CenterTopAppBar(onBackClick = {
-                        navController.navigate(Screen.HomeScreen.route){
-                            popUpTo(Screen.ClassifyScreen.route){
-                                inclusive = true
+                    CenterTopAppBar(
+                        onBackClick = {
+                            navController.navigate(Screen.HomeScreen.route){
+                                popUpTo(Screen.ClassifyScreen.route){
+                                    inclusive = true
                             }
                         }
-                    }, title = null, actionIcon = {
+                    }, title = null,
+                        actionIcon = {
                         Image(
                             painter = painterResource(id = R.drawable.icon_history_classify),
                             contentDescription = "",
@@ -232,6 +237,7 @@ fun EcoSphereApp(
             startDestination = Screen.HomeScreen.route,
             modifier = modifier.padding(innerPadding)
         ) {
+
             /*Splash & Onboarding Route*/
             composable(Screen.SplashScreen.route) {
                 SplashScreen(navController = navController)
@@ -415,7 +421,22 @@ fun EcoSphereApp(
 
             /*Classify Route*/
             composable(Screen.ClassifyScreen.route) {
-                ClassificationScreen(navController = navController)
+                val state = navController.previousBackStackEntry?.savedStateHandle?.get<File>(
+                    "file"
+                )
+                ClassificationScreen(navController = navController, file = state)
+            }
+            composable(Screen.CameraScreen.route){
+                CameraScreen(
+                    moveToResult = { file ->
+                        navController.currentBackStackEntry?.savedStateHandle?.set(
+                            "file",
+                            file
+                        )
+                        navController.navigate(Screen.ClassifyScreen.route)
+                    },
+                    navHostController = navController
+                )
             }
 
             /*Profile Route*/
@@ -533,7 +554,7 @@ fun BottomAppBar(
                 if (index == 2) {
                     FloatingActionButton(
                         onClick = {
-                            navController.navigate(Screen.ClassifyScreen.route)
+                            navController.navigate(Screen.CameraScreen.route)
                         },
                         backgroundColor = PrimaryColor,
                         elevation = FloatingActionButtonDefaults.elevation(0.dp),

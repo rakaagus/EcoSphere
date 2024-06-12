@@ -2,6 +2,8 @@ package com.neirasphere.ecosphere.di
 
 import com.neirasphere.ecosphere.domain.usecase.appusecase.AppUseCase
 import com.neirasphere.ecosphere.domain.usecase.appusecase.AppUseCaseInteract
+import com.neirasphere.ecosphere.domain.usecase.classify.ClassifyUseCase
+import com.neirasphere.ecosphere.domain.usecase.classify.ClassifyUseCaseInteract
 import com.neirasphere.ecosphere.domain.usecase.education.EducationUseCase
 import com.neirasphere.ecosphere.domain.usecase.education.EducationUseCaseInteract
 import com.neirasphere.ecosphere.domain.usecase.learn.LearnUseCase
@@ -39,4 +41,8 @@ abstract class AppModule {
     @Binds
     @Singleton
     abstract fun bindAppRepo(appUseCaseInteract: AppUseCaseInteract) : AppUseCase
+
+    @Binds
+    @Singleton
+    abstract fun bindClassifyRepo(classifyUseCaseInteract: ClassifyUseCaseInteract) : ClassifyUseCase
 }

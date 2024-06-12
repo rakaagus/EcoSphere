@@ -11,8 +11,8 @@ interface ApiClassifyService {
 
     @Multipart
     @POST("/result")
-    fun classifyTrash(
+    suspend fun classifyTrash(
         @Part file: MultipartBody.Part,
-    ) : Call<ClassifyResult>
+    ) : ClassifyResult
 
 }

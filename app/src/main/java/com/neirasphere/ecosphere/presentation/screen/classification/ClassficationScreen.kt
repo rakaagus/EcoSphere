@@ -178,7 +178,9 @@ fun BottomSheetContent(
         Row() {
             AsyncImage(
                 model = file, contentDescription = null,
-                modifier = Modifier.size(84.dp).clip(MaterialTheme.shapes.extraSmall),
+                modifier = Modifier
+                    .size(84.dp)
+                    .clip(MaterialTheme.shapes.extraSmall),
                 contentScale = ContentScale.Crop,
             )
             Column(
@@ -187,26 +189,22 @@ fun BottomSheetContent(
                     .padding(end = 12.dp)
             ) {
                 classificationResponse?.let {
+                    Text(text = "Jenis Sampah:",
+                        style = MaterialTheme.typography.labelSmall,
+                        modifier = Modifier.padding(start = 8.dp)
+                    )
                     Text(
-                        it.classCategory ?: "NA",
+                        text = it.classCategory ?: "NA",
                         style = MaterialTheme.typography.labelSmall,
                         modifier = Modifier.padding(start = 8.dp)
                     )
                 }
-//                Text("Sampah Anorganik",
-//                    style = MaterialTheme.typography.labelSmall,
-//                    modifier = Modifier.padding(start = 8.dp)
-//                )
-//                Text("Botol Plastik",
-//                    style = MaterialTheme.typography.bodySmall,
-//                    modifier = Modifier.padding(start = 8.dp)
-//                )
             }
             Spacer(
                 modifier = Modifier
                     .weight(1f)
             )
-            //tambah logic utk retake photo
+            //retake photo icon
             Image(
                 painterResource(id = R.drawable.icon_refresh),
                 contentDescription = null,
@@ -214,7 +212,7 @@ fun BottomSheetContent(
                     .size(28.dp)
                     .align(Alignment.CenterVertically)
                     .clickable {
-                        Log.d("BottomSheet", "Image clicked")
+                        Log.d("BottomSheet", "Retake image clicked")
                         onDismiss()
                         onRetakePhoto()
                     }
@@ -227,15 +225,11 @@ fun BottomSheetContent(
         )
         classificationResponse?.let {
             Text(
-                "Description: ${it.description ?: ""}",
+                text = it.description,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
             )
         }
-//        Text(text = "Sampah ini termasuk anorganik dan sering ditemui dalam lingkungan sehari-hari. Botol plastik merupakan wadah yang terbuat dari bahan sintetis seperti PET (Polyethylene Terephthalate) atau HDPE (High-Density Polyethylene), digunakan untuk berbagai macam minuman dan produk konsumen lainnya.",
-//            style = MaterialTheme.typography.bodySmall,
-//            modifier = Modifier.padding(top = 8.dp, bottom = 8.dp)
-//        )
         Text(
             "Wow! Sampah ini bisa di daur ulang loh✨",
             style = MaterialTheme.typography.labelSmall,

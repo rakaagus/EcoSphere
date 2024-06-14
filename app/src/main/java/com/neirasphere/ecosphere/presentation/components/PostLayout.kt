@@ -21,13 +21,16 @@ import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.BookmarkBorder
 import androidx.compose.material.icons.filled.Comment
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.OutlinedFlag
 import androidx.compose.material.icons.outlined.BookmarkBorder
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Flag
 import androidx.compose.material.icons.outlined.Upload
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -175,40 +178,46 @@ fun PostAndImage(post: com.neirasphere.ecosphere.domain.model.CommunityPost, mod
 
 @Composable
 fun PostActions(post: com.neirasphere.ecosphere.domain.model.CommunityPost, modifier: Modifier = Modifier) {
+    val isLiked = remember { mutableStateOf(false) }
+
+    fun toggleLike() {
+        isLiked.value = !isLiked.value
+    }
+
     Row(
         modifier = modifier
             .padding(top = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+        horizontalArrangement = Arrangement.Start
     ) {
-        PostActionWithText(Icons.Default.Comment, post.numberDisplay(post.comments))
-        Column(
-            modifier = modifier
-                .clickable(
-                    onClick = {
-                        post.like()
-                    }
-                )
-        ) {
-            PostActionWithText(
-                if (post.liked) Icons.Default.Favorite else Icons.Default.FavoriteBorder, post.numberDisplay(post.likes)
-            )
-        }
-        PostActionWithText(Icons.Default.BarChart, post.numberDisplay(post.views))
+        PostActionWithText(Icons.Default.Comment, post.numberDisplay(post.comments), {})
+        PostActionWithText(
+            if (isLiked.value) {
+                Icons.Filled.Favorite
+            } else {
+                Icons.Outlined.Favorite
+            },
+            post.numberDisplay(post.likes),
+            { toggleLike() }
+        )
+        PostActionWithText(Icons.Default.BarChart, post.numberDisplay(post.views), {})
     }
 }
 
 @Composable
-fun PostActionWithText(icon: ImageVector, content: String) {
-    Row {
-        Icon(
-            imageVector = icon,
-            contentDescription = "",
-            modifier = Modifier
-                .size(16.dp),
-            tint = if (icon == Icons.Default.Favorite) Color.Red else Color.Black
+fun PostActionWithText(icon: ImageVector, content: String, onClick: () -> Unit) {
+    Row (
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        IconButton(onClick = { onClick() }) {
+            Icon(
+                imageVector = icon,
+                contentDescription = "",
+                modifier = Modifier
+                    .size(16.dp),
+                tint = if (icon == Icons.Filled.Favorite) Color.Red else Color.Black
             )
-        Spacer(modifier = Modifier.size(4.dp))
+        }
         Text(
             text = content,
             style = MaterialTheme.typography.bodySmall.copy(

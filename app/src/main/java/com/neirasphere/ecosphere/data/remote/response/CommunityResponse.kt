@@ -2,51 +2,27 @@ package com.neirasphere.ecosphere.data.remote.response
 
 import com.google.gson.annotations.SerializedName
 
-data class CommunityResponse(
-
-    @field:SerializedName("data")
-    val data: Data,
+data class CommunityPostResponse(
 
     @field:SerializedName("message")
     val message: String
+
 )
 
-data class Community(
-
-    @field:SerializedName("nama_depan")
-    val namaDepan: Any,
-
-    @field:SerializedName("resetPasswordExpires")
-    val resetPasswordExpires: Any,
-
-    @field:SerializedName("role")
-    val role: String,
-
-    @field:SerializedName("img_profile")
-    val imgProfile: String,
-
-    @field:SerializedName("id_user")
-    val idUser: Int,
-
-    @field:SerializedName("resetPasswordOTP")
-    val resetPasswordOTP: Any,
-
-    @field:SerializedName("nama_belakang")
-    val namaBelakang: Any,
-
-    @field:SerializedName("email")
-    val email: String
+data class GetAllPostResponse(
+    val data: List<DataItem?>? = null,
+    val message: String? = null
 )
 
-data class CommunityData(
+data class PostImg(
+    val data: List<Int?>? = null,
+    val type: String? = null
+)
 
-    @field:SerializedName("success")
-    val success: Boolean,
-
-    @field:SerializedName("message")
-    val message: String,
-
-    @field:SerializedName("user")
-    val user: User,
-
+data class DataItem(
+    val postImg: PostImg? = null,
+    val post: String? = null,
+    val idUser: Int? = null,
+    val communityId: Int? = null,
+    val email: String? = null
 )

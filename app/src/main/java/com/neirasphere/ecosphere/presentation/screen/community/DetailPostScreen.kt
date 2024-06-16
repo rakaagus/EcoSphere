@@ -17,9 +17,11 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.BookmarkBorder
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.outlined.BorderColor
 import androidx.compose.material.icons.outlined.Comment
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Upload
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -28,6 +30,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -85,6 +89,12 @@ private fun DetailPostContent(
     modifier: Modifier = Modifier,
     navController: NavController
 ) {
+    val isLiked = remember { mutableStateOf(false) }
+
+    fun toggleLike() {
+        isLiked.value = !isLiked.value
+    }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -158,10 +168,26 @@ private fun DetailPostContent(
                     horizontal = 48.dp
                 )
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(imageVector = Icons.Outlined.Comment, contentDescription = null)
-            Icon(imageVector = Icons.Default.FavoriteBorder, contentDescription = null)
+            IconButton(
+                onClick = { toggleLike() }
+                ) {
+                if (isLiked.value) {
+                    Icon(
+                        imageVector = Icons.Filled.Favorite,
+                        contentDescription = "",
+                        tint = Color.Red
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.Outlined.Favorite,
+                        contentDescription = ""
+                    )
+                }
+            }
             Icon(imageVector = Icons.Default.BookmarkBorder, contentDescription = null)
             Icon(imageVector = Icons.Outlined.Upload, contentDescription = null)
         }

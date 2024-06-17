@@ -151,30 +151,9 @@ fun HomeContent(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-//        val allClassifyHistory by classifyViewModel.allClassifyHistory.collectAsState(
-//            initial = emptyList()
-//        )
         val organicCount by classifyViewModel.organicCount.collectAsState()
         val anOrganicCount by classifyViewModel.anOrganicCount.collectAsState()
         val totalCount by classifyViewModel.totalCount.collectAsState()
-
-//        var organicCount by remember { mutableStateOf(0) }
-//        var anOrganicCount by remember { mutableStateOf(0) }
-//        var totalCount by remember { mutableStateOf(0) }
-
-//        LaunchedEffect(allClassifyHistory) {
-//            organicCount = 0
-//            anOrganicCount = 0
-//            totalCount = 0
-//
-//            allClassifyHistory.forEach{ classifyHistory ->
-//                when (classifyHistory.title) {
-//                    "Paper", "Organic" -> organicCount++
-//                    else -> anOrganicCount++
-//                }
-//                totalCount++
-//            }
-//        }
 
         HomeAppBar(name = "Erlin", location = cityNameUser, moveToProfile = moveToProfile)
         SearchBar(query = "", onQueryChange = {}, modifier = Modifier.padding(horizontal = 16.dp))

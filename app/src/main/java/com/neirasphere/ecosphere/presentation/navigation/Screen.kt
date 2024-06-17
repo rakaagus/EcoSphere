@@ -42,6 +42,7 @@ sealed class Screen(val route: String) {
 
     object CameraScreen: Screen("camera_screen")
     object ClassifyScreen: Screen("classify_screen")
+    object ClassifyHistoryScreen: Screen("classify_history_screen")
     object ChangePasswordScreen: Screen("change_password_screen")
     object VerificationEmailScreen: Screen("verification_email_screen")
     object RecycleScreen: Screen("recycle_screen")

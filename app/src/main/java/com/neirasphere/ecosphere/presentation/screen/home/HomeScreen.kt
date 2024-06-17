@@ -34,6 +34,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
@@ -63,12 +64,14 @@ import com.neirasphere.ecosphere.presentation.common.UiState
 import com.neirasphere.ecosphere.presentation.components.HomeCategoriesLearnCard
 import com.neirasphere.ecosphere.presentation.components.SectionTextColumnMap
 import com.neirasphere.ecosphere.presentation.navigation.Screen
+import com.neirasphere.ecosphere.presentation.screen.classification.ClassifyHistoryViewModel
 import java.util.Locale
 
 @Composable
 fun HomeScreen(
     navController: NavController,
     viewModel: HomeViewModel = hiltViewModel(),
+    classifyViewModel: ClassifyHistoryViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
     var cityName by remember {
@@ -117,6 +120,7 @@ fun HomeScreen(
 
     HomeContent(
         viewModel = viewModel,
+        classifyViewModel = classifyViewModel,
         moveToProfile = {
             navController.navigate(Screen.ProfileScreen.route)
         },
@@ -125,18 +129,21 @@ fun HomeScreen(
         cameraState = cameraPositionState,
         mapStyle = properties,
         mapSetting = uiSettings,
+        navController = navController,
     )
 }
 
 @Composable
 fun HomeContent(
     viewModel: HomeViewModel,
+    classifyViewModel: ClassifyHistoryViewModel,
     cityNameUser: String,
     locationUser: LatLng?,
     cameraState: CameraPositionState,
     mapStyle: MapProperties,
     mapSetting: MapUiSettings,
     moveToProfile: () -> Unit,
+    navController: NavController,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -144,9 +151,34 @@ fun HomeContent(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
+//        val allClassifyHistory by classifyViewModel.allClassifyHistory.collectAsState(
+//            initial = emptyList()
+//        )
+        val organicCount by classifyViewModel.organicCount.collectAsState()
+        val anOrganicCount by classifyViewModel.anOrganicCount.collectAsState()
+        val totalCount by classifyViewModel.totalCount.collectAsState()
+
+//        var organicCount by remember { mutableStateOf(0) }
+//        var anOrganicCount by remember { mutableStateOf(0) }
+//        var totalCount by remember { mutableStateOf(0) }
+
+//        LaunchedEffect(allClassifyHistory) {
+//            organicCount = 0
+//            anOrganicCount = 0
+//            totalCount = 0
+//
+//            allClassifyHistory.forEach{ classifyHistory ->
+//                when (classifyHistory.title) {
+//                    "Paper", "Organic" -> organicCount++
+//                    else -> anOrganicCount++
+//                }
+//                totalCount++
+//            }
+//        }
+
         HomeAppBar(name = "Erlin", location = cityNameUser, moveToProfile = moveToProfile)
         SearchBar(query = "", onQueryChange = {}, modifier = Modifier.padding(horizontal = 16.dp))
-        HomeCardClassify("10", "20", "30")
+        HomeCardClassify(count = totalCount, inorganic = anOrganicCount, organic = organicCount, navController = navController)
         SectionTextColumn(title = R.string.section_one, modifier = Modifier.padding(top = 25.dp)) {
             viewModel.categoryLearn.collectAsState(initial = UiState.Loading).value.let { state ->
                 when (state) {
@@ -173,7 +205,8 @@ fun HomeContent(
             modifier = Modifier.padding(top = 10.dp, bottom = 20.dp)
         ) {
             GoogleMap(
-                modifier = modifier.fillMaxWidth()
+                modifier = modifier
+                    .fillMaxWidth()
                     .height(250.dp)
                     .clip(MaterialTheme.shapes.small),
                 cameraPositionState = cameraState,

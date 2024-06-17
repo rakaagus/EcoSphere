@@ -5,9 +5,12 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.neirasphere.ecosphere.data.local.DataSource
@@ -22,8 +25,11 @@ import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 @Composable
 fun CommunityScreen(
     navController: NavController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: CommunityViewModel = hiltViewModel()
 ) {
+    val state by viewModel.getPostsState.collectAsStateWithLifecycle()
+
     val tabs = listOf(
         MagicTabItem(
             title = "Populer"

@@ -10,7 +10,9 @@ data class CommunityPostResponse(
 )
 
 data class GetAllPostResponse(
+    @field:SerializedName("data")
     val data: List<DataItem?>? = null,
+    @field:SerializedName("message")
     val message: String? = null
 )
 
@@ -20,9 +22,14 @@ data class PostImg(
 )
 
 data class DataItem(
+    @field:SerializedName("post_img")
     val postImg: PostImg? = null,
+    @field:SerializedName("post")
     val post: String? = null,
+    @field:SerializedName("id_user")
     val idUser: Int? = null,
+    @field:SerializedName("communityId")
     val communityId: Int? = null,
+    @field:SerializedName("email")
     val email: String? = null
 )

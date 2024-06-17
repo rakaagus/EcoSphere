@@ -10,7 +10,8 @@ import javax.inject.Singleton
 
 @Singleton
 class RemoteDataSource @Inject constructor(
-    private val apiClassifyService: ApiClassifyService
+    private val apiClassifyService: ApiClassifyService,
+    private val apiService: ApiService
 ){
     suspend fun classifyTrash(file: File): ClassifyResult {
         val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
@@ -21,4 +22,6 @@ class RemoteDataSource @Inject constructor(
         )
         return apiClassifyService.classifyTrash(imageMultiPart)
     }
+
+    suspend fun getAllCommunityPosts(token: String) = apiService.getAllCommunityPosts(token)
 }

@@ -70,6 +70,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.firebase.auth)
     implementation(libs.androidx.runtime.livedata)
+    implementation(libs.androidx.lifecycle.runtime.compose.android)
     testImplementation(libs.junit)
 
     /*Permission*/

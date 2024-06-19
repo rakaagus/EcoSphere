@@ -13,8 +13,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.neirasphere.ecosphere.data.local.DataSource
-import com.neirasphere.ecosphere.domain.model.CommunityPost
+import com.neirasphere.ecosphere.domain.model.CommunityPostSQL
 import com.neirasphere.ecosphere.presentation.components.MagicTabItem
 import com.neirasphere.ecosphere.presentation.components.MagicTabLayout
 import com.neirasphere.ecosphere.presentation.components.PostLayout
@@ -35,7 +34,7 @@ fun CommunityScreen(
             title = "Populer"
         ) {
           TabItem(
-              item = DataSource.communityPostData().sortedByDescending { it.likes },
+              item = state.posts.sortedByDescending { it.likes },  //DataSource.communityPostData().sortedByDescending { it.likes },
               navController = navController
           )
         },
@@ -43,7 +42,7 @@ fun CommunityScreen(
             title = "Terbaru"
         ) {
             TabItem(
-                item = DataSource.communityPostData().sortedBy { it.timeDiff() },
+                item = state.posts.sortedByDescending { it.timeDiff() },  //DataSource.communityPostData().sortedBy { it.timeDiff() },
                 navController = navController
             )
         }
@@ -57,7 +56,7 @@ fun CommunityScreen(
 
 @Composable
 fun TabItem(
-    item: List<CommunityPost> = DataSource.communityPostData(),
+    item: List<CommunityPostSQL>,
     navController: NavController,
     modifier: Modifier = Modifier
 ) {

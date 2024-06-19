@@ -41,10 +41,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 
 @Composable
 fun PostLayout(
-    post: com.neirasphere.ecosphere.domain.model.CommunityPost,
+    post: com.neirasphere.ecosphere.domain.model.CommunityPostSQL,
     navController: NavController,
     onItemClicked: (Int) -> Unit
 ) {
@@ -118,7 +119,7 @@ fun PostLayout(
 
 @Composable
 fun PostAvatarAndInfo(
-    post: com.neirasphere.ecosphere.domain.model.CommunityPost,
+    post: com.neirasphere.ecosphere.domain.model.CommunityPostSQL,
     modifier: Modifier = Modifier,
     navController: NavController
 ) {
@@ -153,7 +154,7 @@ fun PostAvatarAndInfo(
 }
 
 @Composable
-fun PostAndImage(post: com.neirasphere.ecosphere.domain.model.CommunityPost, modifier: Modifier = Modifier) {
+fun PostAndImage(post: com.neirasphere.ecosphere.domain.model.CommunityPostSQL, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         Text(
             text = post.text,
@@ -164,7 +165,7 @@ fun PostAndImage(post: com.neirasphere.ecosphere.domain.model.CommunityPost, mod
         if (post.image != null) {
             Spacer(modifier = Modifier.size(10.dp))
             Image(
-                painter = painterResource(post.image),
+                painter = rememberAsyncImagePainter(model = post.image),
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(300.dp)
@@ -177,7 +178,7 @@ fun PostAndImage(post: com.neirasphere.ecosphere.domain.model.CommunityPost, mod
 }
 
 @Composable
-fun PostActions(post: com.neirasphere.ecosphere.domain.model.CommunityPost, modifier: Modifier = Modifier) {
+fun PostActions(post: com.neirasphere.ecosphere.domain.model.CommunityPostSQL, modifier: Modifier = Modifier) {
     val isLiked = remember { mutableStateOf(false) }
 
     fun toggleLike() {

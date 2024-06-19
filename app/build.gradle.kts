@@ -124,6 +124,9 @@ dependencies {
     implementation(libs.androidx.camera2.livecyle)
     implementation(libs.androidx.camera2.view)
 
+    /*Coil*/
+    implementation(libs.io.coil.kt)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

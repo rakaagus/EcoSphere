@@ -1,6 +1,6 @@
 package com.neirasphere.ecosphere.presentation.screen.community
 
-import com.neirasphere.ecosphere.data.remote.response.DataItem
+import com.neirasphere.ecosphere.domain.model.CommunityPostSQL
 
 data class PostState(
     val content: String = "",
@@ -11,7 +11,7 @@ data class PostState(
 )
 
 data class GetPostsState(
-    val posts: List<DataItem?>? = emptyList(),
+    val posts: List<CommunityPostSQL> = emptyList(),
     val isLoading: Boolean = false,
     val message: String? = null,
     val isError: String? = null

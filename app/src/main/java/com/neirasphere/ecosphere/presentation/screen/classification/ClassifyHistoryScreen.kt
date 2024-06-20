@@ -2,7 +2,6 @@ package com.neirasphere.ecosphere.presentation.screen.classification
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,13 +14,8 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,7 +26,6 @@ import coil.compose.AsyncImage
 import com.neirasphere.ecosphere.data.local.entities.ClassifyHistory
 import com.neirasphere.ecosphere.domain.repository.AllClassifyHistory
 import com.neirasphere.ecosphere.ui.theme.NeutralColorWhite
-import java.io.File
 
 /*
 "battery", "glass", "metal", "organic", "paper", "plastic"
@@ -42,28 +35,25 @@ anorganik: "battery", "glass", "metal", "plastic"
 
 @Composable
 fun ClassifyHistoryScreen (
-    file: File?,
     viewModel: ClassifyHistoryViewModel = hiltViewModel(),
 ){
     val allClassifyHistory by viewModel.allClassifyHistory.collectAsState(
         initial = emptyList()
     )
-
     Column(
         modifier = Modifier
-            .padding(12.dp)
-            .fillMaxHeight()
-    ){
+            .padding(8.dp)
+            .fillMaxWidth()
+    ) {
         ClassifyHistoryContent(
-            file = file,
-            allClassifyHistory = allClassifyHistory,
+            allClassifyHistory = allClassifyHistory
         )
     }
 }
 
+
 @Composable
 fun ClassifyHistoryContent(
-    file: File?,
     allClassifyHistory: AllClassifyHistory,
 ) {
     LazyColumn(
@@ -75,7 +65,6 @@ fun ClassifyHistoryContent(
             items = allClassifyHistory
         ) { classifyHistory ->
             ClassifyHistoryCard(
-                file = file,
                 classifyHistory = classifyHistory
             )
         }
@@ -84,7 +73,6 @@ fun ClassifyHistoryContent(
 
 @Composable
 fun ClassifyHistoryCard(
-    file: File?,
     classifyHistory: ClassifyHistory,
 ) {
     Card(
@@ -102,20 +90,16 @@ fun ClassifyHistoryCard(
             verticalAlignment = Alignment.CenterVertically,
         ){
             AsyncImage(
-                model = file,
+                model = classifyHistory.image,
                 contentDescription = null,
                 modifier = Modifier
                     .size(50.dp)
                     .clip(MaterialTheme.shapes.small),
                 contentScale = ContentScale.Crop,
             )
-//            Image(
-//                painter = painterResource(id = classifyHistory.image),
-//                contentDescription = null,
-//                modifier = Modifier.size(50.dp)
-//            )
             Text(
                 text = classifyHistory.title,
+                modifier = Modifier.padding(start = 8.dp),
                 style = MaterialTheme.typography.labelMedium,
             )
         }

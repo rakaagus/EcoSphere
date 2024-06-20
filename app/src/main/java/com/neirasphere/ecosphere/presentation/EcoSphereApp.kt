@@ -447,10 +447,7 @@ fun EcoSphereApp(
                 )
             }
             composable(Screen.ClassifyHistoryScreen.route){
-                val state = navController.previousBackStackEntry?.savedStateHandle?.get<File>(
-                    "file"
-                )
-                ClassifyHistoryScreen(file = state)
+                ClassifyHistoryScreen()
             }
 
             /*Profile Route*/

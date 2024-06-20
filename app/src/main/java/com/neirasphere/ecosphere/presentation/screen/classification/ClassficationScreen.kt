@@ -59,7 +59,6 @@ fun ClassificationScreen(
     var classificationResponse by remember { mutableStateOf<ClassifyResult?>(null) }
 
     val state = viewModel.state.collectAsState().value
-//    val success = state.success
     val success = state.success
     val error = state.error
     val result = state.result
@@ -82,7 +81,6 @@ fun ClassificationScreen(
             historyViewModel.insertHistory(classifyHistory)
             isBottomSheetVisible = true
             shimmerLoading = false
-            Log.d("ClassificationScreen", "Inside: $isBottomSheetVisible")
         }
     }
     Log.d("ClassificationScreen", "Outside: $isBottomSheetVisible, classificationResponse: $classificationResponse")
@@ -253,6 +251,5 @@ fun BottomSheetContent(
                     }
                 }
             })
-
     }
 }

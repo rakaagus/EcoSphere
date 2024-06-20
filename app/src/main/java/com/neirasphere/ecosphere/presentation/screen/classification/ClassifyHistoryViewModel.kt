@@ -9,6 +9,7 @@ import com.neirasphere.ecosphere.data.local.entities.ClassifyHistory
 import com.neirasphere.ecosphere.domain.repository.ClassifyHistoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -34,6 +35,13 @@ class ClassifyHistoryViewModel @Inject constructor(
     private val _totalCount = MutableStateFlow(0)
     val totalCount = _totalCount.asStateFlow()
 
+    private val _requestStoragePermissionEvent = MutableStateFlow(false)
+    val requestStoragePermissionEvent: StateFlow<Boolean> = _requestStoragePermissionEvent
+
+    fun requestStoragePermission() {
+        _requestStoragePermissionEvent.value = true
+    }
+
     init {
         viewModelScope.launch {
             repo.getAllClassifyHistory().collect { classifyHistoryList ->
@@ -42,7 +50,6 @@ class ClassifyHistoryViewModel @Inject constructor(
             }
         }
     }
-
     fun getClassifyHistoryById(id: Int) = viewModelScope.launch {
         classifyHistory = repo.getClassifyHistoryById(id = id)
     }

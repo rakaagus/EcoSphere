@@ -99,7 +99,8 @@ data class CommunityPostSQL(
 
     fun timeDiff(): Long {
         val now = System.currentTimeMillis()
-        val postCreatedAt = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse(this.createdAt)
+        val processedCreatedAt = this.createdAt.replace("T", " ").replace("Z", "")
+        val postCreatedAt = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse(processedCreatedAt)
         val createdAtMills = postCreatedAt.time
         val differenceMillis = now - createdAtMills
 

@@ -1,7 +1,9 @@
 package com.neirasphere.ecosphere.data.remote
 
 import com.neirasphere.ecosphere.data.remote.response.CommunityPostResponse
+import com.neirasphere.ecosphere.data.remote.response.GetACommentResponse
 import com.neirasphere.ecosphere.data.remote.response.GetAllPostResponse
+import com.neirasphere.ecosphere.data.remote.response.GetPostLikesResponse
 import com.neirasphere.ecosphere.data.remote.response.LoginResponse
 import okhttp3.MultipartBody
 import retrofit2.http.Field
@@ -11,6 +13,7 @@ import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Path
 
 interface ApiService {
 
@@ -36,9 +39,17 @@ interface ApiService {
         @Field("post") post: String
     ): CommunityPostResponse
 
-    @GET("community/posts")
-    suspend fun getAllCommunityPosts(
-        @Header("Authorization") token: String
-    ): GetAllPostResponse
+    @GET("community/")
+    suspend fun getAllCommunityPosts(): GetAllPostResponse
+
+    @GET("community/likes/{id}")
+    suspend fun getCommunityLikes(
+        @Path("id") id: Int
+    ): GetPostLikesResponse
+
+    @GET("community/comments/{id}")
+    suspend fun getAComment(
+        @Path("id") id: Int
+    ): GetACommentResponse
 
 }

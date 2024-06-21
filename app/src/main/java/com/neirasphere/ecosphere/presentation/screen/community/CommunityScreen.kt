@@ -1,5 +1,6 @@
 package com.neirasphere.ecosphere.presentation.screen.community
 
+import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -28,6 +29,7 @@ fun CommunityScreen(
     viewModel: CommunityViewModel = hiltViewModel()
 ) {
     val state by viewModel.getPostsState.collectAsStateWithLifecycle()
+    Log.d("cek posts", "${state.posts}")
 
     val tabs = listOf(
         MagicTabItem(

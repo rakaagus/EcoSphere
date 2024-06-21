@@ -5,6 +5,8 @@ import com.neirasphere.ecosphere.data.local.DataSource
 import com.neirasphere.ecosphere.data.preferences.AuthDataStore
 import com.neirasphere.ecosphere.data.remote.ApiService
 import com.neirasphere.ecosphere.data.remote.RemoteDataSource
+import com.neirasphere.ecosphere.data.remote.response.CommentItem
+import com.neirasphere.ecosphere.data.remote.response.LikeItem
 import com.neirasphere.ecosphere.domain.model.CommunityPost
 import com.neirasphere.ecosphere.domain.model.CommunityPostSQL
 import com.neirasphere.ecosphere.domain.repository.CommunityRepository
@@ -15,7 +17,6 @@ import kotlinx.coroutines.flow.flowOn
 import okhttp3.MultipartBody
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.io.encoding.ExperimentalEncodingApi
 
 @Singleton
 class CommunityRepositoryImpl @Inject constructor(
@@ -37,41 +38,81 @@ class CommunityRepositoryImpl @Inject constructor(
         }
     }
 
-    @OptIn(ExperimentalEncodingApi::class)
+    override fun getCommunityLikes(id: Int): Flow<CommunityResult<MutableList<LikeItem>>> = flow {
+        emit(CommunityResult.Loading())
+        try {
+            val likeDataStore = mutableListOf<LikeItem>()
+            val response = remoteDataSource.getCommunityLikes(id)
+            val result = response.data
+            val success = response.success
+            if (success == true) {
+                result?.forEach {
+                    if (it != null) {
+                        likeDataStore.add(it)
+                    }
+                }
+            }
+            emit(CommunityResult.Success(likeDataStore))
+        } catch (e: Exception) {
+            emit(CommunityResult.Error(e.message.toString()))
+        }
+    }.flowOn(Dispatchers.IO)
+
     override fun getAllCommunityPost(): Flow<CommunityResult<MutableList<CommunityPostSQL>>> = flow {
         emit(CommunityResult.Loading())
         try {
             val postDataStore = mutableListOf<CommunityPostSQL>()
-            val response = remoteDataSource.getAllCommunityPosts(token)
+            val response = remoteDataSource.getAllCommunityPosts()
             val result = response.data
-            if (result != null) {
-                result.forEach {
-                    val postImg = it?.postImg
-                    val createdAt = it?.createdAt
-                    val post = it?.post
-                    val idUser = it?.idUser
-                    val communityId = it?.communityId
-                    val email = it?.email
-                    val imgProfile = it?.imgProfile
-                    val resultData = CommunityPostSQL(
-                        id = communityId!!,
-                        user = DataSource.communityPostUser()[0],
-                        text = post!!,
-                        image = postImg!!,
-                        comments = 1000,
-                        likes = 2000,
-                        liked = false,
-                        views = 2000,
-                        createdAt = createdAt!!
-                    )
-                    postDataStore.add(resultData)
-                }
+            result?.forEach {
+                val postImg = it?.postImg
+                val createdAt = it?.createdAt
+                val post = it?.post
+                val idUser = it?.idUser
+                val communityId = it?.communityId
+                val email = it?.email
+                val imgProfile = it?.imgProfile
+                val likeResponse = remoteDataSource.getCommunityLikes(communityId!!)
+                val likeResult = likeResponse.data
+                val likes = likeResult?.size ?: 0
+                val resultData = CommunityPostSQL(
+                    id = communityId,
+                    user = DataSource.communityPostUser()[0],
+                    text = post!!,
+                    image = postImg,
+                    comments = 1000,
+                    likes = likes,
+                    liked = false,
+                    views = 2000,
+                    createdAt = createdAt!!
+                )
+                postDataStore.add(resultData)
             }
             emit(CommunityResult.Success(postDataStore))
         } catch (e: Exception) {
             emit(CommunityResult.Error(e.message.toString()))
         }
     }.flowOn(Dispatchers.IO)
+
+    override fun getAComment(id: Int): Flow<CommunityResult<MutableList<CommentItem>>> = flow {
+        emit(CommunityResult.Loading())
+        try {
+            val commentDataStore = mutableListOf<CommentItem>()
+            val response = remoteDataSource.getAComment(id)
+            val result = response.data
+            val success = response.success
+            if (success == true) {
+                result?.forEach {
+                    if (it != null) {
+                        commentDataStore.add(it)
+                    }
+                }
+            }
+            emit(CommunityResult.Success(commentDataStore))
+        } catch (e: Exception) {
+            emit(CommunityResult.Error(e.message.toString()))
+        }
+    }
 
     override fun postWithImage(post: String, postImg: MultipartBody.Part) = flow {
         emit(CommunityResult.Loading())

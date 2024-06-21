@@ -30,6 +30,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -41,9 +42,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.neirasphere.ecosphere.R
-import com.neirasphere.ecosphere.data.local.DataSource
 import com.neirasphere.ecosphere.presentation.components.CenterTopAppBar
 import com.neirasphere.ecosphere.presentation.components.PostAvatarAndInfo
 import com.neirasphere.ecosphere.presentation.navigation.Screen
@@ -54,9 +57,12 @@ import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 fun DetailPostScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
-    postId: Int?
+    postId: Int?,
+    viewModel: CommunityViewModel = hiltViewModel()
 ) {
-    val post = DataSource.communityPostData().filter { post ->
+    val state by viewModel.getPostsState.collectAsStateWithLifecycle()
+    
+    val post = state.posts.filter { post ->
         post.id == postId
     }
 
@@ -85,7 +91,7 @@ fun DetailPostScreen(
 
 @Composable
 private fun DetailPostContent(
-    post: List<com.neirasphere.ecosphere.domain.model.CommunityPost>,
+    post: List<com.neirasphere.ecosphere.domain.model.CommunityPostSQL>,
     modifier: Modifier = Modifier,
     navController: NavController
 ) {
@@ -113,7 +119,7 @@ private fun DetailPostContent(
             if (post[0].image != null) {
                 Spacer(modifier = Modifier.size(16.dp))
                 Image(
-                    painter = painterResource(post[0].image!!),
+                    painter = rememberAsyncImagePainter(model = post[0].image),
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(350.dp)

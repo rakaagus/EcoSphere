@@ -85,7 +85,7 @@ data class CommunityPostSQL(
     val id: Int,
     val user: com.neirasphere.ecosphere.domain.model.User,
     val text: String,
-    val image: String,
+    val image: String? = null,
     val comments: Int,
     var likes: Int,
     var liked: Boolean,

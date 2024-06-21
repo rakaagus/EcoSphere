@@ -23,5 +23,9 @@ class RemoteDataSource @Inject constructor(
         return apiClassifyService.classifyTrash(imageMultiPart)
     }
 
-    suspend fun getAllCommunityPosts(token: String) = apiService.getAllCommunityPosts(token)
+    suspend fun getAllCommunityPosts() = apiService.getAllCommunityPosts()
+
+    suspend fun getCommunityLikes(id: Int) = apiService.getCommunityLikes(id)
+
+    suspend fun getAComment(id: Int) = apiService.getAComment(id)
 }

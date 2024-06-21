@@ -16,6 +16,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import com.neirasphere.ecosphere.data.Result
 import com.neirasphere.ecosphere.data.remote.ApiService
+import com.neirasphere.ecosphere.data.remote.response.RegisterResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
@@ -34,18 +35,40 @@ class AppRepositoryImpl @Inject constructor(
             val response = apiService.login(email, password)
             val data = response.data
             val success = data.success
-            if(success){
+            if (success) {
                 authDataStore.saveToken(data.token)
                 authDataStore.setLoginStatus(true)
                 Log.e("AppRepository", "data Login ${authDataStore.isLoggedIn()}")
                 Log.e("AppRepository", "data Login ${authDataStore.getToken()}")
             }
             emit(ResultDefault.Success(response))
-        } catch (e: Exception){
+        } catch (e: Exception) {
             Log.d("AppRepository", "loginUser: ${e.message.toString()}")
             emit(ResultDefault.Error(e.message.toString()))
         }
     }.flowOn(Dispatchers.IO)
+
+    override fun register(
+        firstName: String,
+        lastName: String,
+        email: String,
+        password: String
+    ): Flow<ResultDefault<RegisterResponse>> = flow {
+        emit(ResultDefault.Loading)
+        try {
+            val response = apiService.register(firstName, lastName, email, password)
+            val data = response.data
+            if(response.success){
+                emit(ResultDefault.Success(response))
+            }else {
+                emit(ResultDefault.Error("Error"))
+            }
+        } catch (e: Exception) {
+            Log.d("AppRepository", "registerUser: ${e.message.toString()}")
+            emit(ResultDefault.Error(e.message.toString()))
+        }
+    }.flowOn(Dispatchers.IO)
+
 
     override fun getStatusOnboardingUser(): Flow<Boolean> = appDataStore.getStatusOnboardingUser()
 

@@ -10,6 +10,7 @@ import com.neirasphere.ecosphere.ResultDefault
 import com.neirasphere.ecosphere.data.Result
 import com.neirasphere.ecosphere.domain.repository.AppRepository
 import com.neirasphere.ecosphere.presentation.screen.auth.common.LoginFirebaseState
+import com.neirasphere.ecosphere.presentation.screen.auth.register.RegisterState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
     private val repository: AppRepository
-): ViewModel() {
+) : ViewModel() {
 
     private val _stateGoogle = mutableStateOf(LoginFirebaseState())
     val stateGoogle: State<LoginFirebaseState> = _stateGoogle
@@ -31,16 +32,18 @@ class LoginViewModel @Inject constructor(
     private val _loginState = MutableStateFlow(LoginState())
     val loginState = _loginState.asStateFlow()
 
-    fun loginWithGoogle(credential: AuthCredential){
+    fun loginWithGoogle(credential: AuthCredential) {
         viewModelScope.launch {
-            repository.loginWithGoogle(credential).collect{result ->
-                when(result){
+            repository.loginWithGoogle(credential).collect { result ->
+                when (result) {
                     is Result.Loading -> {
                         _stateGoogle.value = LoginFirebaseState(loading = true)
                     }
+
                     is Result.Success -> {
                         _stateGoogle.value = LoginFirebaseState(success = result.data)
                     }
+
                     is Result.Error -> {
                         _stateGoogle.value = LoginFirebaseState(error = result.message)
                     }
@@ -49,16 +52,18 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    fun loginWithFacebook(credential: AccessToken){
+    fun loginWithFacebook(credential: AccessToken) {
         viewModelScope.launch {
-            repository.loginWithFacebook(credential).collect{result ->
-                when(result){
+            repository.loginWithFacebook(credential).collect { result ->
+                when (result) {
                     is Result.Loading -> {
                         _stateGoogle.value = LoginFirebaseState(loading = true)
                     }
+
                     is Result.Success -> {
                         _stateGoogle.value = LoginFirebaseState(success = result.data)
                     }
+
                     is Result.Error -> {
                         _stateGoogle.value = LoginFirebaseState(error = result.message)
                     }
@@ -68,8 +73,8 @@ class LoginViewModel @Inject constructor(
     }
 
     fun login(email: String, password: String) = viewModelScope.launch {
-        repository.login(email, password).collect{ result ->
-            when(result){
+        repository.login(email, password).collect { result ->
+            when (result) {
                 is ResultDefault.Loading -> {
                     _loginState.update {
                         it.copy(
@@ -77,6 +82,7 @@ class LoginViewModel @Inject constructor(
                         )
                     }
                 }
+
                 is ResultDefault.Success -> {
                     _loginState.update {
                         it.copy(
@@ -85,15 +91,24 @@ class LoginViewModel @Inject constructor(
                         )
                     }
                 }
+
                 is ResultDefault.Error -> {
                     _loginState.update {
                         it.copy(
                             isError = result.error,
-                            isConnectLoading = true
+                            isConnectLoading = true,
+                            isSuccess = false,
+                            isLoading = false
                         )
                     }
                 }
             }
+        }
+    }
+
+    fun resetState() {
+        _loginState.update {
+            LoginState()
         }
     }
 

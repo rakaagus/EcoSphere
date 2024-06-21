@@ -36,7 +36,7 @@ object NetworkModule {
     @Singleton
     fun provideApiService(client: OkHttpClient) : ApiService {
         return Retrofit.Builder()
-            .baseUrl("https://ecosphere-api-dot-project-180324-b-03.et.r.appspot.com/api/")
+            .baseUrl("http://localhost:5000/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

@@ -1,5 +1,6 @@
 package com.neirasphere.ecosphere.data.repository
 
+import android.util.Log
 import com.neirasphere.ecosphere.data.CommunityResult
 import com.neirasphere.ecosphere.data.local.DataSource
 import com.neirasphere.ecosphere.data.preferences.AuthDataStore
@@ -72,11 +73,18 @@ class CommunityRepositoryImpl @Inject constructor(
                 val communityId = it?.communityId
                 val email = it?.email
                 val imgProfile = it?.imgProfile
-                val likeResponse = remoteDataSource.getCommunityLikes(communityId!!)
-                val likeResult = likeResponse.data
-                val likes = likeResult?.size ?: 0
+                var likes = 0
+                try {
+                    val likeResponse = remoteDataSource.getCommunityLikes(communityId!!)
+                    val likeResult = likeResponse.data
+                    likes = likeResult?.size ?: 0
+                } catch (e: Exception) {
+                    if (e.message!!.contains("404")) {
+                        likes = 0
+                    }
+                }
                 val resultData = CommunityPostSQL(
-                    id = communityId,
+                    id = communityId!!,
                     user = DataSource.communityPostUser()[0],
                     text = post!!,
                     image = postImg,
@@ -87,9 +95,12 @@ class CommunityRepositoryImpl @Inject constructor(
                     createdAt = createdAt!!
                 )
                 postDataStore.add(resultData)
+                Log.d("cek repo impl", "getAllCommunityPost: $postDataStore")
             }
+            Log.d("cek before emit", "getAllCommunityPost: $postDataStore")
             emit(CommunityResult.Success(postDataStore))
         } catch (e: Exception) {
+            Log.d("cek error", "getAllCommunityPost: ${e.message}")
             emit(CommunityResult.Error(e.message.toString()))
         }
     }.flowOn(Dispatchers.IO)

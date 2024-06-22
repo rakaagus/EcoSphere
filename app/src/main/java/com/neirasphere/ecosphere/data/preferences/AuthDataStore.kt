@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.neirasphere.ecosphere.domain.model.UserData
 import com.neirasphere.ecosphere.domain.preferences.AuthPreferences
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -19,17 +20,42 @@ class AuthDataStore @Inject constructor(
 ) : AuthPreferences{
     override val statusLogin = booleanPreferencesKey(STATUS_LOGIN_KEY)
     override val tokenUser = stringPreferencesKey(TOKEN_USER_KEY)
-    override val userName = stringPreferencesKey(USER_NAME_KEY)
+    override val firstName = stringPreferencesKey(FIRST_NAME_KEY)
+    override val lastName = stringPreferencesKey(LAST_NAME_KEY)
+    override val email = stringPreferencesKey(EMAIL_USER_KEY)
+    override val avatar = stringPreferencesKey(AVATAR_USER_KEY)
 
     override fun isLoggedIn(): Flow<Boolean> = authDataStore.data.map {
         it[statusLogin] ?: false
     }
-    override fun getToken(): Flow<String?> = authDataStore.data.map {
-        it[tokenUser]
+
+    override fun getSession(): Flow<UserData> {
+        return authDataStore.data.map {
+            UserData(
+                token = it[tokenUser] ?: "",
+                firstName = it[firstName] ?: "",
+                lastName = it[lastName] ?: "",
+                email = it[email] ?: "",
+                avatar = it[avatar] ?: ""
+            )
+        }
     }
 
-    override fun getUserName(): Flow<String?> = authDataStore.data.map {
-        it[userName]
+    override suspend fun saveSessionUser(user: UserData) {
+        authDataStore.edit {
+            it[tokenUser] = user.token ?: ""
+            it[lastName] = user.lastName ?: ""
+            it[firstName] = user.firstName ?: ""
+            it[email] = user.email ?: ""
+            it[avatar] = user.avatar ?: ""
+        }
+    }
+
+    override suspend fun clearSessionUser() {
+        authDataStore.edit {
+            it.clear()
+        }
+        setLoginStatus(false)
     }
 
     override suspend fun setLoginStatus(isLogin: Boolean) {
@@ -38,33 +64,12 @@ class AuthDataStore @Inject constructor(
         }
     }
 
-    override suspend fun saveToken(token: String) {
-        authDataStore.edit {
-            it[tokenUser] = token
-        }
-    }
-
-    override suspend fun saveUserName(userName: String) {
-        authDataStore.edit {
-            it[this.userName] = userName
-        }
-    }
-
-    override suspend fun deleteToken() {
-        authDataStore.edit {
-            it.remove(tokenUser)
-        }
-    }
-
-    override suspend fun deleteUserName() {
-        authDataStore.edit {
-            it.remove(userName)
-        }
-    }
-
     companion object{
         private const val STATUS_LOGIN_KEY = "status_login_key"
         private const val TOKEN_USER_KEY = "token_user_key"
-        private const val USER_NAME_KEY = "user_name_key"
+        private const val FIRST_NAME_KEY = "first_name_key"
+        private const val LAST_NAME_KEY = "last_name_key"
+        private const val EMAIL_USER_KEY = "email_user_key"
+        private const val AVATAR_USER_KEY = "avatar_user_key"
     }
 }

@@ -19,6 +19,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,8 +27,8 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
@@ -36,6 +37,7 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.neirasphere.ecosphere.R
+import com.neirasphere.ecosphere.domain.model.UserData
 import com.neirasphere.ecosphere.presentation.components.ButtonProfile
 import com.neirasphere.ecosphere.presentation.components.HeaderProfile
 import com.neirasphere.ecosphere.presentation.components.SectionProfile
@@ -47,11 +49,15 @@ import java.util.Locale
 @Composable
 fun ProfileScreen(
     navController: NavController,
+    viewModel: ProfileViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
     var cityName by remember {
         mutableStateOf("Fetching location...")
     }
+
+    viewModel.getUser()
+    val user by viewModel.user.collectAsState()
 
     val context = LocalContext.current
 
@@ -67,6 +73,7 @@ fun ProfileScreen(
             .verticalScroll(rememberScrollState())
     ) {
         ProfileContent(
+            userData = user.user,
             moveToEditProfile = {
                 navController.navigate(Screen.EditProfileScreen.route)
             },
@@ -86,6 +93,7 @@ fun ProfileScreen(
 
 @Composable
 fun ProfileContent(
+    userData: UserData?,
     moveToEditProfile: () -> Unit,
     moveToSecurity: () -> Unit,
     moveToNotifSetting: () -> Unit,
@@ -98,8 +106,8 @@ fun ProfileContent(
     modifier: Modifier = Modifier
 ) {
     HeaderProfile(
-        image = R.drawable.example_image_user,
-        name = "Erlin",
+        avatarUser = userData?.avatar,
+        name = "${userData?.firstName}",
         location = locationUser
     )
     SectionTextColumnProfile(title = R.string.header_title_1) {

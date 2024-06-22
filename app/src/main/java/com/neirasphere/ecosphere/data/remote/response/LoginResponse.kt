@@ -29,7 +29,7 @@ data class LoginData(
 data class User(
 
 	@field:SerializedName("nama_depan")
-	val namaDepan: Any,
+	val namaDepan: String,
 
 	@field:SerializedName("resetPasswordExpires")
 	val resetPasswordExpires: Any,
@@ -38,7 +38,7 @@ data class User(
 	val role: String,
 
 	@field:SerializedName("img_profile")
-	val imgProfile: Any,
+	val imgProfile: String? = null,
 
 	@field:SerializedName("id_user")
 	val idUser: Int,
@@ -47,7 +47,7 @@ data class User(
 	val resetPasswordOTP: Any,
 
 	@field:SerializedName("nama_belakang")
-	val namaBelakang: Any,
+	val namaBelakang: String,
 
 	@field:SerializedName("email")
 	val email: String

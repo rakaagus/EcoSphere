@@ -17,7 +17,7 @@ interface ApiService {
     ): LoginResponse
 
     @FormUrlEncoded
-    @POST
+    @POST("user")
     suspend fun register(
         @Field("nama_depan") nama_depan: String,
         @Field("nama_belakang") nama_belakang: String,

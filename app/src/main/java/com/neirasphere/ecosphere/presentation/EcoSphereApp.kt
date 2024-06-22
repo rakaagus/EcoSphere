@@ -278,10 +278,28 @@ fun EcoSphereApp(
 
             /*Auth Route*/
             composable(Screen.LoginScreen.route) {
-                LoginScreen(navController = navController)
+                LoginScreen(
+                    moveToRegister = {
+                        navController.navigate(Screen.RegisterScreen.route)
+                    },
+                    moveToHome = {
+                        navController.navigate(Screen.HomeScreen.route) {
+                            popUpTo(Screen.LoginScreen.route) {
+                                inclusive = true
+                            }
+                        }
+                    }
+                )
             }
             composable(Screen.RegisterScreen.route) {
-                RegisterScreen(navController = navController)
+                RegisterScreen(
+                    moveToLogin = {
+                        navController.navigate(Screen.LoginScreen.route) {
+                            popUpTo(Screen.RegisterScreen.route) {
+                                inclusive = true
+                            }
+                        }
+                    })
             }
             composable(Screen.VerificationEmailScreen.route) {
                 VerificationEmailScreen(navController = navController)
@@ -289,7 +307,11 @@ fun EcoSphereApp(
 
             /*Home Screen Route*/
             composable(Screen.HomeScreen.route) {
-                HomeScreen(navController = navController)
+                HomeScreen(
+                    moveToProfile = {
+                        navController.navigate(Screen.ProfileScreen.route)
+                    }
+                )
             }
 
             /*Education Route*/
@@ -480,11 +502,11 @@ fun EcoSphereApp(
                     moveToNotifSetting = {},
                     moveToReport = {},
                     moveToLogin = {
-                        navController.navigate(Screen.LoginScreen.route){
-                            popUpTo(Screen.ProfileScreen.route){
+                        navController.navigate(Screen.LoginScreen.route) {
+                            popUpTo(Screen.ProfileScreen.route) {
                                 inclusive = true
                             }
-                            popUpTo(Screen.HomeScreen.route){
+                            popUpTo(Screen.HomeScreen.route) {
                                 inclusive = true
                             }
                         }
@@ -493,8 +515,8 @@ fun EcoSphereApp(
             }
             composable(Screen.EditProfileScreen.route) {
                 EditProfileScreen(moveToProfile = {
-                    navController.navigate(Screen.ProfileScreen.route){
-                        popUpTo(Screen.EditProfileScreen.route){
+                    navController.navigate(Screen.ProfileScreen.route) {
+                        popUpTo(Screen.EditProfileScreen.route) {
                             inclusive = true
                         }
                     }
@@ -503,8 +525,8 @@ fun EcoSphereApp(
 
             composable(Screen.ChangePasswordScreen.route) {
                 ChangePasswordScreen(moveToProfile = {
-                    navController.navigate(Screen.ProfileScreen.route){
-                        popUpTo(Screen.ChangePasswordScreen.route){
+                    navController.navigate(Screen.ProfileScreen.route) {
+                        popUpTo(Screen.ChangePasswordScreen.route) {
                             inclusive = true
                         }
                     }

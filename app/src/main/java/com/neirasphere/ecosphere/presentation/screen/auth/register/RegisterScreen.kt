@@ -73,7 +73,7 @@ import com.neirasphere.ecosphere.utils.TypeKeyboard
 
 @Composable
 fun RegisterScreen(
-    navController: NavHostController,
+    moveToLogin: () -> Unit,
     viewModel: RegisterViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
@@ -106,13 +106,7 @@ fun RegisterScreen(
     }
 
         if(isSuccess){
-        DialogLoginSuccess(onDismissRequest = { isSuccessDialogShow = false }, moveToLogin = {
-            navController.navigate(Screen.LoginScreen.route){
-                popUpTo(Screen.RegisterScreen.route){
-                    inclusive = true
-                }
-            }
-        })
+        DialogLoginSuccess(onDismissRequest = { isSuccessDialogShow = false }, moveToLogin = moveToLogin)
     }
 
     @Suppress("DEPRECATION")
@@ -185,13 +179,7 @@ fun RegisterScreen(
             onRegisterClick = {
                 viewModel.register(firstName, lastName, email, password)
             },
-            moveToLogin = {
-                navController.navigate(Screen.LoginScreen.route) {
-                    popUpTo(Screen.RegisterScreen.route) {
-                        inclusive = true
-                    }
-                }
-            }
+            moveToLogin = moveToLogin
         )
     }
 }

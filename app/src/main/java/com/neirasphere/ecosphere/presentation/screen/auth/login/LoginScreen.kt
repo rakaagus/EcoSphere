@@ -69,7 +69,8 @@ import com.neirasphere.ecosphere.utils.TypeKeyboard
 
 @Composable
 fun LoginScreen(
-    navController: NavHostController,
+    moveToHome: () -> Unit,
+    moveToRegister: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
@@ -131,11 +132,7 @@ fun LoginScreen(
     }
 
     if (loginSuccess) {
-        navController.navigate(Screen.HomeScreen.route) {
-            popUpTo(Screen.LoginScreen.route) {
-                inclusive = true
-            }
-        }
+        moveToHome()
     }
 
     if (error != null) {
@@ -158,9 +155,7 @@ fun LoginScreen(
             moveToForgot = {
 //                 isBottomSheetVisible = true
             },
-            onRegisterClick = {
-                navController.navigate(Screen.RegisterScreen.route)
-            },
+            onRegisterClick = moveToRegister,
             onLoginGoogleClick = {
                 val googleLogin = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestEmail()

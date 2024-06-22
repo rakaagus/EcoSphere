@@ -65,7 +65,7 @@ import java.util.Locale
 
 @Composable
 fun HomeScreen(
-    navController: NavController,
+    moveToProfile: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
@@ -118,9 +118,7 @@ fun HomeScreen(
 
     HomeContent(
         viewModel = viewModel,
-        moveToProfile = {
-            navController.navigate(Screen.ProfileScreen.route)
-        },
+        moveToProfile = moveToProfile,
         user = user.dataUser,
         cityNameUser = cityName,
         locationUser = userLocation,
@@ -278,5 +276,5 @@ fun getCityName(
 @Preview
 @Composable
 private fun HomeScreenPrev() {
-    HomeScreen(navController = rememberNavController())
+    HomeScreen(moveToProfile = {})
 }

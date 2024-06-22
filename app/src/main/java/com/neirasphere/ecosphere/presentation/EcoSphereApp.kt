@@ -156,7 +156,7 @@ fun EcoSphereApp(
                     )
                 }
 
-                Screen.EduHistoryScreen.route ->{
+                Screen.EduHistoryScreen.route -> {
                     CenterTopAppBar(
                         onBackClick = {
                             navController.popBackStack()
@@ -178,8 +178,8 @@ fun EcoSphereApp(
                 Screen.ChangePasswordScreen.route -> {
                     CenterTopAppBar(
                         onBackClick = {
-                            navController.navigate(Screen.ProfileScreen.route){
-                                popUpTo(Screen.ChangePasswordScreen.route){
+                            navController.navigate(Screen.ProfileScreen.route) {
+                                popUpTo(Screen.ChangePasswordScreen.route) {
                                     inclusive = true
                                 }
                             }
@@ -200,23 +200,23 @@ fun EcoSphereApp(
                 Screen.ClassifyScreen.route -> {
                     CenterTopAppBar(
                         onBackClick = {
-                            navController.navigate(Screen.HomeScreen.route){
-                                popUpTo(Screen.ClassifyScreen.route){
+                            navController.navigate(Screen.HomeScreen.route) {
+                                popUpTo(Screen.ClassifyScreen.route) {
                                     inclusive = true
-                            }
-                        }
-                    }, title = null,
-                        actionIcon = {
-                        Image(
-                            painter = painterResource(id = R.drawable.icon_history_classify),
-                            contentDescription = "",
-                            modifier = Modifier
-                                .size(34.dp)
-                                .clickable {
-
                                 }
-                        )
-                    })
+                            }
+                        }, title = null,
+                        actionIcon = {
+                            Image(
+                                painter = painterResource(id = R.drawable.icon_history_classify),
+                                contentDescription = "",
+                                modifier = Modifier
+                                    .size(34.dp)
+                                    .clickable {
+
+                                    }
+                            )
+                        })
                 }
             }
         },
@@ -240,10 +240,40 @@ fun EcoSphereApp(
 
             /*Splash & Onboarding Route*/
             composable(Screen.SplashScreen.route) {
-                SplashScreen(navController = navController)
+                SplashScreen(
+                    moveToLogin = {
+                        navController.navigate(Screen.LoginScreen.route) {
+                            popUpTo(Screen.SplashScreen.route) {
+                                inclusive = true
+                            }
+                        }
+                    },
+                    moveToHome = {
+                        navController.navigate(Screen.HomeScreen.route) {
+                            popUpTo(Screen.SplashScreen.route) {
+                                inclusive = true
+                            }
+                        }
+                    },
+                    moveToOnboarding = {
+                        navController.navigate(Screen.OnboardingScreen.route) {
+                            popUpTo(Screen.SplashScreen.route) {
+                                inclusive = true
+                            }
+                        }
+                    }
+                )
             }
             composable(Screen.OnboardingScreen.route) {
-                OnboardingScreen(navController = navController)
+                OnboardingScreen(
+                    moveToLoginScreen = {
+                        navController.navigate(Screen.LoginScreen.route) {
+                            popUpTo(Screen.OnboardingScreen.route) {
+                                inclusive = true
+                            }
+                        }
+                    }
+                )
             }
 
             /*Auth Route*/
@@ -252,9 +282,6 @@ fun EcoSphereApp(
             }
             composable(Screen.RegisterScreen.route) {
                 RegisterScreen(navController = navController)
-            }
-            composable(Screen.ChangePasswordScreen.route) {
-                ChangePasswordScreen(navController = navController)
             }
             composable(Screen.VerificationEmailScreen.route) {
                 VerificationEmailScreen(navController = navController)
@@ -426,7 +453,7 @@ fun EcoSphereApp(
                 )
                 ClassificationScreen(navController = navController, file = state)
             }
-            composable(Screen.CameraScreen.route){
+            composable(Screen.CameraScreen.route) {
                 CameraScreen(
                     moveToResult = { file ->
                         navController.currentBackStackEntry?.savedStateHandle?.set(
@@ -441,14 +468,47 @@ fun EcoSphereApp(
 
             /*Profile Route*/
             composable(Screen.ProfileScreen.route) {
-                ProfileScreen(navController = navController)
+                ProfileScreen(
+                    moveToChangePassword = {
+                        navController.navigate(Screen.ChangePasswordScreen.route)
+                    },
+                    moveToEditProfile = {
+                        navController.navigate(Screen.EditProfileScreen.route)
+                    },
+                    moveToHelpScreen = {},
+                    moveToSecurity = {},
+                    moveToNotifSetting = {},
+                    moveToReport = {},
+                    moveToLogin = {
+                        navController.navigate(Screen.LoginScreen.route){
+                            popUpTo(Screen.ProfileScreen.route){
+                                inclusive = true
+                            }
+                            popUpTo(Screen.HomeScreen.route){
+                                inclusive = true
+                            }
+                        }
+                    }
+                )
             }
             composable(Screen.EditProfileScreen.route) {
-                EditProfileScreen(navController = navController)
+                EditProfileScreen(moveToProfile = {
+                    navController.navigate(Screen.ProfileScreen.route){
+                        popUpTo(Screen.EditProfileScreen.route){
+                            inclusive = true
+                        }
+                    }
+                })
             }
 
             composable(Screen.ChangePasswordScreen.route) {
-                ChangePasswordScreen(navController = navController)
+                ChangePasswordScreen(moveToProfile = {
+                    navController.navigate(Screen.ProfileScreen.route){
+                        popUpTo(Screen.ChangePasswordScreen.route){
+                            inclusive = true
+                        }
+                    }
+                })
             }
             composable(Screen.VerificationEmailScreen.route) {
                 VerificationEmailScreen(navController = navController)

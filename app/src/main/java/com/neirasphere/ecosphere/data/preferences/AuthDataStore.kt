@@ -53,7 +53,11 @@ class AuthDataStore @Inject constructor(
 
     override suspend fun clearSessionUser() {
         authDataStore.edit {
-            it.clear()
+            it[tokenUser] = ""
+            it[lastName] = ""
+            it[firstName] = ""
+            it[email] = ""
+            it[avatar] = ""
         }
         setLoginStatus(false)
     }

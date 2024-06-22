@@ -37,8 +37,8 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun OnboardingScreen(
-    navController: NavHostController,
     viewModel: OnboardingViewModel = hiltViewModel(),
+    moveToLoginScreen: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val page = listOf(
@@ -70,8 +70,7 @@ fun OnboardingScreen(
                 scope.launch {
                     if(pagerState.currentPage == pagerState.pageCount - 1){
                         viewModel.saveStatusOnboarding(true)
-                        navController.popBackStack()
-                        navController.navigate(Screen.LoginScreen.route)
+                        moveToLoginScreen()
                     }else {
                         pagerState.animateScrollToPage(pagerState.currentPage + 1)
                     }

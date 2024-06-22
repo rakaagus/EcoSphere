@@ -105,7 +105,7 @@ fun RegisterScreen(
         LoadingDialog(onDismissRequest = { isLoadingDialogShow = false })
     }
 
-    if(isSuccess){
+        if(isSuccess){
         DialogLoginSuccess(onDismissRequest = { isSuccessDialogShow = false }, moveToLogin = {
             navController.navigate(Screen.LoginScreen.route){
                 popUpTo(Screen.RegisterScreen.route){

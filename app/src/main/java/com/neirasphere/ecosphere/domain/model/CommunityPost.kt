@@ -150,7 +150,7 @@ data class CommunityPostSQL(
     }
 
     fun timeDisplay(): String {
-        val postCreatedString = this.createdAt
+        val postCreatedString = this.createdAt.replace("T", " ").replace("Z", "")
         val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         val postCreatedAt = simpleDateFormat.parse(postCreatedString)
 

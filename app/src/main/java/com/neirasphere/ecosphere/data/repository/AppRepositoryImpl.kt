@@ -92,11 +92,15 @@ class AppRepositoryImpl @Inject constructor(
         appDataStore.saveStatusOnboardingUser(status)
     }
 
-    override suspend fun saveSessionUser(session: UserData) = authDataStore.saveSessionUser(session)
+    override suspend fun saveSessionUser(session: UserData) {
+        authDataStore.saveSessionUser(session)
+    }
 
     override fun getSessionUser(): Flow<UserData> = authDataStore.getSession()
 
-    override suspend fun clearSessionUser() = authDataStore.clearSessionUser()
+    override suspend fun clearSessionUser() {
+        authDataStore.clearSessionUser()
+    }
 
     override fun isLoggedIn(): Flow<Boolean> = authDataStore.isLoggedIn()
 

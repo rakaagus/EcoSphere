@@ -36,7 +36,7 @@ class AuthDataStore @Inject constructor(
                 firstName = it[firstName] ?: "",
                 lastName = it[lastName] ?: "",
                 email = it[email] ?: "",
-                avatar = it[avatar] ?: ""
+                avatar = it[avatar] ?: "",
             )
         }
     }
@@ -58,8 +58,8 @@ class AuthDataStore @Inject constructor(
             it[firstName] = ""
             it[email] = ""
             it[avatar] = ""
+            it[statusLogin] = false
         }
-        setLoginStatus(false)
     }
 
     override suspend fun setLoginStatus(isLogin: Boolean) {

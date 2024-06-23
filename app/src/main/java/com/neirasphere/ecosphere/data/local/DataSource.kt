@@ -16,7 +16,6 @@ import com.neirasphere.ecosphere.domain.model.SecondRecycleData
 import com.neirasphere.ecosphere.domain.model.Step
 import com.neirasphere.ecosphere.domain.model.ThirdEducationData
 import com.neirasphere.ecosphere.domain.model.User
-import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
@@ -153,7 +152,8 @@ object DataSource{
             1,
             "Indah Nur Lailatul",
             "indahnurlailatul11",
-            R.drawable.example_image_user
+            "indah@gmail.com",
+            R.drawable.example_image_user.toString()
         )
     )
 

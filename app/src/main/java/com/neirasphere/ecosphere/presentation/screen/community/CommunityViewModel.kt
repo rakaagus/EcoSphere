@@ -1,9 +1,9 @@
 package com.neirasphere.ecosphere.presentation.screen.community
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.neirasphere.ecosphere.data.CommunityResult
-import com.neirasphere.ecosphere.domain.repository.AppRepository
 import com.neirasphere.ecosphere.domain.repository.CommunityRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,8 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CommunityViewModel @Inject constructor(
-    private val repository: CommunityRepository,
-    private val appRepository: AppRepository
+    private val repository: CommunityRepository
 ): ViewModel() {
 
     private val _postState = MutableStateFlow(PostState())
@@ -27,6 +26,19 @@ class CommunityViewModel @Inject constructor(
 
     private val _getPostsState = MutableStateFlow(GetPostsState())
     val getPostsState = _getPostsState.asStateFlow()
+
+    private val _getPostState = MutableStateFlow(GetPostsState())
+    val getPostState = _getPostState.asStateFlow()
+
+    private var postId = 0
+
+    fun setPostId(id: Int) {
+        postId = id
+    }
+
+    fun getPostId(): Int {
+        return postId
+    }
 
     init {
         getAllCommunityPosts()
@@ -49,6 +61,34 @@ class CommunityViewModel @Inject constructor(
                 }
 
                 is CommunityResult.Success -> _getPostsState.update {
+                    it.copy(
+                        isLoading = false,
+                        posts = result.data
+                    )
+                }
+            }
+        }
+    }
+
+    fun getPostById() = viewModelScope.launch {
+        repository.getPostById(postId).collect { result ->
+            when (result) {
+                is CommunityResult.Error -> _getPostState.update {
+                    Log.d("cek error get post by id", "${result.message}")
+                    it.copy(
+                        isLoading = false,
+                        isError = result.message
+                    )
+                }
+
+                is CommunityResult.Loading -> _getPostState.update {
+                    it.copy(
+                        isLoading = true
+                    )
+                }
+
+                is CommunityResult.Success -> _getPostState.update {
+                    Log.d("cek sukses get post by id", "${result.data}")
                     it.copy(
                         isLoading = false,
                         posts = result.data

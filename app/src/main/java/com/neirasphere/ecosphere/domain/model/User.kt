@@ -2,7 +2,8 @@ package com.neirasphere.ecosphere.domain.model
 
 data class User(
     val id: Int,
-    val nama: String,
-    val username: String,
-    val avatar: Int
+    val namaDepan: String? = null,
+    val namaBelakang: String? = null,
+    val email: String,
+    val avatar: String? =  null
 )

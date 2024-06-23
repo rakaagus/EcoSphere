@@ -1,9 +1,10 @@
 package com.neirasphere.ecosphere.data.remote
 
 import com.neirasphere.ecosphere.data.remote.response.CommunityPostResponse
-import com.neirasphere.ecosphere.data.remote.response.GetACommentResponse
-import com.neirasphere.ecosphere.data.remote.response.GetAllPostResponse
+import com.neirasphere.ecosphere.data.remote.response.GetPostCommentsResponse
 import com.neirasphere.ecosphere.data.remote.response.GetPostLikesResponse
+import com.neirasphere.ecosphere.data.remote.response.GetPostsResponse
+import com.neirasphere.ecosphere.data.remote.response.GetUserByIdResponse
 import com.neirasphere.ecosphere.data.remote.response.LoginResponse
 import okhttp3.MultipartBody
 import retrofit2.http.Field
@@ -24,6 +25,11 @@ interface ApiService {
         @Field("password") password: String
     ): LoginResponse
 
+    @GET("user/{id}")
+    suspend fun getUserById(
+        @Path("id") id: Int
+    ): GetUserByIdResponse
+
     @Multipart
     @POST("community/")
     suspend fun postWithImage(
@@ -40,16 +46,21 @@ interface ApiService {
     ): CommunityPostResponse
 
     @GET("community/")
-    suspend fun getAllCommunityPosts(): GetAllPostResponse
+    suspend fun getAllCommunityPosts(): GetPostsResponse
+
+    @GET("community/{id}")
+    suspend fun getCommunityPost(
+        @Path("id") id: Int
+    ): GetPostsResponse
 
     @GET("community/likes/{id}")
     suspend fun getCommunityLikes(
         @Path("id") id: Int
     ): GetPostLikesResponse
 
-    @GET("community/comments/{id}")
-    suspend fun getAComment(
+    @GET("community/{id}/comments")
+    suspend fun getCommentsByPostId(
         @Path("id") id: Int
-    ): GetACommentResponse
+    ): GetPostCommentsResponse
 
 }

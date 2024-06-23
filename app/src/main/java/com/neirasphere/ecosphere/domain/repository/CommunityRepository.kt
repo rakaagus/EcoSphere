@@ -15,9 +15,11 @@ interface CommunityRepository {
 
     fun getAllCommunityPost() : Flow<CommunityResult<MutableList<CommunityPostSQL>>>
 
+    fun getPostById(id: Int) : Flow<CommunityResult<MutableList<CommunityPostSQL>>>
+
     fun getCommunityLikes(id: Int) : Flow<CommunityResult<MutableList<LikeItem>>>
 
-    fun getAComment(id: Int) : Flow<CommunityResult<MutableList<CommentItem>>>
+    fun getCommentsByPostId(id: Int) : Flow<CommunityResult<MutableList<CommentItem>>>
 
     fun postWithImage(post: String, postImg: MultipartBody.Part): Flow<CommunityResult<CommunityPostResponse>>
 

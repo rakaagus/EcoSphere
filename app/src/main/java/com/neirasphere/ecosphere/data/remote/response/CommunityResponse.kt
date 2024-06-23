@@ -9,7 +9,7 @@ data class CommunityPostResponse(
 
 )
 
-data class GetAllPostResponse(
+data class GetPostsResponse(
 
     @field:SerializedName("data")
     val data: List<DataItem?>? = null,
@@ -62,14 +62,14 @@ data class LikeItem(
 
 )
 
-data class GetACommentResponse(
+data class GetPostCommentsResponse(
     val data: List<CommentItem?>? = null,
     val success: Boolean? = null,
     val message: String? = null
 )
 
 data class CommentItem(
-    val commentImg: Any? = null,
+    val commentImg: String? = null,
     val commentId: Int? = null,
     val createdAt: String? = null,
     val comment: String? = null,

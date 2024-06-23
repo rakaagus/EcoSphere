@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.neirasphere.ecosphere.R
+import com.neirasphere.ecosphere.domain.model.PostComment
 
 @Composable
 fun PostLayout(
@@ -123,6 +124,153 @@ fun PostLayout(
                 }
             }
 
+        }
+    }
+}
+
+@Composable
+fun CommentLayout(
+    comment: PostComment,
+    modifier: Modifier = Modifier,
+    navController: NavController
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Image(
+                modifier = Modifier
+                    .size(50.dp)
+                    .clip(shape = CircleShape),
+                painter = if (comment.User.avatar != null) rememberAsyncImagePainter(model = comment.User.avatar) else painterResource(id = R.drawable.accoun_user),
+                contentScale = ContentScale.Crop,
+                contentDescription = "Post User Avatar"
+            )
+            Spacer(modifier = Modifier.size(8.dp))
+            Column {
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    if (comment.User.namaDepan != null) {
+                        Text(
+                            text = comment.User.namaDepan + " " + comment.User.namaBelakang,
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                fontSize = 12.sp
+                            )
+                        )
+                        Spacer(modifier = Modifier.size(5.dp))
+                        Text(
+                            text = "@${comment.User.email} · ${comment.timeAgo()}",
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                fontSize = 12.sp
+                            )
+                        )
+                    } else {
+                        Text(
+                            text = "@${comment.User.email} · ${comment.timeAgo()}",
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                fontSize = 12.sp
+                            )
+                        )
+                    }
+                }
+                Column(modifier = modifier) {
+                    Text(
+                        text = comment.comment,
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            fontSize = 14.sp
+                        )
+                    )
+                    if (comment.commentImg != null) {
+                        Spacer(modifier = Modifier.size(10.dp))
+                        Image(
+                            painter = rememberAsyncImagePainter(model = comment.commentImg),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(300.dp)
+                                .clip(shape = RoundedCornerShape(4.dp)),
+                            contentScale = ContentScale.Crop,
+                            contentDescription = ""
+                        )
+                    }
+                }
+//                Row(
+//                    modifier = Modifier
+//                        .fillMaxWidth(),
+//                    horizontalArrangement = Arrangement.SpaceBetween,
+//                    verticalAlignment = Alignment.CenterVertically
+//                ) {
+//                    Column {
+//                        PostActions(post = post)
+//                    }
+//                    Column {
+//                        Row(
+//                            verticalAlignment = Alignment.CenterVertically,
+//                            modifier = Modifier.padding(top = 8.dp)
+//                        ) {
+//                            Icon(imageVector = Icons.Outlined.Flag, contentDescription = null, Modifier.size(16.dp))
+//                            Spacer(modifier = Modifier.padding(4.dp))
+//                            Icon(imageVector = Icons.Outlined.BookmarkBorder, contentDescription = null, Modifier.size(16.dp))
+//                            Spacer(modifier = Modifier.padding(4.dp))
+//                            Icon(imageVector = Icons.Outlined.Upload, contentDescription = null, Modifier.size(16.dp))
+//                        }
+//                    }
+//                }
+            }
+
+        }
+    }
+}
+
+@Composable
+fun CommentAvatarAndInfo(
+   comment: PostComment,
+   modifier: Modifier = Modifier,
+   navController: NavController
+) {
+    Row(
+        horizontalArrangement = Arrangement.Center
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Image(
+                modifier = modifier
+                    .size(50.dp)
+                    .clip(shape = CircleShape),
+                painter = if (comment.User.avatar != null) rememberAsyncImagePainter(model = comment.User.avatar) else painterResource(id = R.drawable.accoun_user),
+                contentScale = ContentScale.Crop,
+                contentDescription = "Post User Avatar"
+            )
+            Spacer(modifier = Modifier.size(8.dp))
+            Column {
+                if (comment.User.namaDepan != null) {
+                    Text(
+                        text = comment.User.namaDepan + " " + comment.User.namaBelakang,
+                        style = MaterialTheme.typography.labelSmall.copy(
+                            fontSize = 12.sp
+                        )
+                    )
+                    Spacer(modifier = Modifier.size(5.dp))
+                    Text(
+                        text = "@${comment.User.email} · ${comment.timeAgo()}",
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            fontSize = 12.sp
+                        )
+                    )
+                } else {
+                    Text(
+                        text = "@${comment.User.email} · ${comment.timeAgo()}",
+                        style = MaterialTheme.typography.bodySmall.copy(
+                            fontSize = 12.sp
+                        )
+                    )
+                }
+            }
         }
     }
 }

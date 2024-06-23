@@ -10,6 +10,7 @@ import com.neirasphere.ecosphere.data.remote.response.CommentItem
 import com.neirasphere.ecosphere.data.remote.response.LikeItem
 import com.neirasphere.ecosphere.domain.model.CommunityPost
 import com.neirasphere.ecosphere.domain.model.CommunityPostSQL
+import com.neirasphere.ecosphere.domain.model.User
 import com.neirasphere.ecosphere.domain.repository.CommunityRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -66,13 +67,22 @@ class CommunityRepositoryImpl @Inject constructor(
             val response = remoteDataSource.getAllCommunityPosts()
             val result = response.data
             result?.forEach {
-                val postImg = it?.postImg
+                val postImg = if (it?.postImg != null) remoteDataSource.imageBaseURL + it.postImg else null
                 val createdAt = it?.createdAt
                 val post = it?.post
                 val idUser = it?.idUser
                 val communityId = it?.communityId
                 val email = it?.email
                 val imgProfile = it?.imgProfile
+                val userResponse = remoteDataSource.getUserById(idUser!!)
+                val userResult = userResponse.data
+                val user = User(
+                    id = userResult.idUser,
+                    namaDepan = userResult.namaDepan,
+                    namaBelakang = userResult.namaBelakang,
+                    email = userResult.email,
+                    avatar = if (userResult.imgProfile != null) remoteDataSource.imageBaseURL + userResult.imgProfile else null
+                )
                 var likes = 0
                 try {
                     val likeResponse = remoteDataSource.getCommunityLikes(communityId!!)
@@ -85,7 +95,7 @@ class CommunityRepositoryImpl @Inject constructor(
                 }
                 val resultData = CommunityPostSQL(
                     id = communityId!!,
-                    user = DataSource.communityPostUser()[0],
+                    user = user,
                     text = post!!,
                     image = postImg,
                     comments = 1000,
@@ -105,24 +115,63 @@ class CommunityRepositoryImpl @Inject constructor(
         }
     }.flowOn(Dispatchers.IO)
 
-    override fun getAComment(id: Int): Flow<CommunityResult<MutableList<CommentItem>>> = flow {
+    override fun getPostById(id: Int): Flow<CommunityResult<MutableList<CommunityPostSQL>>> = flow {
         emit(CommunityResult.Loading())
         try {
-            val commentDataStore = mutableListOf<CommentItem>()
-            val response = remoteDataSource.getAComment(id)
+            val postDataStore = mutableListOf<CommunityPostSQL>()
+            val response = remoteDataSource.getPostById(id)
             val result = response.data
-            val success = response.success
-            if (success == true) {
-                result?.forEach {
-                    if (it != null) {
-                        commentDataStore.add(it)
+            result?.forEach {
+                val postImg = if (it?.postImg != null) remoteDataSource.imageBaseURL + it.postImg else null
+                val createdAt = it?.createdAt
+                val post = it?.post
+                val idUser = it?.idUser
+                val communityId = it?.communityId
+                val email = it?.email
+                val imgProfile = it?.imgProfile
+                val userResponse = remoteDataSource.getUserById(idUser!!)
+                val userResult = userResponse.data
+                val user = User(
+                    id = userResult.idUser,
+                    namaDepan = userResult.namaDepan,
+                    namaBelakang = userResult.namaBelakang,
+                    email = userResult.email,
+                    avatar = if (userResult.imgProfile != null) remoteDataSource.imageBaseURL + userResult.imgProfile else null
+                )
+                var likes = 0
+                try {
+                    val likeResponse = remoteDataSource.getCommunityLikes(communityId!!)
+                    val likeResult = likeResponse.data
+                    likes = likeResult?.size ?: 0
+                } catch (e: Exception) {
+                    if (e.message!!.contains("404")) {
+                        likes = 0
                     }
                 }
+                val resultData = CommunityPostSQL(
+                    id = communityId!!,
+                    user = user,
+                    text = post!!,
+                    image = postImg,
+                    comments = 1000,
+                    likes = likes,
+                    liked = false,
+                    views = 2000,
+                    createdAt = createdAt!!
+                )
+                postDataStore.add(resultData)
+                Log.d("cek repo impl by id", "getAllCommunityPost: $postDataStore")
             }
-            emit(CommunityResult.Success(commentDataStore))
+            Log.d("cek before emit by id", "getAllCommunityPost: $postDataStore")
+            emit(CommunityResult.Success(postDataStore))
         } catch (e: Exception) {
+            Log.d("cek error", "getAllCommunityPost: ${e.message}")
             emit(CommunityResult.Error(e.message.toString()))
         }
+    }.flowOn(Dispatchers.IO)
+
+    override fun getCommentsByPostId(id: Int): Flow<CommunityResult<MutableList<CommentItem>>> {
+        TODO("Not yet implemented")
     }
 
     override fun postWithImage(post: String, postImg: MultipartBody.Part) = flow {

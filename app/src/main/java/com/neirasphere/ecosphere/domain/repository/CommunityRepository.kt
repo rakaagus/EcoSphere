@@ -1,11 +1,11 @@
 package com.neirasphere.ecosphere.domain.repository
 
 import com.neirasphere.ecosphere.data.CommunityResult
-import com.neirasphere.ecosphere.data.remote.response.CommentItem
 import com.neirasphere.ecosphere.data.remote.response.CommunityPostResponse
 import com.neirasphere.ecosphere.data.remote.response.LikeItem
 import com.neirasphere.ecosphere.domain.model.CommunityPost
 import com.neirasphere.ecosphere.domain.model.CommunityPostSQL
+import com.neirasphere.ecosphere.domain.model.PostComment
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 
@@ -19,7 +19,7 @@ interface CommunityRepository {
 
     fun getCommunityLikes(id: Int) : Flow<CommunityResult<MutableList<LikeItem>>>
 
-    fun getCommentsByPostId(id: Int) : Flow<CommunityResult<MutableList<CommentItem>>>
+    fun getCommentsByPostId(id: Int) : Flow<CommunityResult<MutableList<PostComment>>>
 
     fun postWithImage(post: String, postImg: MultipartBody.Part): Flow<CommunityResult<CommunityPostResponse>>
 

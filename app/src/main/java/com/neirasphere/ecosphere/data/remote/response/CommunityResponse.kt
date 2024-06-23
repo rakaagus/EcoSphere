@@ -77,3 +77,12 @@ data class CommentItem(
     val communityId: Int? = null,
     val email: String? = null
 )
+
+data class GetUserByIdResponse(
+	@field:SerializedName("message")
+	val message: String,
+	@field:SerializedName("success")
+	val success: Boolean,
+	@field:SerializedName("data")
+	val data: User
+)

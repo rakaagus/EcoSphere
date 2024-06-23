@@ -30,10 +30,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -52,6 +55,7 @@ import com.neirasphere.ecosphere.presentation.components.CenterTopAppBar
 import com.neirasphere.ecosphere.presentation.components.PostAvatarAndInfo
 import com.neirasphere.ecosphere.presentation.navigation.Screen
 import com.neirasphere.ecosphere.ui.theme.BlackColor
+import com.neirasphere.ecosphere.ui.theme.NeutralColorWhite
 import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 
 
@@ -70,6 +74,11 @@ fun DetailPostScreen(
     Log.d("cek posts detail", "${state.posts}")
 
     val post = state.posts
+
+    var text by remember {
+        mutableStateOf("")
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -89,6 +98,20 @@ fun DetailPostScreen(
                 DetailPostContent(
                     post = post,
                     navController = navController
+                )
+                TextField(
+                    value = text,
+                    onValueChange = { text = it },
+                    modifier = modifier
+                        .fillMaxWidth(),
+                    colors = TextFieldDefaults.colors(
+                        unfocusedContainerColor = NeutralColorWhite,
+                        focusedContainerColor = NeutralColorWhite,
+                        unfocusedIndicatorColor = Color.White
+                    ),
+                    placeholder = {
+                        androidx.compose.material3.Text(text = "Tulis komentar di sini")
+                    }
                 )
             } else {
                 Text(text = "Error data fetching: ${state.isLoading}")

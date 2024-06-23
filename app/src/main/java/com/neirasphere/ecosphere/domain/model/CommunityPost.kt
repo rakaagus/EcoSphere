@@ -159,3 +159,44 @@ data class CommunityPostSQL(
         return formattedTime
     }
 }
+
+data class PostComment(
+    val id: Int,
+    val PostId: Int,
+    val UserId: Int,
+    val User: User,
+    val commentImg: String? = null,
+    val createdAt: String,
+    val comment: String,
+    val email: String? = null
+) {
+    fun timeDiff(): Long {
+        val now = System.currentTimeMillis()
+        val processedCreatedAt = this.createdAt.replace("T", " ").replace("Z", "")
+        val postCreatedAt = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).parse(processedCreatedAt)
+        val createdAtMills = postCreatedAt.time
+        val differenceMillis = now - createdAtMills
+
+        return differenceMillis
+    }
+
+    fun timeAgo(): String {
+        val seconds = this.timeDiff()/1000
+        val minutes = seconds/60
+        val hours = minutes/60
+        val days = hours/24
+
+        val relativeTime: String
+        if (seconds < 60) {
+            relativeTime = "$seconds detik lalu"
+        } else if (minutes < 60) {
+            relativeTime = "$minutes menit lalu"
+        } else if (hours < 24) {
+            relativeTime = "$hours jam lalu"
+        } else {
+            relativeTime = "$days hari lalu"
+        }
+
+        return relativeTime
+    }
+}

@@ -30,6 +30,9 @@ class CommunityViewModel @Inject constructor(
     private val _getPostState = MutableStateFlow(GetPostsState())
     val getPostState = _getPostState.asStateFlow()
 
+    private val  _getPostCommentState = MutableStateFlow(GetPostCommentState())
+    val getPostCommentState = _getPostCommentState.asStateFlow()
+
     private var postId = 0
 
     fun setPostId(id: Int) {
@@ -92,6 +95,30 @@ class CommunityViewModel @Inject constructor(
                     it.copy(
                         isLoading = false,
                         posts = result.data
+                    )
+                }
+            }
+        }
+    }
+
+    fun getCommentsByPostId() = viewModelScope.launch {
+        repository.getCommentsByPostId(postId).collect { result ->
+            when (result) {
+                is CommunityResult.Error -> _getPostCommentState.update {
+                    it.copy(
+                        isLoading = false,
+                        isError = result.message
+                    )
+                }
+                is CommunityResult.Loading -> _getPostCommentState.update {
+                    it.copy(
+                        isLoading = true
+                    )
+                }
+                is CommunityResult.Success -> _getPostCommentState.update {
+                    it.copy(
+                        isLoading = false,
+                        comments = result.data
                     )
                 }
             }

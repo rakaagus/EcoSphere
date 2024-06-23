@@ -11,10 +11,19 @@ data class LoginResponse(
 	val message: String
 )
 
+data class GetUserByIdResponse(
+	@field:SerializedName("message")
+	val message: String,
+	@field:SerializedName("success")
+	val success: Boolean,
+	@field:SerializedName("data")
+	val data: User
+)
+
 data class User(
 
 	@field:SerializedName("nama_depan")
-	val namaDepan: Any,
+	val namaDepan: String,
 
 	@field:SerializedName("resetPasswordExpires")
 	val resetPasswordExpires: Any,
@@ -32,7 +41,7 @@ data class User(
 	val resetPasswordOTP: Any,
 
 	@field:SerializedName("nama_belakang")
-	val namaBelakang: Any,
+	val namaBelakang: String,
 
 	@field:SerializedName("email")
 	val email: String

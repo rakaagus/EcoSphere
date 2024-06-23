@@ -1,5 +1,6 @@
 package com.neirasphere.ecosphere.presentation.screen.community
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,9 +18,11 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.BookmarkBorder
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.outlined.BorderColor
 import androidx.compose.material.icons.outlined.Comment
+import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material.icons.outlined.Upload
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,7 +30,13 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,23 +46,37 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 import com.neirasphere.ecosphere.R
-import com.neirasphere.ecosphere.data.local.DataSource
 import com.neirasphere.ecosphere.presentation.components.CenterTopAppBar
 import com.neirasphere.ecosphere.presentation.components.PostAvatarAndInfo
 import com.neirasphere.ecosphere.presentation.navigation.Screen
 import com.neirasphere.ecosphere.ui.theme.BlackColor
+import com.neirasphere.ecosphere.ui.theme.NeutralColorWhite
 import com.neirasphere.ecosphere.ui.theme.PrimaryColor
+
 
 @Composable
 fun DetailPostScreen(
     modifier: Modifier = Modifier,
     navController: NavController,
-    postId: Int?
+    postId: Int?,
+    viewModel: CommunityViewModel = hiltViewModel()
 ) {
-    val post = DataSource.communityPostData().filter { post ->
-        post.id == postId
+    Log.d("cek postId", "$postId")
+    viewModel.setPostId(postId!!)
+    Log.d("cek VMPostId", "${viewModel.getPostId()}")
+    viewModel.getPostById()
+    val state by viewModel.getPostState.collectAsStateWithLifecycle()
+    Log.d("cek posts detail", "${state.posts}")
+
+    val post = state.posts
+
+    var text by remember {
+        mutableStateOf("")
     }
 
     Column(
@@ -71,20 +94,44 @@ fun DetailPostScreen(
             modifier = modifier
                 .padding(16.dp)
         ) {
-            DetailPostContent(
-                post = post,
-                navController = navController
-            )
+            if (post.isNotEmpty()) {
+                DetailPostContent(
+                    post = post,
+                    navController = navController
+                )
+                TextField(
+                    value = text,
+                    onValueChange = { text = it },
+                    modifier = modifier
+                        .fillMaxWidth(),
+                    colors = TextFieldDefaults.colors(
+                        unfocusedContainerColor = NeutralColorWhite,
+                        focusedContainerColor = NeutralColorWhite,
+                        unfocusedIndicatorColor = Color.White
+                    ),
+                    placeholder = {
+                        androidx.compose.material3.Text(text = "Tulis komentar di sini")
+                    }
+                )
+            } else {
+                Text(text = "Error data fetching: ${state.isLoading}")
+            }
         }
     }
 }
 
 @Composable
 private fun DetailPostContent(
-    post: List<com.neirasphere.ecosphere.domain.model.CommunityPost>,
+    post: List<com.neirasphere.ecosphere.domain.model.CommunityPostSQL>,
     modifier: Modifier = Modifier,
     navController: NavController
 ) {
+    val isLiked = remember { mutableStateOf(false) }
+
+    fun toggleLike() {
+        isLiked.value = !isLiked.value
+    }
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -103,7 +150,7 @@ private fun DetailPostContent(
             if (post[0].image != null) {
                 Spacer(modifier = Modifier.size(16.dp))
                 Image(
-                    painter = painterResource(post[0].image!!),
+                    painter = rememberAsyncImagePainter(model = post[0].image),
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(350.dp)
@@ -158,10 +205,26 @@ private fun DetailPostContent(
                     horizontal = 48.dp
                 )
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(imageVector = Icons.Outlined.Comment, contentDescription = null)
-            Icon(imageVector = Icons.Default.FavoriteBorder, contentDescription = null)
+            IconButton(
+                onClick = { toggleLike() }
+                ) {
+                if (isLiked.value) {
+                    Icon(
+                        imageVector = Icons.Filled.Favorite,
+                        contentDescription = "",
+                        tint = Color.Red
+                    )
+                } else {
+                    Icon(
+                        imageVector = Icons.Outlined.Favorite,
+                        contentDescription = ""
+                    )
+                }
+            }
             Icon(imageVector = Icons.Default.BookmarkBorder, contentDescription = null)
             Icon(imageVector = Icons.Outlined.Upload, contentDescription = null)
         }

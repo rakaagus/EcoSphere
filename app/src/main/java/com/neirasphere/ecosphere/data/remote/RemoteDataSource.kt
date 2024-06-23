@@ -10,7 +10,8 @@ import javax.inject.Singleton
 
 @Singleton
 class RemoteDataSource @Inject constructor(
-    private val apiClassifyService: ApiClassifyService
+    private val apiClassifyService: ApiClassifyService,
+    private val apiService: ApiService
 ){
     suspend fun classifyTrash(file: File): ClassifyResult {
         val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
@@ -21,4 +22,16 @@ class RemoteDataSource @Inject constructor(
         )
         return apiClassifyService.classifyTrash(imageMultiPart)
     }
+
+    val imageBaseURL = "http:/192.168.1.7:4000/assets/"
+
+    suspend fun getUserById(id: Int) = apiService.getUserById(id)
+
+    suspend fun getAllCommunityPosts() = apiService.getAllCommunityPosts()
+
+    suspend fun getPostById(id: Int) = apiService.getCommunityPost(id)
+
+    suspend fun getCommunityLikes(id: Int) = apiService.getCommunityLikes(id)
+
+    suspend fun getCommentsByPostId(id: Int) = apiService.getCommentsByPostId(id)
 }

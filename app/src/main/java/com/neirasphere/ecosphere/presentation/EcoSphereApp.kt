@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.FloatingActionButtonDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Book
@@ -17,6 +18,7 @@ import androidx.compose.material.icons.filled.People
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -31,6 +33,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -41,26 +44,14 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.presentation.components.CenterTopAppBar
 import com.neirasphere.ecosphere.presentation.components.CommunityAppBar
-import com.neirasphere.ecosphere.presentation.components.PostingBottomBar
 import com.neirasphere.ecosphere.presentation.navigation.NavigationItem
 import com.neirasphere.ecosphere.presentation.navigation.Screen
+import com.neirasphere.ecosphere.presentation.screen.auth.changepassword.ChangePasswordScreen
 import com.neirasphere.ecosphere.presentation.screen.auth.login.LoginScreen
 import com.neirasphere.ecosphere.presentation.screen.auth.register.RegisterScreen
-import com.neirasphere.ecosphere.presentation.screen.home.HomeScreen
-import com.neirasphere.ecosphere.presentation.screen.onboarding.OnboardingScreen
-import com.neirasphere.ecosphere.presentation.screen.profile.ProfileScreen
-import com.neirasphere.ecosphere.presentation.screen.splashscreen.SplashScreen
-import com.neirasphere.ecosphere.ui.theme.BlackColor
-import com.neirasphere.ecosphere.ui.theme.PrimaryColor
-import com.neirasphere.ecosphere.ui.theme.containerColor
-import androidx.compose.material.FloatingActionButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.ui.text.font.FontWeight
-import androidx.navigation.navigation
-import com.neirasphere.ecosphere.R
-import com.neirasphere.ecosphere.presentation.screen.auth.changepassword.ChangePasswordScreen
 import com.neirasphere.ecosphere.presentation.screen.auth.verificationemail.VerificationEmailScreen
 import com.neirasphere.ecosphere.presentation.screen.classification.CameraScreen
 import com.neirasphere.ecosphere.presentation.screen.classification.ClassificationScreen
@@ -76,15 +67,22 @@ import com.neirasphere.ecosphere.presentation.screen.education.FifthEducationDet
 import com.neirasphere.ecosphere.presentation.screen.education.FourthEducationDetailScreen
 import com.neirasphere.ecosphere.presentation.screen.education.SecondEducationDetailScreen
 import com.neirasphere.ecosphere.presentation.screen.education.ThirdEducationDetailScreen
+import com.neirasphere.ecosphere.presentation.screen.home.HomeScreen
 import com.neirasphere.ecosphere.presentation.screen.interactivemap.MapScreen
 import com.neirasphere.ecosphere.presentation.screen.interactivemap.confirmMaps.ConfirmMapScreen
 import com.neirasphere.ecosphere.presentation.screen.interactivemap.detailtps.DetailTpsScreen
 import com.neirasphere.ecosphere.presentation.screen.interactivemap.search.SearchMapScreen
+import com.neirasphere.ecosphere.presentation.screen.onboarding.OnboardingScreen
+import com.neirasphere.ecosphere.presentation.screen.profile.ProfileScreen
 import com.neirasphere.ecosphere.presentation.screen.profile.edit.EditProfileScreen
 import com.neirasphere.ecosphere.presentation.screen.recycle.FirstRecycleScreen
 import com.neirasphere.ecosphere.presentation.screen.recycle.RecycleDone
 import com.neirasphere.ecosphere.presentation.screen.recycle.RecycleScreen
 import com.neirasphere.ecosphere.presentation.screen.recycle.SecondRecycleScreen
+import com.neirasphere.ecosphere.presentation.screen.splashscreen.SplashScreen
+import com.neirasphere.ecosphere.ui.theme.BlackColor
+import com.neirasphere.ecosphere.ui.theme.PrimaryColor
+import com.neirasphere.ecosphere.ui.theme.containerColor
 import java.io.File
 
 @Composable
@@ -226,9 +224,7 @@ fun EcoSphereApp(
                     BottomAppBar(navController = navController)
                 }
 
-                Screen.PostingScreen.route -> {
-                    PostingBottomBar()
-                }
+                Screen.PostingScreen.route -> {}
             }
         },
     ) { innerPadding ->

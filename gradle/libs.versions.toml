@@ -36,6 +36,7 @@ firebaseAuth = "23.0.0"
 lottieCompose = "4.0.0"
 runtimeLivedata = "1.6.7"
 cameraXVersion = "1.4.0-beta01"
+lifecycleRuntimeComposeAndroidVersion = "2.8.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -110,6 +111,7 @@ androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtim
 androidx-camera2 = { module = "androidx.camera:camera-camera2", version.ref ="cameraXVersion"}
 androidx-camera2-livecyle = { module = "androidx.camera:camera-lifecycle", version.ref ="cameraXVersion"}
 androidx-camera2-view = { module = "androidx.camera:camera-view", version.ref ="cameraXVersion"}
+androidx-lifecycle-runtime-compose-android = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose-android", version.ref = "lifecycleRuntimeComposeAndroidVersion" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

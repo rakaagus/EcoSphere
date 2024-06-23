@@ -2,6 +2,7 @@ package com.neirasphere.ecosphere.di
 
 import com.neirasphere.ecosphere.data.repository.AppRepositoryImpl
 import com.neirasphere.ecosphere.data.repository.ClassificationRepositoryImpl
+import com.neirasphere.ecosphere.data.repository.CommunityRepositoryImpl
 import com.neirasphere.ecosphere.data.repository.EduHistoryRepositoryImpl
 import com.neirasphere.ecosphere.data.repository.EducationRepositoryImpl
 import com.neirasphere.ecosphere.data.repository.LearnRepositoryImpl
@@ -9,6 +10,7 @@ import com.neirasphere.ecosphere.data.repository.MapRepositoryImpl
 import com.neirasphere.ecosphere.data.repository.RecycleRepositoryImpl
 import com.neirasphere.ecosphere.domain.repository.AppRepository
 import com.neirasphere.ecosphere.domain.repository.ClassificationRepository
+import com.neirasphere.ecosphere.domain.repository.CommunityRepository
 import com.neirasphere.ecosphere.domain.repository.EduHistoryRepository
 import com.neirasphere.ecosphere.domain.repository.EducationRepository
 import com.neirasphere.ecosphere.domain.repository.LearnRepository
@@ -51,4 +53,8 @@ abstract class RepositoryModule {
     @Binds
     @Singleton
     abstract fun provideClassifyRepo(classificationRepositoryImpl: ClassificationRepositoryImpl) : ClassificationRepository
+
+    @Binds
+    @Singleton
+    abstract fun provideCommunityRepo(communityRepositoryImpl: CommunityRepositoryImpl) : CommunityRepository
 }

@@ -70,6 +70,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.firebase.auth)
     implementation(libs.androidx.runtime.livedata)
+    implementation(libs.androidx.lifecycle.runtime.compose.android)
     testImplementation(libs.junit)
 
     /*Permission*/
@@ -122,6 +123,9 @@ dependencies {
     implementation(libs.androidx.camera2)
     implementation(libs.androidx.camera2.livecyle)
     implementation(libs.androidx.camera2.view)
+
+    /*Coil*/
+    implementation(libs.io.coil.kt)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

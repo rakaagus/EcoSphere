@@ -6,10 +6,10 @@ import com.neirasphere.ecosphere.data.local.DataSource
 import com.neirasphere.ecosphere.data.preferences.AuthDataStore
 import com.neirasphere.ecosphere.data.remote.ApiService
 import com.neirasphere.ecosphere.data.remote.RemoteDataSource
-import com.neirasphere.ecosphere.data.remote.response.CommentItem
 import com.neirasphere.ecosphere.data.remote.response.LikeItem
 import com.neirasphere.ecosphere.domain.model.CommunityPost
 import com.neirasphere.ecosphere.domain.model.CommunityPostSQL
+import com.neirasphere.ecosphere.domain.model.PostComment
 import com.neirasphere.ecosphere.domain.model.User
 import com.neirasphere.ecosphere.domain.repository.CommunityRepository
 import kotlinx.coroutines.Dispatchers
@@ -93,12 +93,21 @@ class CommunityRepositoryImpl @Inject constructor(
                         likes = 0
                     }
                 }
+                var comments = 0
+                try {
+                    val commentResponse = remoteDataSource.getCommentsByPostId(communityId!!)
+                    val commentResult = commentResponse.data
+                    comments = commentResult?.size ?: 0
+                } catch (e: Exception) {
+                    Log.d("error fetch comment impl", "${e.message}")
+                    comments = 0
+                }
                 val resultData = CommunityPostSQL(
                     id = communityId!!,
                     user = user,
                     text = post!!,
                     image = postImg,
-                    comments = 1000,
+                    comments = comments,
                     likes = likes,
                     liked = false,
                     views = 2000,
@@ -148,12 +157,21 @@ class CommunityRepositoryImpl @Inject constructor(
                         likes = 0
                     }
                 }
+                var comments = 0
+                try {
+                    val commentResponse = remoteDataSource.getCommentsByPostId(communityId!!)
+                    val commentResult = commentResponse.data
+                    comments = commentResult?.size ?: 0
+                } catch (e: Exception) {
+                    Log.d("error fetch comment impl", "${e.message}")
+                    comments = 0
+                }
                 val resultData = CommunityPostSQL(
                     id = communityId!!,
                     user = user,
                     text = post!!,
                     image = postImg,
-                    comments = 1000,
+                    comments = comments,
                     likes = likes,
                     liked = false,
                     views = 2000,
@@ -170,9 +188,42 @@ class CommunityRepositoryImpl @Inject constructor(
         }
     }.flowOn(Dispatchers.IO)
 
-    override fun getCommentsByPostId(id: Int): Flow<CommunityResult<MutableList<CommentItem>>> {
-        TODO("Not yet implemented")
-    }
+    override fun getCommentsByPostId(id: Int): Flow<CommunityResult<MutableList<PostComment>>> = flow {
+        emit(CommunityResult.Loading())
+        try {
+            val commentDataStore = mutableListOf<PostComment>()
+            val response = remoteDataSource.getCommentsByPostId(id)
+            val result = response.data
+            val success = response.success
+            if (success == true) {
+                result?.forEach {
+                    val userResponse = remoteDataSource.getUserById(it!!.idUser!!)
+                    val userResult = userResponse.data
+                    val user = User(
+                        id = userResult.idUser,
+                        namaDepan = userResult.namaDepan,
+                        namaBelakang = userResult.namaBelakang,
+                        email = userResult.email,
+                        avatar = if (userResult.imgProfile != null) remoteDataSource.imageBaseURL + userResult.imgProfile else null
+                    )
+                    val resultData = PostComment(
+                        id = it.commentId!!,
+                        PostId = it.communityId!!,
+                        UserId = it.idUser!!,
+                        User = user,
+                        commentImg = it.commentImg,
+                        createdAt = it.createdAt!!,
+                        comment = it.comment!!,
+                        email = it.email
+                    )
+                    commentDataStore.add(resultData)
+                }
+            }
+            emit(CommunityResult.Success(commentDataStore))
+        } catch (e: Exception) {
+            emit(CommunityResult.Error(e.message))
+        }
+    }.flowOn(Dispatchers.IO)
 
     override fun postWithImage(post: String, postImg: MultipartBody.Part) = flow {
         emit(CommunityResult.Loading())

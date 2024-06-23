@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
+import com.neirasphere.ecosphere.R
 
 @Composable
 fun PostLayout(
@@ -65,7 +66,7 @@ fun PostLayout(
                 modifier = Modifier
                     .size(50.dp)
                     .clip(shape = CircleShape),
-                painter = painterResource(id = post.user.avatar),
+                painter = if (post.user.avatar != null) rememberAsyncImagePainter(model = post.user.avatar) else painterResource(id = R.drawable.accoun_user),
                 contentScale = ContentScale.Crop,
                 contentDescription = "Post User Avatar"
             )
@@ -74,19 +75,28 @@ fun PostLayout(
                 Row(
                     horizontalArrangement = Arrangement.Center,
                 ) {
-                    Text(
-                        text = post.user.nama,
-                        style = MaterialTheme.typography.labelSmall.copy(
-                            fontSize = 12.sp
+                    if (post.user.namaDepan != null) {
+                        Text(
+                            text = post.user.namaDepan + " " + post.user.namaBelakang,
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                fontSize = 12.sp
+                            )
                         )
-                    )
-                    Spacer(modifier = Modifier.size(5.dp))
-                    Text(
-                        text = "@${post.user.username} · ${post.timeAgo()}",
-                        style = MaterialTheme.typography.bodySmall.copy(
-                            fontSize = 12.sp
+                        Spacer(modifier = Modifier.size(5.dp))
+                        Text(
+                            text = "@${post.user.email} · ${post.timeAgo()}",
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                fontSize = 12.sp
+                            )
                         )
-                    )
+                    } else {
+                        Text(
+                            text = "@${post.user.email} · ${post.timeAgo()}",
+                            style = MaterialTheme.typography.bodySmall.copy(
+                                fontSize = 12.sp
+                            )
+                        )
+                    }
                 }
                 PostAndImage(post = post)
                 Row(
@@ -130,25 +140,34 @@ fun PostAvatarAndInfo(
             modifier = modifier
                 .size(50.dp)
                 .clip(shape = CircleShape),
-            painter = painterResource(id = post.user.avatar),
+            painter = if (post.user.avatar != null) rememberAsyncImagePainter(model = post.user.avatar) else painterResource(id = R.drawable.accoun_user),
             contentScale = ContentScale.Crop,
             contentDescription = "Post User Avatar"
         )
         Spacer(modifier = Modifier.size(8.dp))
         Column {
-            Text(
-                text = post.user.nama,
-                style = MaterialTheme.typography.bodySmall.copy(
-                    fontSize = 12.sp
+            if (post.user.namaDepan != null) {
+                Text(
+                    text = post.user.namaDepan + " " + post.user.namaBelakang,
+                    style = MaterialTheme.typography.labelSmall.copy(
+                        fontSize = 12.sp
+                    )
                 )
-            )
-            Spacer(modifier = Modifier.size(5.dp))
-            Text(
-                text = "@${post.user.username}",
-                style = MaterialTheme.typography.bodySmall.copy(
-                    fontSize = 12.sp
+                Spacer(modifier = Modifier.size(5.dp))
+                Text(
+                    text = "@${post.user.email} · ${post.timeAgo()}",
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontSize = 12.sp
+                    )
                 )
-            )
+            } else {
+                Text(
+                    text = "@${post.user.email} · ${post.timeAgo()}",
+                    style = MaterialTheme.typography.bodySmall.copy(
+                        fontSize = 12.sp
+                    )
+                )
+            }
         }
     }
 }

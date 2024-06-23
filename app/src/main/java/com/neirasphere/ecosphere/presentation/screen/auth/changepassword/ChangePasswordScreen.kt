@@ -24,19 +24,27 @@ import com.neirasphere.ecosphere.ui.theme.BlackColor
 import com.neirasphere.ecosphere.utils.ActionKeyboard
 
 @Composable
-fun ChangePasswordScreen(navController: NavController, modifier: Modifier = Modifier) {
+fun ChangePasswordScreen(
+    moveToProfile: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier
             .fillMaxSize()
             .padding(horizontal = 16.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        ChangePasswordContent()
+        ChangePasswordContent(
+            onChangePasswordClick = {}
+        )
     }
 }
 
 @Composable
-fun ChangePasswordContent(modifier: Modifier = Modifier) {
+fun ChangePasswordContent(
+    onChangePasswordClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Text(
         text = stringResource(id = R.string.change_pass_header_title),
         style = MaterialTheme.typography.bodyMedium.copy(
@@ -47,15 +55,24 @@ fun ChangePasswordContent(modifier: Modifier = Modifier) {
     )
     Spacer(modifier = Modifier.height(20.dp))
     SectionTextColumn(title = R.string.edit_sec_title_4) {
-        EditPasswordProfileForm(label = "Masukan Password", value = "", keyboardAction = ActionKeyboard.NEXT,onValueChange = { })
+        EditPasswordProfileForm(
+            label = "Masukan Password",
+            value = "",
+            keyboardAction = ActionKeyboard.NEXT,
+            onValueChange = { })
     }
     Spacer(modifier = Modifier.height(15.dp))
     SectionTextColumn(title = R.string.edit_sec_title_6) {
-        EditPasswordProfileForm(label = "Masukan Password", value = "", keyboardAction = ActionKeyboard.END,onValueChange = { })
+        EditPasswordProfileForm(
+            label = "Masukan Password",
+            value = "",
+            keyboardAction = ActionKeyboard.END,
+            onValueChange = { })
     }
     ButtonProfile(
         label = "Simpan",
         isLogoutButton = false,
         modifier = Modifier.padding(vertical = 35.dp),
-        click = { })
+        click = onChangePasswordClick
+    )
 }

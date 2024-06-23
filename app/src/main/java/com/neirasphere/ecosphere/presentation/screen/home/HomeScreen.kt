@@ -5,7 +5,6 @@ import android.content.Context
 import android.location.Geocoder
 import android.location.Location
 import android.os.Looper
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,7 +28,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -45,7 +43,6 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.LatLngBounds
 import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
@@ -55,6 +52,7 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.neirasphere.ecosphere.R
+import com.neirasphere.ecosphere.domain.model.UserData
 import com.neirasphere.ecosphere.presentation.components.HomeAppBar
 import com.neirasphere.ecosphere.presentation.components.HomeCardClassify
 import com.neirasphere.ecosphere.presentation.components.SearchBar
@@ -67,7 +65,7 @@ import java.util.Locale
 
 @Composable
 fun HomeScreen(
-    navController: NavController,
+    moveToProfile: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
@@ -82,6 +80,9 @@ fun HomeScreen(
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(userLocation ?: yogyakartaLatlng, 6f)
     }
+
+    viewModel.dataUser()
+    val user by viewModel.user.collectAsState()
 
     RequestLocationPermission(
         onPermissionGranted = {
@@ -117,9 +118,8 @@ fun HomeScreen(
 
     HomeContent(
         viewModel = viewModel,
-        moveToProfile = {
-            navController.navigate(Screen.ProfileScreen.route)
-        },
+        moveToProfile = moveToProfile,
+        user = user.dataUser,
         cityNameUser = cityName,
         locationUser = userLocation,
         cameraState = cameraPositionState,
@@ -131,6 +131,7 @@ fun HomeScreen(
 @Composable
 fun HomeContent(
     viewModel: HomeViewModel,
+    user: UserData?,
     cityNameUser: String,
     locationUser: LatLng?,
     cameraState: CameraPositionState,
@@ -139,12 +140,15 @@ fun HomeContent(
     moveToProfile: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+    val userName = if(user !=null) "${user?.firstName}" else "Unknows"
+
     Column(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        HomeAppBar(name = "Erlin", location = cityNameUser, moveToProfile = moveToProfile)
+        HomeAppBar(name = userName, location = cityNameUser, userImage = user?.avatar,moveToProfile = moveToProfile)
         SearchBar(query = "", onQueryChange = {}, modifier = Modifier.padding(horizontal = 16.dp))
         HomeCardClassify("10", "20", "30")
         SectionTextColumn(title = R.string.section_one, modifier = Modifier.padding(top = 25.dp)) {
@@ -173,7 +177,8 @@ fun HomeContent(
             modifier = Modifier.padding(top = 10.dp, bottom = 20.dp)
         ) {
             GoogleMap(
-                modifier = modifier.fillMaxWidth()
+                modifier = modifier
+                    .fillMaxWidth()
                     .height(250.dp)
                     .clip(MaterialTheme.shapes.small),
                 cameraPositionState = cameraState,
@@ -271,5 +276,5 @@ fun getCityName(
 @Preview
 @Composable
 private fun HomeScreenPrev() {
-    HomeScreen(navController = rememberNavController())
+    HomeScreen(moveToProfile = {})
 }

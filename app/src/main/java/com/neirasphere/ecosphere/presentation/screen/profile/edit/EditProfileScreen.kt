@@ -15,6 +15,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.presentation.components.ButtonProfile
@@ -27,7 +28,8 @@ import com.neirasphere.ecosphere.utils.TypeKeyboard
 
 @Composable
 fun EditProfileScreen(
-    navController: NavController,
+    moveToProfile: () -> Unit,
+    viewModel: EditProfileViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
 
@@ -47,9 +49,6 @@ fun EditProfileScreen(
         mutableStateOf("")
     }
 
-    var password by remember {
-        mutableStateOf("")
-    }
 
     var location by remember {
         mutableStateOf("")
@@ -65,17 +64,16 @@ fun EditProfileScreen(
             firstName = firstName,
             lastName = lastName,
             email = email,
-            password = password,
             date = birtDate,
             location = location,
             onFirstNameChange = { firstName = it },
             onLastNameChange = { lastName = it },
-            onPasswordChange = { password = it },
             onEmailChange = { email = it },
             onDateChange = { birtDate = it },
             onLocationChange = {
                 location = it
-            }
+            },
+            onButtonSaveClick = {}
         )
     }
 }
@@ -85,15 +83,14 @@ fun EditProfileContent(
     firstName: String,
     lastName: String,
     email: String,
-    password: String,
     date: String,
     location: String,
     onFirstNameChange: (String) -> Unit,
     onLastNameChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
-    onPasswordChange: (String) -> Unit,
     onDateChange: (String) -> Unit,
     onLocationChange: (String) -> Unit,
+    onButtonSaveClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     HeaderEditProfile(
@@ -158,5 +155,6 @@ fun EditProfileContent(
         label = "Save Changes",
         isLogoutButton = false,
         modifier = Modifier.padding(vertical = 45.dp),
-        click = { })
+        click = onButtonSaveClick
+    )
 }

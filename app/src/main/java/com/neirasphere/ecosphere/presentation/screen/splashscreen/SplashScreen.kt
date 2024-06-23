@@ -33,7 +33,9 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun SplashScreen(
-    navController: NavHostController,
+    moveToHome: () -> Unit,
+    moveToLogin: () -> Unit,
+    moveToOnboarding: () -> Unit,
     viewModel: SplashViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
@@ -45,30 +47,18 @@ fun SplashScreen(
     val isLogin = viewModel.getIsLogin().collectAsState(initial = false)
 
     LaunchedEffect(key1 = true) {
-        delay(1500)
+        delay(1000)
         startAnim = true
-        delay(2000)
+        delay(1500)
 
         if(statusOnboarding.value){
             if(isLogin.value){
-                navController.navigate(Screen.HomeScreen.route){
-                    popUpTo(Screen.SplashScreen.route){
-                        inclusive = true
-                    }
-                }
+                moveToHome()
             }else {
-                navController.navigate(Screen.LoginScreen.route){
-                    popUpTo(Screen.SplashScreen.route){
-                        inclusive = true
-                    }
-                }
+                moveToLogin()
             }
         }else {
-            navController.navigate(Screen.OnboardingScreen.route){
-                popUpTo(Screen.SplashScreen.route){
-                    inclusive = true
-                }
-            }
+            moveToOnboarding()
         }
     }
     SplashScreenAnimation(state = startAnim)

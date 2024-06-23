@@ -7,6 +7,8 @@ import com.neirasphere.ecosphere.data.remote.response.GetPostsResponse
 import com.neirasphere.ecosphere.data.remote.response.GetUserByIdResponse
 import com.neirasphere.ecosphere.data.remote.response.LoginResponse
 import okhttp3.MultipartBody
+import com.neirasphere.ecosphere.data.remote.response.RegisterResponse
+import retrofit2.Response
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -24,6 +26,7 @@ interface ApiService {
         @Field("email") email: String,
         @Field("password") password: String
     ): LoginResponse
+
 
     @GET("user/{id}")
     suspend fun getUserById(
@@ -63,4 +66,12 @@ interface ApiService {
         @Path("id") id: Int
     ): GetPostCommentsResponse
 
+    @FormUrlEncoded
+    @POST("user")
+    suspend fun register(
+        @Field("nama_depan") nama_depan: String,
+        @Field("nama_belakang") nama_belakang: String,
+        @Field("email") email: String,
+        @Field("password") password: String
+    ) : RegisterResponse
 }

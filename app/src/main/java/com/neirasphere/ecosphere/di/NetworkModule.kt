@@ -36,7 +36,7 @@ object NetworkModule {
     @Singleton
     fun provideApiService(client: OkHttpClient) : ApiService {
         return Retrofit.Builder()
-            .baseUrl("http://localhost:4000/api/")
+            .baseUrl("http://localhost:5000/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

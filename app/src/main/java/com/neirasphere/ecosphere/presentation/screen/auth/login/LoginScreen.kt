@@ -55,21 +55,20 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.presentation.components.AuthForm
 import com.neirasphere.ecosphere.presentation.components.AuthWith
-import com.neirasphere.ecosphere.presentation.components.ButtonAuth
 import com.neirasphere.ecosphere.presentation.components.PasswordForm
 import com.neirasphere.ecosphere.presentation.components.RoundedIconButton
 import com.neirasphere.ecosphere.presentation.navigation.Screen
+import com.neirasphere.ecosphere.presentation.screen.auth.component.ButtonAuth
 import com.neirasphere.ecosphere.ui.theme.BlackColor
 import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 import com.neirasphere.ecosphere.utils.ActionKeyboard
 import com.neirasphere.ecosphere.utils.Constant.CLIENT
 import com.neirasphere.ecosphere.utils.TypeKeyboard
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
-    navController: NavHostController,
+    moveToHome: () -> Unit,
+    moveToRegister: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
@@ -83,8 +82,8 @@ fun LoginScreen(
 
     val loginLoading = viewModel.loginState.collectAsState().value.isLoading
     val loginSuccess = viewModel.loginState.collectAsState().value.isSuccess
+    val error = viewModel.loginState.collectAsState().value.isError
     var isLoadingDialogShow by remember { mutableStateOf(false) }
-    var isSuccessDialogShow by remember { mutableStateOf(false) }
 
     @Suppress("DEPRECATION")
     val launcher =
@@ -131,13 +130,11 @@ fun LoginScreen(
     }
 
     if (loginSuccess) {
-        DialogLoginSuccess(onDismissRequest = { isSuccessDialogShow = false }, moveToHome = {
-            navController.navigate(Screen.HomeScreen.route) {
-                popUpTo(Screen.LoginScreen.route) {
-                    inclusive = true
-                }
-            }
-        })
+        moveToHome()
+    }
+
+    if (error != null) {
+
     }
 
     Column(
@@ -156,9 +153,7 @@ fun LoginScreen(
             moveToForgot = {
 //                 isBottomSheetVisible = true
             },
-            onRegisterClick = {
-                navController.navigate(Screen.RegisterScreen.route)
-            },
+            onRegisterClick = moveToRegister,
             onLoginGoogleClick = {
                 val googleLogin = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestEmail()
@@ -194,6 +189,7 @@ fun LoginContent(
     onRegisterClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val disable = if (email.isNotBlank() && password.isNotBlank()) true else false
     Image(
         painter = painterResource(id = R.drawable.happy_earth), contentDescription = "LoginImage",
         modifier = modifier
@@ -239,6 +235,7 @@ fun LoginContent(
     )
     ButtonAuth(
         label = "Login",
+        isDisable = disable,
         click = onLoginClick
     )
     AuthWith(string = R.string.continue_with)

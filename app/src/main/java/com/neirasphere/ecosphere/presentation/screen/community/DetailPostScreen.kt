@@ -1,5 +1,6 @@
 package com.neirasphere.ecosphere.presentation.screen.community
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -53,6 +54,7 @@ import com.neirasphere.ecosphere.presentation.navigation.Screen
 import com.neirasphere.ecosphere.ui.theme.BlackColor
 import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 
+
 @Composable
 fun DetailPostScreen(
     modifier: Modifier = Modifier,
@@ -60,12 +62,14 @@ fun DetailPostScreen(
     postId: Int?,
     viewModel: CommunityViewModel = hiltViewModel()
 ) {
-    val state by viewModel.getPostsState.collectAsStateWithLifecycle()
-    
-    val post = state.posts.filter { post ->
-        post.id == postId
-    }
+    Log.d("cek postId", "$postId")
+    viewModel.setPostId(postId!!)
+    Log.d("cek VMPostId", "${viewModel.getPostId()}")
+    viewModel.getPostById()
+    val state by viewModel.getPostState.collectAsStateWithLifecycle()
+    Log.d("cek posts detail", "${state.posts}")
 
+    val post = state.posts
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -81,10 +85,14 @@ fun DetailPostScreen(
             modifier = modifier
                 .padding(16.dp)
         ) {
-            DetailPostContent(
-                post = post,
-                navController = navController
-            )
+            if (post.isNotEmpty()) {
+                DetailPostContent(
+                    post = post,
+                    navController = navController
+                )
+            } else {
+                Text(text = "Error data fetching: ${state.isLoading}")
+            }
         }
     }
 }

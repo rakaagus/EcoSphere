@@ -84,6 +84,7 @@ fun LoginScreen(
     val loginSuccess = viewModel.loginState.collectAsState().value.isSuccess
     val error = viewModel.loginState.collectAsState().value.isError
     var isLoadingDialogShow by remember { mutableStateOf(false) }
+    var isErrorDialogShow by remember { mutableStateOf(false) }
 
     @Suppress("DEPRECATION")
     val launcher =
@@ -134,7 +135,15 @@ fun LoginScreen(
     }
 
     if (error != null) {
-
+        var errorData = when{
+            error.contains("HTTP 400") -> {
+                "Password Atau Gmail Kamu Salah"
+            }
+            else -> {
+                error
+            }
+        }
+        DialogLoginError(onDismissRequest = { viewModel.clearError() },  errorData = errorData)
     }
 
     Column(
@@ -305,29 +314,31 @@ fun LoadingDialog(
 
 
 @Composable
-fun DialogLoginSuccess(
+fun DialogLoginError(
     onDismissRequest: () -> Unit,
-    moveToHome: () -> Unit,
+    errorData: String,
     modifier: Modifier = Modifier
 ) {
     AlertDialog(
         onDismissRequest = { onDismissRequest() },
         text = {
             Text(
-                text = "Yey, Berhasil Login",
+                text = errorData,
                 style = MaterialTheme.typography.bodyMedium,
             )
         },
         confirmButton = {
-            TextButton(onClick = { moveToHome() }) {
+            TextButton(onClick = { onDismissRequest() }) {
                 Text(
-                    text = "Go to Home",
+                    text = "Coba Lagi",
                     style = MaterialTheme.typography.bodyLarge.copy(
                         fontSize = 14.sp
                     ),
-                    color = PrimaryColor
+                    color = MaterialTheme.colorScheme.error
                 )
             }
-        }
+        },
+        modifier = modifier
     )
 }
+

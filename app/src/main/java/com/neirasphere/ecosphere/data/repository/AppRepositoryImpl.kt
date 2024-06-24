@@ -35,17 +35,16 @@ class AppRepositoryImpl @Inject constructor(
         try {
             val response = apiService.login(email, password)
             val data = response.data
-            val user = data.user
-            val success = data.success
+            val user = data?.user
+            val success = data?.success ?: false
             if (success) {
                 setLoginStatus(true)
                 val userData = UserData(
-                    id = user.idUser,
-                    token = data.token,
-                    firstName = user.namaDepan,
-                    lastName = user.namaBelakang,
-                    email = user.email,
-                    avatar = user.imgProfile
+                    token = data?.token ?: "",
+                    firstName = user?.namaDepan,
+                    lastName = user?.namaBelakang,
+                    email = user?.email,
+                    avatar = user?.imgProfile
                 )
                 saveSessionUser(userData)
                 Log.e("AppRepository", "data Login ${authDataStore.isLoggedIn()}")
@@ -58,6 +57,8 @@ class AppRepositoryImpl @Inject constructor(
                 Log.i("AppRepository", "User Last Name: ${userData.lastName}")
                 Log.i("AppRepository", "User Email: ${userData.email}")
                 Log.i("AppRepository", "User Avatar: ${userData.avatar}")
+            }else {
+                emit(ResultDefault.Error(response.message))
             }
             emit(ResultDefault.Success(response))
         } catch (e: Exception) {
@@ -79,7 +80,7 @@ class AppRepositoryImpl @Inject constructor(
             if(response.success){
                 emit(ResultDefault.Success(response))
             }else {
-                emit(ResultDefault.Error("Error"))
+                emit(ResultDefault.Error(response.message))
             }
         } catch (e: Exception) {
             Log.d("AppRepository", "registerUser: ${e.message.toString()}")

@@ -31,6 +31,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.android.gms.location.LocationCallback
@@ -58,12 +61,16 @@ import com.neirasphere.ecosphere.presentation.components.HomeCategoriesLearnCard
 import com.neirasphere.ecosphere.presentation.components.SearchBar
 import com.neirasphere.ecosphere.presentation.components.SectionTextColumn
 import com.neirasphere.ecosphere.presentation.components.SectionTextColumnMap
+import com.neirasphere.ecosphere.presentation.navigation.Screen
+import com.neirasphere.ecosphere.presentation.screen.classification.ClassifyHistoryViewModel
 import java.util.Locale
 
 @Composable
 fun HomeScreen(
     moveToProfile: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
+    classifyViewModel: ClassifyHistoryViewModel = hiltViewModel(),
+    moveToClassificationHistory: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var cityName by remember {
@@ -115,6 +122,7 @@ fun HomeScreen(
 
     HomeContent(
         viewModel = viewModel,
+        classifyViewModel = classifyViewModel,
         moveToProfile = moveToProfile,
         user = user.dataUser,
         cityNameUser = cityName,
@@ -122,12 +130,14 @@ fun HomeScreen(
         cameraState = cameraPositionState,
         mapStyle = properties,
         mapSetting = uiSettings,
+        moveToClassificationHistory = moveToClassificationHistory,
     )
 }
 
 @Composable
 fun HomeContent(
     viewModel: HomeViewModel,
+    classifyViewModel: ClassifyHistoryViewModel,
     user: UserData?,
     cityNameUser: String,
     locationUser: LatLng?,
@@ -135,19 +145,34 @@ fun HomeContent(
     mapStyle: MapProperties,
     mapSetting: MapUiSettings,
     moveToProfile: () -> Unit,
+    moveToClassificationHistory: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
-    val userName = if(user !=null) "${user?.firstName}" else "Unknows"
+    val userName = if (user != null) "${user?.firstName}" else "Unknows"
 
     Column(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        HomeAppBar(name = userName, location = cityNameUser, userImage = user?.avatar,moveToProfile = moveToProfile)
+        val organicCount by classifyViewModel.organicCount.collectAsState()
+        val anOrganicCount by classifyViewModel.anOrganicCount.collectAsState()
+        val totalCount by classifyViewModel.totalCount.collectAsState()
+
+        HomeAppBar(
+            name = userName,
+            location = cityNameUser,
+            userImage = user?.avatar,
+            moveToProfile = moveToProfile
+        )
         SearchBar(query = "", onQueryChange = {}, modifier = Modifier.padding(horizontal = 16.dp))
-        HomeCardClassify("10", "20", "30")
+        HomeCardClassify(
+            count = totalCount,
+            inorganic = anOrganicCount,
+            organic = organicCount,
+            moveToClassificationHistory = moveToClassificationHistory,
+        )
         SectionTextColumn(title = R.string.section_one, modifier = Modifier.padding(top = 25.dp)) {
             viewModel.categoryLearn.collectAsState(initial = UiState.Loading).value.let { state ->
                 when (state) {
@@ -216,6 +241,7 @@ fun RequestLocationPermission(
         permissionState.allPermissionsGranted -> {
             onPermissionGranted()
         }
+
         else -> {
 
         }
@@ -259,7 +285,7 @@ fun GetUserLocation(
 fun getCityName(
     context: Context,
     location: Location
-) : String {
+): String {
     val geocoder = Geocoder(context, Locale.getDefault())
     val address = geocoder.getFromLocation(location.latitude, location.longitude, 1)
     return if (!address.isNullOrEmpty()) {
@@ -273,5 +299,5 @@ fun getCityName(
 @Preview
 @Composable
 private fun HomeScreenPrev() {
-    HomeScreen(moveToProfile = {})
+    HomeScreen(moveToProfile = {}, moveToClassificationHistory = {})
 }

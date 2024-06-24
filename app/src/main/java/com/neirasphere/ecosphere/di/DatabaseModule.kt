@@ -5,7 +5,7 @@ import android.content.Context
 import androidx.room.Room
 import com.google.firebase.auth.FirebaseAuth
 import com.neirasphere.ecosphere.data.local.DataSource
-import com.neirasphere.ecosphere.data.local.room.EduDb
+import com.neirasphere.ecosphere.data.local.room.AppDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -27,16 +27,20 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideEduHistoryDatabase(@ApplicationContext context: Context): EduDb {
+    fun provideDatabase(@ApplicationContext context: Context): AppDatabase {
         return Room.databaseBuilder(
             context,
-            EduDb::class.java,
-            "edu_history_table"
+            AppDatabase::class.java,
+            "app_database"
         ).build()
     }
 
     @Provides
     @Singleton
-    fun provideEduHistoryDao(db: EduDb) = db.eduHistoryDao
+    fun provideClassifyHistoryDao(db: AppDatabase) = db.classifyHistoryDao
+
+    @Provides
+    @Singleton
+    fun provideEduHistoryDao(db: AppDatabase) = db.eduHistoryDao
 
 }

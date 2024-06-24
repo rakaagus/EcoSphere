@@ -112,4 +112,8 @@ class LoginViewModel @Inject constructor(
         }
     }
 
+    fun clearError() {
+        _loginState.update { it.copy(isError = null) }
+    }
+
 }

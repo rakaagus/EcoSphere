@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.neirasphere.ecosphere.R
+import com.neirasphere.ecosphere.domain.model.UserData
 import com.neirasphere.ecosphere.presentation.components.ButtonProfile
 import com.neirasphere.ecosphere.presentation.components.EditPasswordProfileForm
 import com.neirasphere.ecosphere.presentation.components.EditProfileForm
@@ -32,6 +34,8 @@ fun EditProfileScreen(
     viewModel: EditProfileViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
+
+    val user by viewModel.state.collectAsState()
 
     var firstName by remember {
         mutableStateOf("")
@@ -61,6 +65,7 @@ fun EditProfileScreen(
             .verticalScroll(rememberScrollState())
     ) {
         EditProfileContent(
+            user = user.user,
             firstName = firstName,
             lastName = lastName,
             email = email,
@@ -85,6 +90,7 @@ fun EditProfileContent(
     email: String,
     date: String,
     location: String,
+    user: UserData?,
     onFirstNameChange: (String) -> Unit,
     onLastNameChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
@@ -94,7 +100,7 @@ fun EditProfileContent(
     modifier: Modifier = Modifier
 ) {
     HeaderEditProfile(
-        image = R.drawable.example_image_user,
+        avatarUser = user?.avatar,
     )
     Spacer(modifier = Modifier.height(20.dp))
     SectionTextColumnProfile(title = R.string.edit_sec_title_7) {

@@ -1,11 +1,9 @@
 package com.neirasphere.ecosphere.presentation.screen.classification
 
-
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,7 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,22 +28,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
 import com.neirasphere.ecosphere.R
+import com.neirasphere.ecosphere.data.local.entities.ClassifyHistory
 import com.neirasphere.ecosphere.data.remote.response.ClassifyResult
 import com.neirasphere.ecosphere.presentation.components.ButtonAuth
 import com.neirasphere.ecosphere.presentation.navigation.Screen
 import com.neirasphere.ecosphere.presentation.screen.classification.component.ShimmerImage
-import com.neirasphere.ecosphere.utils.shimmerEffect
 import kotlinx.coroutines.delay
 import java.io.File
 
@@ -55,6 +48,7 @@ fun ClassificationScreen(
     navController: NavHostController,
     file: File?,
     viewModel: ClassificationViewModel = hiltViewModel(),
+    historyViewModel: ClassifyHistoryViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
 
@@ -62,31 +56,40 @@ fun ClassificationScreen(
 
     var isBottomSheetVisible by remember { mutableStateOf(false) }
     var shimmerLoading by remember { mutableStateOf(true) }
-    val success = viewModel.state.collectAsState().value.success
-    val error = viewModel.state.collectAsState().value.error
     var classificationResponse by remember { mutableStateOf<ClassifyResult?>(null) }
 
-    LaunchedEffect(key1 = Unit) {
+    val state = viewModel.state.collectAsState().value
+    val success = state.success
+    val error = state.error
+    val result = state.result
+
+    LaunchedEffect(file, result) {
         delay(100)
-        if (file != null) {
+        if (file != null && result == null) {
             viewModel.classifyTrash(file)
         }
     }
 
-    if (success) {
-        viewModel.state.collectAsState().value.result.let {
-            classificationResponse = it
+    LaunchedEffect(success) {
+        if (success && result != null) {
+            classificationResponse = result
+            val classifyHistory = ClassifyHistory(
+                title = result.classCategory ?: "NONE CLASSIFY",
+                image = file?.absolutePath ?: "" ,
+            )
+            Log.d("ClassificationScreen", "File: ${file?.absolutePath ?: "null"}")
+            historyViewModel.insertHistory(classifyHistory)
+            isBottomSheetVisible = true
+            shimmerLoading = false
         }
-        isBottomSheetVisible = true
-        shimmerLoading = false
     }
+    Log.d("ClassificationScreen", "Outside: $isBottomSheetVisible, classificationResponse: $classificationResponse")
 
     if (error != null) {
         viewModel.state.collectAsState().value.error.let {
             Toast.makeText(context, error, Toast.LENGTH_SHORT).show()
         }
     }
-
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -106,13 +109,15 @@ fun ClassificationScreen(
         }
     }
     if (isBottomSheetVisible) {
+        Log.e("bottom","show bottomsheet")
         BottomSheet(
-            onDismiss = { isBottomSheetVisible = false },
+            onDismiss = {},
             file = file,
             navController = navController,
             classificationResponse = classificationResponse
         ) {
             isBottomSheetVisible = false
+            classificationResponse = null
             navController.navigate(Screen.CameraScreen.route) {
                 popUpTo(Screen.ClassifyScreen.route) {
                     inclusive = true
@@ -246,6 +251,5 @@ fun BottomSheetContent(
                     }
                 }
             })
-
     }
 }

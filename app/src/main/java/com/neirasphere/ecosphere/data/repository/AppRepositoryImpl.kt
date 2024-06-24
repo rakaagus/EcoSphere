@@ -40,6 +40,7 @@ class AppRepositoryImpl @Inject constructor(
             if (success) {
                 setLoginStatus(true)
                 val userData = UserData(
+                    id = user?.idUser,
                     token = data?.token ?: "",
                     firstName = user?.namaDepan,
                     lastName = user?.namaBelakang,

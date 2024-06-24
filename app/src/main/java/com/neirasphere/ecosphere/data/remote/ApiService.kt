@@ -5,10 +5,10 @@ import com.neirasphere.ecosphere.data.remote.response.GetPostCommentsResponse
 import com.neirasphere.ecosphere.data.remote.response.GetPostLikesResponse
 import com.neirasphere.ecosphere.data.remote.response.GetPostsResponse
 import com.neirasphere.ecosphere.data.remote.response.GetUserByIdResponse
+import com.neirasphere.ecosphere.data.remote.response.LikeResponse
 import com.neirasphere.ecosphere.data.remote.response.LoginResponse
-import okhttp3.MultipartBody
 import com.neirasphere.ecosphere.data.remote.response.RegisterResponse
-import retrofit2.Response
+import okhttp3.MultipartBody
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -38,7 +38,7 @@ interface ApiService {
     suspend fun postWithImage(
         @Header("Authorization") token: String,
         @Part("post") post: String,
-        @Part("post_img") postImg: MultipartBody.Part
+        @Part post_img: MultipartBody.Part
     ): CommunityPostResponse
 
     @FormUrlEncoded
@@ -67,11 +67,19 @@ interface ApiService {
     ): GetPostCommentsResponse
 
     @FormUrlEncoded
+    @POST("{id}/like")
+    suspend fun postLike(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int
+    ): LikeResponse
+
+    @FormUrlEncoded
     @POST("user")
     suspend fun register(
         @Field("nama_depan") nama_depan: String,
         @Field("nama_belakang") nama_belakang: String,
         @Field("email") email: String,
-        @Field("password") password: String
+        @Field("password") password: String,
+        @Field("googleId") googleId: String? = null
     ) : RegisterResponse
 }

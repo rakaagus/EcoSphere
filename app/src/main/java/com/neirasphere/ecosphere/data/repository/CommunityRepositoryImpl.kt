@@ -7,6 +7,7 @@ import com.neirasphere.ecosphere.data.preferences.AuthDataStore
 import com.neirasphere.ecosphere.data.remote.ApiService
 import com.neirasphere.ecosphere.data.remote.RemoteDataSource
 import com.neirasphere.ecosphere.data.remote.response.LikeItem
+import com.neirasphere.ecosphere.data.remote.response.LikeResponse
 import com.neirasphere.ecosphere.domain.model.CommunityPost
 import com.neirasphere.ecosphere.domain.model.CommunityPostSQL
 import com.neirasphere.ecosphere.domain.model.PostComment
@@ -30,7 +31,15 @@ class CommunityRepositoryImpl @Inject constructor(
 
     override val communityPost = mutableListOf<CommunityPost>()
 
-    val token = authDataStore.getToken().toString()
+    var userId : Int = 0
+
+    fun setUserId(id: Int) {
+        userId = id
+    }
+
+    fun getUserId(): Int {
+        return userId
+    }
 
     init {
         if (communityPost.isEmpty()) {
@@ -84,10 +93,12 @@ class CommunityRepositoryImpl @Inject constructor(
                     avatar = if (userResult.imgProfile != null) remoteDataSource.imageBaseURL + userResult.imgProfile else null
                 )
                 var likes = 0
+                var liked = false
                 try {
                     val likeResponse = remoteDataSource.getCommunityLikes(communityId!!)
                     val likeResult = likeResponse.data
                     likes = likeResult?.size ?: 0
+                    liked = likeResult?.any { it?.idUser == userId } ?: false
                 } catch (e: Exception) {
                     if (e.message!!.contains("404")) {
                         likes = 0
@@ -197,17 +208,25 @@ class CommunityRepositoryImpl @Inject constructor(
             val success = response.success
             if (success == true) {
                 result?.forEach {
-                    val userResponse = remoteDataSource.getUserById(it!!.idUser!!)
+                    var user : User
+                    val idUser = it?.idUser
+                    val userResponse = remoteDataSource.getUserById(idUser!!)
                     val userResult = userResponse.data
-                    val user = User(
-                        id = userResult.idUser,
-                        namaDepan = userResult.namaDepan,
-                        namaBelakang = userResult.namaBelakang,
-                        email = userResult.email,
-                        avatar = if (userResult.imgProfile != null) remoteDataSource.imageBaseURL + userResult.imgProfile else null
-                    )
+                    val userSuccess = userResponse.success
+                    if (userSuccess) {
+                        user = User(
+                            id = userResult.idUser,
+                            namaDepan = userResult.namaDepan,
+                            namaBelakang = userResult.namaBelakang,
+                            email = userResult.email,
+                            avatar = if (userResult.imgProfile != null) remoteDataSource.imageBaseURL + userResult.imgProfile else null
+                        )
+                    } else {
+                        Log.d("error fetch user", "${userResponse.message}")
+                        user = DataSource.communityPostUser()[0]
+                    }
                     val resultData = PostComment(
-                        id = it.commentId!!,
+                        id = it?.commentId!!,
                         PostId = it.communityId!!,
                         UserId = it.idUser!!,
                         User = user,
@@ -219,13 +238,14 @@ class CommunityRepositoryImpl @Inject constructor(
                     commentDataStore.add(resultData)
                 }
             }
+            Log.d("cek komen sukses", "masuk")
             emit(CommunityResult.Success(commentDataStore))
         } catch (e: Exception) {
             emit(CommunityResult.Error(e.message))
         }
     }.flowOn(Dispatchers.IO)
 
-    override fun postWithImage(post: String, postImg: MultipartBody.Part) = flow {
+    override fun postWithImage(token: String, post: String, postImg: MultipartBody.Part) = flow {
         emit(CommunityResult.Loading())
         try {
             val response = apiService.postWithImage(token, post, postImg)
@@ -238,7 +258,7 @@ class CommunityRepositoryImpl @Inject constructor(
         }
     }.flowOn(Dispatchers.IO)
 
-    override fun post(post: String) = flow {
+    override fun post(token: String, post: String) = flow {
         emit(CommunityResult.Loading())
         try {
             val response = apiService.post(token, post)
@@ -250,5 +270,18 @@ class CommunityRepositoryImpl @Inject constructor(
             emit(CommunityResult.Error(e.message.toString()))
         }
     }.flowOn(Dispatchers.IO)
+
+    override fun postLike(token: String, id: Int): Flow<CommunityResult<LikeResponse>> = flow {
+        emit(CommunityResult.Loading())
+        try {
+            val response = apiService.postLike(token, id)
+            val success = response.success
+            if (success == true) {
+                emit(CommunityResult.Success(response))
+            }
+        } catch (e: Exception) {
+            emit(CommunityResult.Error(e.message.toString()))
+        }
+    }
 
 }

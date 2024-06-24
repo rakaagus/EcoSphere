@@ -77,8 +77,6 @@ fun CameraScreen(
     viewModel: ClassificationViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
-
-
     CameraContent(
         onImageFiled = { file ->
             moveToResult(file)

@@ -55,6 +55,7 @@ import com.neirasphere.ecosphere.presentation.screen.auth.register.RegisterScree
 import com.neirasphere.ecosphere.presentation.screen.auth.verificationemail.VerificationEmailScreen
 import com.neirasphere.ecosphere.presentation.screen.classification.CameraScreen
 import com.neirasphere.ecosphere.presentation.screen.classification.ClassificationScreen
+import com.neirasphere.ecosphere.presentation.screen.classification.ClassifyHistoryScreen
 import com.neirasphere.ecosphere.presentation.screen.community.CommunityScreen
 import com.neirasphere.ecosphere.presentation.screen.community.DetailPostScreen
 import com.neirasphere.ecosphere.presentation.screen.community.DummyDetailPostScreen
@@ -131,7 +132,14 @@ fun EcoSphereApp(
                 Screen.CommunityScreen.route -> {
                     CommunityAppBar(navController = navController)
                 }
-
+                Screen.ClassifyHistoryScreen.route ->{
+                    CenterTopAppBar(
+                        onBackClick = {
+                            navController.navigateUp()
+                        },
+                        title = R.string.title_page_classify_history
+                    )
+                }
                 Screen.EditProfileScreen.route -> {
                     CenterTopAppBar(
                         onBackClick = {
@@ -482,6 +490,9 @@ fun EcoSphereApp(
                     },
                     navHostController = navController
                 )
+            }
+            composable(Screen.ClassifyHistoryScreen.route){
+                ClassifyHistoryScreen()
             }
 
             /*Profile Route*/

@@ -31,9 +31,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.domain.model.CategoryLearn
 import com.neirasphere.ecosphere.data.local.entities.EduHistory
+import com.neirasphere.ecosphere.presentation.navigation.Screen
 import com.neirasphere.ecosphere.presentation.screen.education.EduHistoryViewModel
 import com.neirasphere.ecosphere.ui.theme.BlackColor
 import com.neirasphere.ecosphere.ui.theme.NeutralColorGrey
@@ -41,11 +44,13 @@ import com.neirasphere.ecosphere.ui.theme.NeutralColorWhite
 import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 import com.neirasphere.ecosphere.ui.theme.TextColorSc
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeCardClassify(
-    count: String,
-    inorganic: String,
-    organic: String,
+    count: Int,
+    inorganic: Int,
+    organic: Int,
+    navController : NavController,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -131,7 +136,10 @@ fun HomeCardClassify(
         Card(
             shape = MaterialTheme.shapes.large,
             colors = CardDefaults.cardColors(NeutralColorGrey),
-            modifier = Modifier.offset(y = 20.dp)
+            modifier = Modifier.offset(y = 20.dp),
+            onClick = {
+                navController.navigate(Screen.ClassifyHistoryScreen.route)
+            }
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
@@ -182,13 +190,13 @@ fun HomeCategoriesLearnCard(
     }
 }
 
-@Preview
-@Composable
-private fun HomeCardClassifyPrev() {
-    HomeCardClassify(
-        "10", "20", "30"
-    )
-}
+//@Preview
+//@Composable
+//private fun HomeCardClassifyPrev() {
+//    HomeCardClassify(
+//        "10", "20", "30"
+//    )
+//}
 
 @Preview
 @Composable

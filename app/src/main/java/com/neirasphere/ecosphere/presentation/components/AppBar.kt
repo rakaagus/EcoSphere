@@ -267,7 +267,7 @@ fun HeaderProfile(
 
 @Composable
 fun HeaderEditProfile(
-    @DrawableRes image: Int,
+    avatarUser: String?,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -280,10 +280,12 @@ fun HeaderEditProfile(
         Box(
             contentAlignment = Alignment.BottomEnd
         ) {
-            Image(
-                painter = painterResource(id = image),
+            AsyncImage(
+                model = avatarUser,
+                placeholder = painterResource(id = R.drawable.image_default),
+                error = painterResource(R.drawable.image_default),
                 contentDescription = "UserImage",
-                modifier = Modifier
+                modifier =  Modifier
                     .padding(5.dp)
                     .size(120.dp)
                     .clip(CircleShape)
@@ -311,5 +313,5 @@ fun HeaderEditProfile(
 @Preview
 @Composable
 private fun HeaderEditProfilePrev() {
-    HeaderEditProfile(R.drawable.example_image_user)
+    HeaderEditProfile("")
 }

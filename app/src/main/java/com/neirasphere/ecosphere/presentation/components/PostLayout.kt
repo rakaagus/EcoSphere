@@ -67,7 +67,7 @@ fun PostLayout(
                 modifier = Modifier
                     .size(50.dp)
                     .clip(shape = CircleShape),
-                painter = if (post.user.avatar != null) rememberAsyncImagePainter(model = post.user.avatar) else painterResource(id = R.drawable.accoun_user),
+                painter = if (post.user.avatar != null) rememberAsyncImagePainter(model = post.user.avatar) else painterResource(id = R.drawable.image_default),
                 contentScale = ContentScale.Crop,
                 contentDescription = "Post User Avatar"
             )
@@ -146,7 +146,7 @@ fun CommentLayout(
                 modifier = Modifier
                     .size(50.dp)
                     .clip(shape = CircleShape),
-                painter = if (comment.User.avatar != null) rememberAsyncImagePainter(model = comment.User.avatar) else painterResource(id = R.drawable.accoun_user),
+                painter = if (comment.User.avatar != null) rememberAsyncImagePainter(model = comment.User.avatar) else painterResource(id = R.drawable.image_default),
                 contentScale = ContentScale.Crop,
                 contentDescription = "Post User Avatar"
             )
@@ -242,7 +242,7 @@ fun CommentAvatarAndInfo(
                 modifier = modifier
                     .size(50.dp)
                     .clip(shape = CircleShape),
-                painter = if (comment.User.avatar != null) rememberAsyncImagePainter(model = comment.User.avatar) else painterResource(id = R.drawable.accoun_user),
+                painter = if (comment.User.avatar != null) rememberAsyncImagePainter(model = comment.User.avatar) else painterResource(id = R.drawable.image_default),
                 contentScale = ContentScale.Crop,
                 contentDescription = "Post User Avatar"
             )
@@ -288,7 +288,7 @@ fun PostAvatarAndInfo(
             modifier = modifier
                 .size(50.dp)
                 .clip(shape = CircleShape),
-            painter = if (post.user.avatar != null) rememberAsyncImagePainter(model = post.user.avatar) else painterResource(id = R.drawable.accoun_user),
+            painter = if (post.user.avatar != null) rememberAsyncImagePainter(model = post.user.avatar) else painterResource(id = R.drawable.image_default),
             contentScale = ContentScale.Crop,
             contentDescription = "Post User Avatar"
         )

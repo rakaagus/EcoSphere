@@ -238,7 +238,7 @@ fun EcoSphereApp(
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.SplashScreen.route,
+            startDestination = Screen.HomeScreen.route,
             modifier = modifier.padding(innerPadding)
         ) {
 
@@ -314,6 +314,9 @@ fun EcoSphereApp(
                 HomeScreen(
                     moveToProfile = {
                         navController.navigate(Screen.ProfileScreen.route)
+                    },
+                    moveToClassificationHistory = {
+                        navController.navigate(Screen.ClassifyHistoryScreen.route)
                     }
                 )
             }

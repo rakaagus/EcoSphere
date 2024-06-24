@@ -116,8 +116,11 @@ fun CameraContent(
         }
     )
 
+
     LaunchedEffect(Unit) {
-        permissionState.launchPermissionRequest()
+        if (!permissionState.status.isGranted) {
+            permissionState.launchPermissionRequest()
+        }
     }
 
     Column(
@@ -258,7 +261,7 @@ fun CameraContent(
                 }
             }
         } else {
-            permissionState.launchPermissionRequest()
+//            permissionState.launchPermissionRequest()
         }
     }
 }

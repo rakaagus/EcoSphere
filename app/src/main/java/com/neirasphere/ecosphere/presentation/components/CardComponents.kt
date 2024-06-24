@@ -50,7 +50,7 @@ fun HomeCardClassify(
     count: Int,
     inorganic: Int,
     organic: Int,
-    navController : NavController,
+    moveToClassificationHistory: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -138,7 +138,7 @@ fun HomeCardClassify(
             colors = CardDefaults.cardColors(NeutralColorGrey),
             modifier = Modifier.offset(y = 20.dp),
             onClick = {
-                navController.navigate(Screen.ClassifyHistoryScreen.route)
+                moveToClassificationHistory()
             }
         ) {
             Row(

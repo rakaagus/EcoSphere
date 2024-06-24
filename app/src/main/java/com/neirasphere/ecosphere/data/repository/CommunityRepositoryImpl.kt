@@ -30,7 +30,7 @@ class CommunityRepositoryImpl @Inject constructor(
 
     override val communityPost = mutableListOf<CommunityPost>()
 
-    val token = authDataStore.getToken().toString()
+    val token = authDataStore.tokenUser.toString()
 
     init {
         if (communityPost.isEmpty()) {

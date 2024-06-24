@@ -70,6 +70,7 @@ fun HomeScreen(
     moveToProfile: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
     classifyViewModel: ClassifyHistoryViewModel = hiltViewModel(),
+    moveToClassificationHistory: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var cityName by remember {
@@ -122,9 +123,6 @@ fun HomeScreen(
     HomeContent(
         viewModel = viewModel,
         classifyViewModel = classifyViewModel,
-        moveToProfile = {
-            navController.navigate(Screen.ProfileScreen.route)
-        },
         moveToProfile = moveToProfile,
         user = user.dataUser,
         cityNameUser = cityName,
@@ -132,7 +130,7 @@ fun HomeScreen(
         cameraState = cameraPositionState,
         mapStyle = properties,
         mapSetting = uiSettings,
-        navController = navController,
+        moveToClassificationHistory = moveToClassificationHistory,
     )
 }
 
@@ -147,11 +145,11 @@ fun HomeContent(
     mapStyle: MapProperties,
     mapSetting: MapUiSettings,
     moveToProfile: () -> Unit,
-    navController: NavController,
+    moveToClassificationHistory: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
-    val userName = if(user !=null) "${user?.firstName}" else "Unknows"
+    val userName = if (user != null) "${user?.firstName}" else "Unknows"
 
     Column(
         modifier = modifier
@@ -161,10 +159,20 @@ fun HomeContent(
         val organicCount by classifyViewModel.organicCount.collectAsState()
         val anOrganicCount by classifyViewModel.anOrganicCount.collectAsState()
         val totalCount by classifyViewModel.totalCount.collectAsState()
-        
-        HomeAppBar(name = userName, location = cityNameUser, userImage = user?.avatar,moveToProfile = moveToProfile)
+
+        HomeAppBar(
+            name = userName,
+            location = cityNameUser,
+            userImage = user?.avatar,
+            moveToProfile = moveToProfile
+        )
         SearchBar(query = "", onQueryChange = {}, modifier = Modifier.padding(horizontal = 16.dp))
-        HomeCardClassify(count = totalCount, inorganic = anOrganicCount, organic = organicCount, navController = navController)
+        HomeCardClassify(
+            count = totalCount,
+            inorganic = anOrganicCount,
+            organic = organicCount,
+            moveToClassificationHistory = moveToClassificationHistory,
+        )
         SectionTextColumn(title = R.string.section_one, modifier = Modifier.padding(top = 25.dp)) {
             viewModel.categoryLearn.collectAsState(initial = UiState.Loading).value.let { state ->
                 when (state) {
@@ -233,6 +241,7 @@ fun RequestLocationPermission(
         permissionState.allPermissionsGranted -> {
             onPermissionGranted()
         }
+
         else -> {
 
         }
@@ -276,7 +285,7 @@ fun GetUserLocation(
 fun getCityName(
     context: Context,
     location: Location
-) : String {
+): String {
     val geocoder = Geocoder(context, Locale.getDefault())
     val address = geocoder.getFromLocation(location.latitude, location.longitude, 1)
     return if (!address.isNullOrEmpty()) {
@@ -290,5 +299,5 @@ fun getCityName(
 @Preview
 @Composable
 private fun HomeScreenPrev() {
-    HomeScreen(moveToProfile = {})
+    HomeScreen(moveToProfile = {}, moveToClassificationHistory = {})
 }

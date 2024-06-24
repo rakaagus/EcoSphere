@@ -3,7 +3,7 @@ package com.neirasphere.ecosphere.domain.repository
 import com.neirasphere.ecosphere.data.CommunityResult
 import com.neirasphere.ecosphere.data.remote.response.CommunityPostResponse
 import com.neirasphere.ecosphere.data.remote.response.LikeItem
-import com.neirasphere.ecosphere.data.remote.response.LikeResponse
+import com.neirasphere.ecosphere.data.remote.response.PostResponse
 import com.neirasphere.ecosphere.domain.model.CommunityPost
 import com.neirasphere.ecosphere.domain.model.CommunityPostSQL
 import com.neirasphere.ecosphere.domain.model.PostComment
@@ -26,5 +26,7 @@ interface CommunityRepository {
 
     fun post(token: String, post: String): Flow<CommunityResult<CommunityPostResponse>>
 
-    fun postLike(token: String, id: Int): Flow<CommunityResult<LikeResponse>>
+    fun postLike(token: String, id: Int, liked: Boolean): Flow<CommunityResult<PostResponse>>
+
+    fun postComment(token: String, id: Int, comment: String): Flow<CommunityResult<PostResponse>>
 }

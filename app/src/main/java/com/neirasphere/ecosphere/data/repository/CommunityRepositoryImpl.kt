@@ -7,7 +7,7 @@ import com.neirasphere.ecosphere.data.preferences.AuthDataStore
 import com.neirasphere.ecosphere.data.remote.ApiService
 import com.neirasphere.ecosphere.data.remote.RemoteDataSource
 import com.neirasphere.ecosphere.data.remote.response.LikeItem
-import com.neirasphere.ecosphere.data.remote.response.LikeResponse
+import com.neirasphere.ecosphere.data.remote.response.PostResponse
 import com.neirasphere.ecosphere.domain.model.CommunityPost
 import com.neirasphere.ecosphere.domain.model.CommunityPostSQL
 import com.neirasphere.ecosphere.domain.model.PostComment
@@ -30,16 +30,6 @@ class CommunityRepositoryImpl @Inject constructor(
 ) : CommunityRepository{
 
     override val communityPost = mutableListOf<CommunityPost>()
-
-    var userId : Int = 0
-
-    fun setUserId(id: Int) {
-        userId = id
-    }
-
-    fun getUserId(): Int {
-        return userId
-    }
 
     init {
         if (communityPost.isEmpty()) {
@@ -98,7 +88,7 @@ class CommunityRepositoryImpl @Inject constructor(
                     val likeResponse = remoteDataSource.getCommunityLikes(communityId!!)
                     val likeResult = likeResponse.data
                     likes = likeResult?.size ?: 0
-                    liked = likeResult?.any { it?.idUser == userId } ?: false
+//                    liked = likeResult?.any { it?.idUser == userId } ?: false
                 } catch (e: Exception) {
                     if (e.message!!.contains("404")) {
                         likes = 0
@@ -120,7 +110,7 @@ class CommunityRepositoryImpl @Inject constructor(
                     image = postImg,
                     comments = comments,
                     likes = likes,
-                    liked = false,
+                    liked = liked,
                     views = 2000,
                     createdAt = createdAt!!
                 )
@@ -159,10 +149,12 @@ class CommunityRepositoryImpl @Inject constructor(
                     avatar = if (userResult.imgProfile != null) remoteDataSource.imageBaseURL + userResult.imgProfile else null
                 )
                 var likes = 0
+                var liked = false
                 try {
                     val likeResponse = remoteDataSource.getCommunityLikes(communityId!!)
                     val likeResult = likeResponse.data
                     likes = likeResult?.size ?: 0
+//                    liked = likeResult?.any { it?.idUser == userId } ?: false
                 } catch (e: Exception) {
                     if (e.message!!.contains("404")) {
                         likes = 0
@@ -184,7 +176,7 @@ class CommunityRepositoryImpl @Inject constructor(
                     image = postImg,
                     comments = comments,
                     likes = likes,
-                    liked = false,
+                    liked = liked,
                     views = 2000,
                     createdAt = createdAt!!
                 )
@@ -210,10 +202,10 @@ class CommunityRepositoryImpl @Inject constructor(
                 result?.forEach {
                     var user : User
                     val idUser = it?.idUser
-                    val userResponse = remoteDataSource.getUserById(idUser!!)
-                    val userResult = userResponse.data
-                    val userSuccess = userResponse.success
-                    if (userSuccess) {
+                    try {
+                        val userResponse = remoteDataSource.getUserById(idUser!!)
+                        val userResult = userResponse.data
+                        val userSuccess = userResponse.success
                         user = User(
                             id = userResult.idUser,
                             namaDepan = userResult.namaDepan,
@@ -221,8 +213,7 @@ class CommunityRepositoryImpl @Inject constructor(
                             email = userResult.email,
                             avatar = if (userResult.imgProfile != null) remoteDataSource.imageBaseURL + userResult.imgProfile else null
                         )
-                    } else {
-                        Log.d("error fetch user", "${userResponse.message}")
+                    } catch (e: Exception) {
                         user = DataSource.communityPostUser()[0]
                     }
                     val resultData = PostComment(
@@ -241,6 +232,7 @@ class CommunityRepositoryImpl @Inject constructor(
             Log.d("cek komen sukses", "masuk")
             emit(CommunityResult.Success(commentDataStore))
         } catch (e: Exception) {
+            Log.d("cek error getComment", "getAllCommunityPost: ${e.message}")
             emit(CommunityResult.Error(e.message))
         }
     }.flowOn(Dispatchers.IO)
@@ -271,16 +263,34 @@ class CommunityRepositoryImpl @Inject constructor(
         }
     }.flowOn(Dispatchers.IO)
 
-    override fun postLike(token: String, id: Int): Flow<CommunityResult<LikeResponse>> = flow {
+    override fun postLike(token: String, id: Int, liked: Boolean): Flow<CommunityResult<PostResponse>> = flow {
         emit(CommunityResult.Loading())
         try {
-            val response = apiService.postLike(token, id)
+            val response = if (liked) apiService.postUnlike(token, id) else apiService.postLike(token, id)
             val success = response.success
             if (success == true) {
                 emit(CommunityResult.Success(response))
             }
         } catch (e: Exception) {
             emit(CommunityResult.Error(e.message.toString()))
+        }
+    }.flowOn(Dispatchers.IO)
+
+    override fun postComment(
+        token: String,
+        id: Int,
+        comment: String
+    ): Flow<CommunityResult<PostResponse>> = flow {
+        emit(CommunityResult.Loading())
+        try {
+            val response = apiService.postComment(token, id, comment)
+            val success = response.success
+            if (success == true) {
+                emit(CommunityResult.Success(response))
+            }
+        } catch (e: Exception) {
+            emit(CommunityResult.Error(e.message.toString()))
+
         }
     }
 

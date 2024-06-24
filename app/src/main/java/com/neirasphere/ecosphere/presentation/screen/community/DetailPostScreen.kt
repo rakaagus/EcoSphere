@@ -37,6 +37,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -71,13 +72,16 @@ fun DetailPostScreen(
     postId: Int?,
     viewModel: CommunityViewModel = hiltViewModel()
 ) {
+    viewModel.getUser()
+    val user by viewModel.user.collectAsState()
+    val token = user.user?.token
     Log.d("cek postId", "$postId")
     viewModel.setPostId(postId!!)
     Log.d("cek VMPostId", "${viewModel.getPostId()}")
     viewModel.getPostById()
     viewModel.getCommentsByPostId()
     val state by viewModel.getPostState.collectAsStateWithLifecycle()
-    val commentState by viewModel.getPostCommentState.collectAsStateWithLifecycle()
+    val commentState by viewModel.getPostCommentState.collectAsState()
     Log.d("cek posts detail", "${state.posts}")
     Log.d("cek comments detail", "${commentState.comments}")
 
@@ -121,9 +125,23 @@ fun DetailPostScreen(
                     placeholder = {
                         androidx.compose.material3.Text(text = "Tulis komentar di sini")
                     },
+                    leadingIcon = {
+                        Image(
+                            modifier = modifier
+                                .size(50.dp)
+                                .clip(shape = CircleShape),
+                            painter = if (user.user?.avatar != null) rememberAsyncImagePainter(model = user.user!!.avatar) else painterResource(id = R.drawable.image_default),
+                            contentScale = ContentScale.Crop,
+                            contentDescription = "Post User Avatar"
+                        )
+                    },
                     trailingIcon = {
                         Button(
-                            onClick = {},
+                            onClick = { viewModel.postComment(
+                                token!!,
+                                postId,
+                                text
+                            ) },
                             colors = ButtonDefaults.buttonColors(
                                 MaterialTheme.colorScheme.primary
                             ),
@@ -148,12 +166,11 @@ fun DetailPostScreen(
                         }
                     }
                 } else {
-//                    Text(
-//                        text = "Error data fetching: ${commentState.isError}, ${commentState.isLoading}",
-//                        modifier = modifier
-//                            .padding(16.dp)
-//                        )
-                    // TODO: FIX Comment Fetching
+                    Text(
+                        text = "Tidak ada komentar",
+                        modifier = modifier
+                            .padding(16.dp)
+                        )
                 }
             } else {
                 Text(text = "Error data fetching: ${state.isLoading}")
@@ -168,9 +185,15 @@ private fun DetailPostContent(
     modifier: Modifier = Modifier,
     navController: NavController
 ) {
-    val isLiked = remember { mutableStateOf(false) }
+    val isLiked = remember { mutableStateOf(post[0].liked) }
 
     fun toggleLike() {
+//        viewModel.postLike()
+        if (isLiked.value) {
+            post[0].likes--
+        } else {
+            post[0].likes++
+        }
         isLiked.value = !isLiked.value
     }
 

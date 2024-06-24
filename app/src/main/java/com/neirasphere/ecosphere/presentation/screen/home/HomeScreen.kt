@@ -31,8 +31,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.android.gms.location.LocationCallback
@@ -53,14 +51,13 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.domain.model.UserData
+import com.neirasphere.ecosphere.presentation.common.UiState
 import com.neirasphere.ecosphere.presentation.components.HomeAppBar
 import com.neirasphere.ecosphere.presentation.components.HomeCardClassify
+import com.neirasphere.ecosphere.presentation.components.HomeCategoriesLearnCard
 import com.neirasphere.ecosphere.presentation.components.SearchBar
 import com.neirasphere.ecosphere.presentation.components.SectionTextColumn
-import com.neirasphere.ecosphere.presentation.common.UiState
-import com.neirasphere.ecosphere.presentation.components.HomeCategoriesLearnCard
 import com.neirasphere.ecosphere.presentation.components.SectionTextColumnMap
-import com.neirasphere.ecosphere.presentation.navigation.Screen
 import java.util.Locale
 
 @Composable

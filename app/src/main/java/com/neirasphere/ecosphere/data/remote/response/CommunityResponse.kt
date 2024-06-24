@@ -19,7 +19,7 @@ data class GetPostsResponse(
     val message: String? = null
 )
 
-data class LikeResponse(
+data class PostResponse(
 
     @field:SerializedName("message")
     val message: String,

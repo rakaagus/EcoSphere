@@ -36,19 +36,8 @@ class CommunityViewModel @Inject constructor(
     private val  _getPostCommentState = MutableStateFlow(GetPostCommentState())
     val getPostCommentState = _getPostCommentState.asStateFlow()
 
-    private var postId = 0
-
-    fun setPostId(id: Int) {
-        postId = id
-    }
-
-    fun getPostId(): Int {
-        return postId
-    }
-
-    init {
-        getAllCommunityPosts()
-    }
+    private val _likeState = MutableStateFlow(PostState())
+    val likeState = _likeState.asStateFlow()
 
     private val _user = MutableStateFlow(ProfileState())
     val user = _user.asStateFlow()
@@ -63,7 +52,22 @@ class CommunityViewModel @Inject constructor(
         }
     }
 
+    private var postId = 0
+
+    fun setPostId(id: Int) {
+        postId = id
+    }
+
+    fun getPostId(): Int {
+        return postId
+    }
+
+    init {
+        getAllCommunityPosts()
+    }
+
     private fun getAllCommunityPosts() = viewModelScope.launch {
+//        val userId = user.value.user?.id
         repository.getAllCommunityPost().collect { result ->
             when (result) {
                 is CommunityResult.Error -> _getPostsState.update {
@@ -90,6 +94,7 @@ class CommunityViewModel @Inject constructor(
     }
 
     fun getPostById() = viewModelScope.launch {
+//        val userId = user.value.user?.id
         repository.getPostById(postId).collect { result ->
             when (result) {
                 is CommunityResult.Error -> _getPostState.update {
@@ -182,10 +187,73 @@ class CommunityViewModel @Inject constructor(
     }
 
     fun post(token: String, post: String) = viewModelScope.launch {
-
         repository.post(
             token = "Bearer ${token}",
             post
+        ).collect{ result ->
+            when (result) {
+                is CommunityResult.Loading -> {
+                    _postState.update {
+                        it.copy(
+                            isLoading = true
+                        )
+                    }
+                }
+                is CommunityResult.Success -> {
+                    _postState.update {
+                        it.copy(
+                            isLoading = false,
+                            isSuccess = true
+                        )
+                    }
+                }
+                is CommunityResult.Error -> {
+                    _postState.update {
+                        it.copy(
+                            isLoading = false,
+                            isError = result.message
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun postLike(token: String, postId: Int, liked: Boolean) = viewModelScope.launch {
+        repository.postLike(token, postId, liked).collect { result ->
+            when (result) {
+                is CommunityResult.Loading -> {
+                    _likeState.update {
+                        it.copy(
+                            isLoading = true
+                        )
+                    }
+                }
+                is CommunityResult.Success -> {
+                    _likeState.update {
+                        it.copy(
+                            isLoading = false,
+                            isSuccess = true
+                        )
+                    }
+                }
+                is CommunityResult.Error -> {
+                    _likeState.update {
+                        it.copy(
+                            isLoading = false,
+                            isError = result.message
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    fun postComment(token: String, id: Int, comment: String) = viewModelScope.launch {
+        repository.postComment(
+            token = "Bearer ${token}",
+            id,
+            comment
         ).collect{ result ->
             when (result) {
                 is CommunityResult.Loading -> {

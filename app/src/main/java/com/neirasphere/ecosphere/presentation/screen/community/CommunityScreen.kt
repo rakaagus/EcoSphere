@@ -32,6 +32,12 @@ fun CommunityScreen(
     modifier: Modifier = Modifier,
     viewModel: CommunityViewModel = hiltViewModel()
 ) {
+//    viewModel.getUser()
+//    val user by viewModel.user.collectAsState()
+//    Log.d("cek userId", "${user.user?.id}")
+//    val userId = user.user?.id
+//    viewModel.setUserId(user.user!!.id!!)
+//    Log.d("cek userId vm", "${viewModel.getUserId()}")
     val state by viewModel.getPostsState.collectAsStateWithLifecycle()
     val loading = state.isLoading
     var isLoadingDialogShow by remember { mutableStateOf(false) }
@@ -54,7 +60,7 @@ fun CommunityScreen(
             title = "Terbaru"
         ) {
             TabItem(
-                item = state.posts.sortedByDescending { it.timeDiff() },  //DataSource.communityPostData().sortedBy { it.timeDiff() },
+                item = state.posts.sortedBy { it.timeDiff() },  //DataSource.communityPostData().sortedBy { it.timeDiff() },
                 navController = navController
             )
         }

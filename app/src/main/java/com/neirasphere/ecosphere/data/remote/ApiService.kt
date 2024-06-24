@@ -5,10 +5,11 @@ import com.neirasphere.ecosphere.data.remote.response.GetPostCommentsResponse
 import com.neirasphere.ecosphere.data.remote.response.GetPostLikesResponse
 import com.neirasphere.ecosphere.data.remote.response.GetPostsResponse
 import com.neirasphere.ecosphere.data.remote.response.GetUserByIdResponse
-import com.neirasphere.ecosphere.data.remote.response.LikeResponse
 import com.neirasphere.ecosphere.data.remote.response.LoginResponse
+import com.neirasphere.ecosphere.data.remote.response.PostResponse
 import com.neirasphere.ecosphere.data.remote.response.RegisterResponse
 import okhttp3.MultipartBody
+import retrofit2.http.DELETE
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -61,17 +62,32 @@ interface ApiService {
         @Path("id") id: Int
     ): GetPostLikesResponse
 
-    @GET("community/{id}/comments")
+    @GET("comments/{id}/comments")
     suspend fun getCommentsByPostId(
         @Path("id") id: Int
     ): GetPostCommentsResponse
+
+    @FormUrlEncoded
+    @POST("comments/{id}/comments")
+    suspend fun postComment(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int,
+        @Field("comment") comment: String
+    ): PostResponse
 
     @FormUrlEncoded
     @POST("{id}/like")
     suspend fun postLike(
         @Header("Authorization") token: String,
         @Path("id") id: Int
-    ): LikeResponse
+    ): PostResponse
+
+    @FormUrlEncoded
+    @DELETE("{id}/unlike")
+    suspend fun postUnlike(
+        @Header("Authorization") token: String,
+        @Path("id") id: Int
+    ): PostResponse
 
     @FormUrlEncoded
     @POST("user")

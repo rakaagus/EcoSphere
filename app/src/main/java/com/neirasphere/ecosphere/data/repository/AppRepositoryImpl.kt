@@ -7,21 +7,21 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FacebookAuthProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.neirasphere.ecosphere.ResultDefault
+import com.neirasphere.ecosphere.data.Result
 import com.neirasphere.ecosphere.data.preferences.AppDataStore
 import com.neirasphere.ecosphere.data.preferences.AuthDataStore
-import com.neirasphere.ecosphere.domain.repository.AppRepository
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import javax.inject.Inject
-import javax.inject.Singleton
-import com.neirasphere.ecosphere.data.Result
 import com.neirasphere.ecosphere.data.remote.ApiService
 import com.neirasphere.ecosphere.data.remote.response.RegisterResponse
 import com.neirasphere.ecosphere.domain.model.UserData
+import com.neirasphere.ecosphere.domain.repository.AppRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.tasks.await
+import javax.inject.Inject
+import javax.inject.Singleton
 
 @Singleton
 class AppRepositoryImpl @Inject constructor(
@@ -40,6 +40,7 @@ class AppRepositoryImpl @Inject constructor(
             if (success) {
                 setLoginStatus(true)
                 val userData = UserData(
+                    id = user.idUser,
                     token = data.token,
                     firstName = user.namaDepan,
                     lastName = user.namaBelakang,
@@ -51,6 +52,7 @@ class AppRepositoryImpl @Inject constructor(
                 Log.e("AppRepository", "data Login ${getSessionUser()}")
 
                 // Logging user data
+                Log.i("AppRepository", "User ID: ${userData.id}")
                 Log.i("AppRepository", "User Token: ${userData.token}")
                 Log.i("AppRepository", "User First Name: ${userData.firstName}")
                 Log.i("AppRepository", "User Last Name: ${userData.lastName}")

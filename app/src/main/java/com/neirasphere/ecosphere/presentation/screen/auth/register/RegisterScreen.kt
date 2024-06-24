@@ -98,15 +98,28 @@ fun RegisterScreen(
 
     var isLoading = viewModel.registerState.collectAsState().value.isLoading
     var isSuccess = viewModel.registerState.collectAsState().value.isSuccess
+    val error = viewModel.registerState.collectAsState().value.isError
     var isLoadingDialogShow by remember { mutableStateOf(false) }
     var isSuccessDialogShow by remember { mutableStateOf(false) }
+    var isErrorDialogShow by remember { mutableStateOf(false) }
 
     if(isLoading){
         LoadingDialog(onDismissRequest = { isLoadingDialogShow = false })
     }
 
-        if(isSuccess){
+    if(isSuccess){
         DialogLoginSuccess(onDismissRequest = { isSuccessDialogShow = false }, moveToLogin = moveToLogin)
+    }
+    if(error != null){
+        var errorData = when{
+            error.contains("HTTP 400") -> {
+                "Password Atau Gmail Kamu Salah"
+            }
+            else -> {
+                error
+            }
+        }
+        DialogRegisterError(onDismissRequest = { viewModel.clearError() }, errorData = errorData)
     }
 
     @Suppress("DEPRECATION")
@@ -371,5 +384,34 @@ fun DialogLoginSuccess(
                 )
             }
         }
+    )
+}
+
+@Composable
+fun DialogRegisterError(
+    onDismissRequest: () -> Unit,
+    errorData: String,
+    modifier: Modifier = Modifier
+) {
+    AlertDialog(
+        onDismissRequest = { onDismissRequest() },
+        text = {
+            Text(
+                text = errorData,
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        },
+        confirmButton = {
+            TextButton(onClick = { onDismissRequest() }) {
+                Text(
+                    text = "Coba Lagi",
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        fontSize = 14.sp
+                    ),
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+        },
+        modifier = modifier
     )
 }

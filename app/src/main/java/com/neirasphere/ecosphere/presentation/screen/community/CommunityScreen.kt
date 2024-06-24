@@ -7,6 +7,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.unit.dp
@@ -19,6 +22,7 @@ import com.neirasphere.ecosphere.presentation.components.MagicTabItem
 import com.neirasphere.ecosphere.presentation.components.MagicTabLayout
 import com.neirasphere.ecosphere.presentation.components.PostLayout
 import com.neirasphere.ecosphere.presentation.navigation.Screen
+import com.neirasphere.ecosphere.presentation.screen.auth.login.LoadingDialog
 import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 
 @OptIn(ExperimentalPagerApi::class)
@@ -29,7 +33,13 @@ fun CommunityScreen(
     viewModel: CommunityViewModel = hiltViewModel()
 ) {
     val state by viewModel.getPostsState.collectAsStateWithLifecycle()
+    val loading = state.isLoading
+    var isLoadingDialogShow by remember { mutableStateOf(false) }
     Log.d("cek posts", "${state.posts}")
+
+    if (loading) {
+        LoadingDialog(onDismissRequest = { isLoadingDialogShow = false })
+    }
 
     val tabs = listOf(
         MagicTabItem(

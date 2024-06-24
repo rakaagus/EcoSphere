@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -76,6 +77,10 @@ fun PostingScreen(
     navController: NavController,
     viewModel: CommunityViewModel = hiltViewModel()
 ) {
+    viewModel.getUser()
+    val user by viewModel.user.collectAsState()
+    val token = user.user?.token
+    Log.d("token", token.toString())
     val context = LocalContext.current
     var text by remember { mutableStateOf("") }
     val sheetState = rememberModalBottomSheetState()
@@ -83,10 +88,14 @@ fun PostingScreen(
 
     val postLoading = viewModel.postState.collectAsState().value.isLoading
     val postSuccess = viewModel.postState.collectAsState().value.isSuccess
+    val postError = viewModel.postState.collectAsState().value.isError
     var isLoadingDialogShow by remember {
         mutableStateOf(false)
     }
     var isSuccessDialogShow by remember {
+        mutableStateOf(false)
+    }
+    var isErrorDialogShow by remember {
         mutableStateOf(false)
     }
     
@@ -122,6 +131,13 @@ fun PostingScreen(
                     }
                 }
             }
+        )
+    }
+
+    if (postError != null) {
+        DialogPostError(
+            onDismissRequest = { isErrorDialogShow =  false },
+            error = postError
         )
     }
 
@@ -202,11 +218,15 @@ fun PostingScreen(
                     onClick = {
                         if (imageUri != null) {
                             viewModel.postWithImage(
+                                token = token!!,
                                 post = text,
                                 img = imageUri!!.toFile(context)
                             )
                         } else {
-                            viewModel.post(post = text)
+                            viewModel.post(
+                                token = token!!,
+                                post = text
+                            )
                         }
 //                        navController.navigate(Screen.DummyDetailPostScreen.route)
                     },
@@ -232,7 +252,7 @@ fun PostingScreen(
                     modifier = modifier
                         .size(50.dp)
                         .clip(shape = CircleShape),
-                    painter = painterResource(id = R.drawable.example_image_user),
+                    painter = if (user.user?.avatar != null) rememberAsyncImagePainter(model = user.user!!.avatar) else painterResource(id = R.drawable.image_default),
                     contentScale = ContentScale.Crop,
                     contentDescription = "Post User Avatar"
                 )
@@ -349,6 +369,33 @@ fun DialogPostSuccess(
             TextButton(onClick = { moveToPosts() }) {
                 Text(
                     text = "Kembali ke komunitas",
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        fontSize = 14.sp
+                    ),
+                    color = PrimaryColor
+                )
+            }
+        })
+}
+
+@Composable
+fun DialogPostError(
+    onDismissRequest: () -> Unit,
+    error: String,
+    modifier: Modifier = Modifier
+) {
+    AlertDialog(
+        onDismissRequest = { onDismissRequest() },
+        text = {
+            Text(
+                text = "Terjadi error saat membuat Postingan!\n${error}",
+                style = MaterialTheme.typography.bodyMedium
+            )
+        },
+        confirmButton = {
+            TextButton(onClick = { onDismissRequest() }) {
+                Text(
+                    text = "Ok",
                     style = MaterialTheme.typography.bodyLarge.copy(
                         fontSize = 14.sp
                     ),

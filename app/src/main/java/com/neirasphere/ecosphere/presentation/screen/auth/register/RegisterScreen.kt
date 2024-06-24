@@ -17,13 +17,17 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomSheetDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -57,18 +61,19 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.presentation.components.AuthForm
 import com.neirasphere.ecosphere.presentation.components.AuthWith
-import com.neirasphere.ecosphere.presentation.components.ButtonAuth
 import com.neirasphere.ecosphere.presentation.components.PasswordForm
 import com.neirasphere.ecosphere.presentation.components.RoundedIconButton
 import com.neirasphere.ecosphere.presentation.navigation.Screen
+import com.neirasphere.ecosphere.presentation.screen.auth.component.ButtonAuth
 import com.neirasphere.ecosphere.ui.theme.BlackColor
+import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 import com.neirasphere.ecosphere.utils.ActionKeyboard
 import com.neirasphere.ecosphere.utils.Constant
 import com.neirasphere.ecosphere.utils.TypeKeyboard
 
 @Composable
 fun RegisterScreen(
-    navController: NavHostController,
+    moveToLogin: () -> Unit,
     viewModel: RegisterViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
@@ -89,6 +94,19 @@ fun RegisterScreen(
 
     val callbackManager = remember {
         CallbackManager.Factory.create()
+    }
+
+    var isLoading = viewModel.registerState.collectAsState().value.isLoading
+    var isSuccess = viewModel.registerState.collectAsState().value.isSuccess
+    var isLoadingDialogShow by remember { mutableStateOf(false) }
+    var isSuccessDialogShow by remember { mutableStateOf(false) }
+
+    if(isLoading){
+        LoadingDialog(onDismissRequest = { isLoadingDialogShow = false })
+    }
+
+        if(isSuccess){
+        DialogLoginSuccess(onDismissRequest = { isSuccessDialogShow = false }, moveToLogin = moveToLogin)
     }
 
     @Suppress("DEPRECATION")
@@ -158,14 +176,10 @@ fun RegisterScreen(
                 val googleLoginClient = GoogleSignIn.getClient(context, googleLogin)
                 launcher.launch(googleLoginClient.signInIntent)
             },
-            onRegisterClick = {},
-            moveToLogin = {
-                navController.navigate(Screen.LoginScreen.route) {
-                    popUpTo(Screen.RegisterScreen.route) {
-                        inclusive = true
-                    }
-                }
-            }
+            onRegisterClick = {
+                viewModel.register(firstName, lastName, email, password)
+            },
+            moveToLogin = moveToLogin
         )
     }
 }
@@ -186,6 +200,10 @@ fun RegisterContent(
     moveToLogin: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+
+    val isEnableButton =
+        if (firstName.isNotBlank() && lastName.isNotBlank() && email.isNotBlank() && password.isNotBlank()) true else false
+
     Text(
         text = stringResource(id = R.string.sign_up),
         style = MaterialTheme.typography.bodyLarge.copy(
@@ -226,7 +244,7 @@ fun RegisterContent(
         onValueChange = onPasswordChange
     )
     Spacer(modifier = Modifier.height(24.dp))
-    ButtonAuth(label = "Sign Up", click = { onRegisterClick() })
+    ButtonAuth(label = "Sign Up", click = { onRegisterClick() }, isDisable = isEnableButton)
     Spacer(modifier = Modifier.height(24.dp))
     AuthWith(string = R.string.continue_with)
     Row(
@@ -308,60 +326,50 @@ fun RegisterContent(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SuccessRegisterBs(
-    visible: Boolean,
-    onDismiss: () -> Unit,
-    navController: NavHostController,
+fun LoadingDialog(
+    onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-    val modalBottomSheetState = rememberModalBottomSheetState()
-
-    if (visible) {
-        ModalBottomSheet(
-            onDismissRequest = { onDismiss() },
-            sheetState = modalBottomSheetState,
-            dragHandle = { BottomSheetDefaults.DragHandle() },
+    AlertDialog(onDismissRequest = { onDismissRequest() }) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = modifier
         ) {
-            SuccessLoginBsContent(navController = navController)
+            CircularProgressIndicator(
+                modifier = Modifier,
+                color = PrimaryColor,
+                trackColor = MaterialTheme.colorScheme.surfaceVariant
+            )
         }
     }
 }
 
+
 @Composable
-fun SuccessLoginBsContent(
-    navController: NavHostController,
+fun DialogLoginSuccess(
+    onDismissRequest: () -> Unit,
+    moveToLogin: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
-
-    val preloaderLottieComposition by rememberLottieComposition(
-        LottieCompositionSpec.RawRes(
-            R.raw.sucess_animation
-        )
+    AlertDialog(
+        onDismissRequest = { onDismissRequest() },
+        text = {
+            Text(
+                text = "Yey, Berhasil Login",
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        },
+        confirmButton = {
+            TextButton(onClick = moveToLogin) {
+                Text(
+                    text = "Go to Home",
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        fontSize = 14.sp
+                    ),
+                    color = PrimaryColor
+                )
+            }
+        }
     )
-
-    val preloaderProgress by animateLottieCompositionAsState(
-        preloaderLottieComposition,
-        isPlaying = true
-    )
-
-    Column(
-        modifier = Modifier
-            .padding(start = 12.dp, end = 12.dp, bottom = 12.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        LottieAnimation(
-            composition = preloaderLottieComposition,
-            progress = preloaderProgress,
-            modifier = Modifier.size(100.dp)
-        )
-        Text(
-            "Berhasil Login",
-            style = MaterialTheme.typography.labelSmall,
-            modifier = Modifier
-                .padding(top = 8.dp, bottom = 12.dp)
-                .align(Alignment.CenterHorizontally)
-        )
-        ButtonAuth(
-            label = "Login",
-            click = { navController.navigate(Screen.RecycleScreen.route) })
-
-    }
 }

@@ -1,5 +1,6 @@
 package com.neirasphere.ecosphere.presentation.components
 
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -47,6 +48,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.presentation.navigation.Screen
@@ -58,16 +60,20 @@ fun HomeAppBar(
     moveToProfile: () -> Unit,
     name: String,
     location: String,
+    userImage: String?,
     modifier: Modifier = Modifier
 ) {
+
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.example_image_user),
+        AsyncImage(
+            model = userImage,
+            placeholder = painterResource(id = R.drawable.image_default),
+            error = painterResource(id = R.drawable.image_default),
             contentDescription = "UserImage",
             modifier = Modifier
                 .padding(5.dp)
@@ -115,8 +121,8 @@ fun CommunityAppBar(
             modifier = Modifier.padding(horizontal = 16.dp)
         ) {
             CommunitySearchBar(onBackClick = {
-                navController.navigate(Screen.HomeScreen.route){
-                    popUpTo(Screen.CommunityScreen.route){
+                navController.navigate(Screen.HomeScreen.route) {
+                    popUpTo(Screen.CommunityScreen.route) {
                         inclusive = true
                     }
                 }
@@ -221,7 +227,7 @@ fun CenterTopAppBar(
 
 @Composable
 fun HeaderProfile(
-    @DrawableRes image: Int,
+    avatarUser: String?,
     name: String,
     location: String,
     modifier: Modifier = Modifier
@@ -233,8 +239,10 @@ fun HeaderProfile(
             .fillMaxWidth()
             .padding(16.dp)
     ) {
-        Image(
-            painter = painterResource(id = image),
+        AsyncImage(
+            model = avatarUser,
+            placeholder = painterResource(id = R.drawable.image_default),
+            error = painterResource(R.drawable.image_default),
             contentDescription = "UserImage",
             modifier = Modifier
                 .padding(5.dp)

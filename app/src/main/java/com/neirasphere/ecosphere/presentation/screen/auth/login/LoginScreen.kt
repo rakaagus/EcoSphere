@@ -14,20 +14,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -40,22 +35,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
-import com.airbnb.lottie.compose.LottieAnimation
-import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
-import com.airbnb.lottie.compose.rememberLottieComposition
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -68,22 +55,20 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.presentation.components.AuthForm
 import com.neirasphere.ecosphere.presentation.components.AuthWith
-import com.neirasphere.ecosphere.presentation.components.ButtonAuth
 import com.neirasphere.ecosphere.presentation.components.PasswordForm
 import com.neirasphere.ecosphere.presentation.components.RoundedIconButton
 import com.neirasphere.ecosphere.presentation.navigation.Screen
+import com.neirasphere.ecosphere.presentation.screen.auth.component.ButtonAuth
 import com.neirasphere.ecosphere.ui.theme.BlackColor
-import com.neirasphere.ecosphere.ui.theme.NeutralColorGrey
 import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 import com.neirasphere.ecosphere.utils.ActionKeyboard
 import com.neirasphere.ecosphere.utils.Constant.CLIENT
 import com.neirasphere.ecosphere.utils.TypeKeyboard
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
-    navController: NavHostController,
+    moveToHome: () -> Unit,
+    moveToRegister: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel()
 ) {
@@ -97,8 +82,8 @@ fun LoginScreen(
 
     val loginLoading = viewModel.loginState.collectAsState().value.isLoading
     val loginSuccess = viewModel.loginState.collectAsState().value.isSuccess
+    val error = viewModel.loginState.collectAsState().value.isError
     var isLoadingDialogShow by remember { mutableStateOf(false) }
-    var isSuccessDialogShow by remember { mutableStateOf(false) }
 
     @Suppress("DEPRECATION")
     val launcher =
@@ -145,13 +130,11 @@ fun LoginScreen(
     }
 
     if (loginSuccess) {
-        DialogLoginSuccess(onDismissRequest = { isSuccessDialogShow = false }, moveToHome = {
-            navController.navigate(Screen.HomeScreen.route) {
-                popUpTo(Screen.LoginScreen.route) {
-                    inclusive = true
-                }
-            }
-        })
+        moveToHome()
+    }
+
+    if (error != null) {
+
     }
 
     Column(
@@ -170,9 +153,7 @@ fun LoginScreen(
             moveToForgot = {
 //                 isBottomSheetVisible = true
             },
-            onRegisterClick = {
-                navController.navigate(Screen.RegisterScreen.route)
-            },
+            onRegisterClick = moveToRegister,
             onLoginGoogleClick = {
                 val googleLogin = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestEmail()
@@ -208,6 +189,7 @@ fun LoginContent(
     onRegisterClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val disable = if (email.isNotBlank() && password.isNotBlank()) true else false
     Image(
         painter = painterResource(id = R.drawable.happy_earth), contentDescription = "LoginImage",
         modifier = modifier
@@ -253,6 +235,7 @@ fun LoginContent(
     )
     ButtonAuth(
         label = "Login",
+        isDisable = disable,
         click = onLoginClick
     )
     AuthWith(string = R.string.continue_with)

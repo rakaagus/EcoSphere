@@ -14,11 +14,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -26,8 +31,9 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
@@ -36,24 +42,49 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 import com.neirasphere.ecosphere.R
+import com.neirasphere.ecosphere.domain.model.UserData
 import com.neirasphere.ecosphere.presentation.components.ButtonProfile
 import com.neirasphere.ecosphere.presentation.components.HeaderProfile
 import com.neirasphere.ecosphere.presentation.components.SectionProfile
 import com.neirasphere.ecosphere.presentation.components.SectionTextColumnProfile
 import com.neirasphere.ecosphere.presentation.navigation.Screen
 import com.neirasphere.ecosphere.ui.theme.NeutralColorGrey
+import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 import java.util.Locale
 
 @Composable
 fun ProfileScreen(
-    navController: NavController,
+    moveToEditProfile: () -> Unit,
+    moveToSecurity: () -> Unit,
+    moveToNotifSetting: () -> Unit,
+    moveToChangePassword: () -> Unit,
+    moveToHelpScreen: () -> Unit,
+    moveToReport: () -> Unit,
+    moveToLogin: () -> Unit,
+    viewModel: ProfileViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
     var cityName by remember {
         mutableStateOf("Fetching location...")
     }
 
+    viewModel.getUser()
+    val user by viewModel.user.collectAsState()
+
     val context = LocalContext.current
+
+    var isShowDialog by remember { mutableStateOf(false) }
+
+    if(isShowDialog){
+        DialogLogout(
+            onDismissRequest = { isShowDialog = false },
+            moveToLogin = {
+                viewModel.logout()
+                moveToLogin()
+                isShowDialog = false
+            }
+        )
+    }
 
     RequestLocationPermission(onPermissionGranted = {
         GetUserLocation {
@@ -67,17 +98,16 @@ fun ProfileScreen(
             .verticalScroll(rememberScrollState())
     ) {
         ProfileContent(
-            moveToEditProfile = {
-                navController.navigate(Screen.EditProfileScreen.route)
+            userData = user.user,
+            moveToEditProfile = moveToEditProfile,
+            moveToSecurity = moveToSecurity,
+            moveToNotifSetting = moveToNotifSetting,
+            moveToChangePassword = moveToChangePassword,
+            moveToHelpScreen = moveToHelpScreen,
+            moveToReport = moveToReport,
+            onLogoutClick = {
+                  isShowDialog = !isShowDialog
             },
-            moveToSecurity = {},
-            moveToNotifSetting = {},
-            moveToChangePassword = {
-                navController.navigate(Screen.ChangePasswordScreen.route)
-            },
-            moveToHelpScreen = {},
-            moveToReport = {},
-            onLogoutClick = {},
             clickFreeUp = {},
             locationUser = cityName
         )
@@ -86,6 +116,7 @@ fun ProfileScreen(
 
 @Composable
 fun ProfileContent(
+    userData: UserData?,
     moveToEditProfile: () -> Unit,
     moveToSecurity: () -> Unit,
     moveToNotifSetting: () -> Unit,
@@ -98,8 +129,8 @@ fun ProfileContent(
     modifier: Modifier = Modifier
 ) {
     HeaderProfile(
-        image = R.drawable.example_image_user,
-        name = "Erlin",
+        avatarUser = userData?.avatar,
+        name = "${userData?.firstName}",
         location = locationUser
     )
     SectionTextColumnProfile(title = R.string.header_title_1) {
@@ -174,9 +205,7 @@ fun ProfileContent(
         label = "Log out",
         modifier = Modifier.padding(vertical = 33.dp),
         isLogoutButton = true,
-        click = {
-            onLogoutClick()
-        })
+        click = onLogoutClick)
 }
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -253,4 +282,43 @@ fun getCityName(
     } else {
         "Unknown City"
     }
+}
+
+@Composable
+fun DialogLogout(
+    onDismissRequest: () -> Unit,
+    moveToLogin: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    AlertDialog(
+        onDismissRequest = { onDismissRequest() },
+        text = {
+            Text(
+                text = "Kamu yakin akan logout?",
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        },
+        dismissButton = {
+            TextButton(onClick = onDismissRequest) {
+                Text(
+                    text = "Batal",
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        fontSize = 14.sp
+                    ),
+                    color = PrimaryColor
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = moveToLogin) {
+                Text(
+                    text = "Logout",
+                    style = MaterialTheme.typography.bodyLarge.copy(
+                        fontSize = 14.sp
+                    ),
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+        }
+    )
 }

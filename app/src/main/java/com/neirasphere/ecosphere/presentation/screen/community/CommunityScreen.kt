@@ -1,16 +1,20 @@
 package com.neirasphere.ecosphere.presentation.screen.community
 
+import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.neirasphere.ecosphere.data.local.DataSource
+import com.neirasphere.ecosphere.domain.model.CommunityPostSQL
 import com.neirasphere.ecosphere.presentation.components.MagicTabItem
 import com.neirasphere.ecosphere.presentation.components.MagicTabLayout
 import com.neirasphere.ecosphere.presentation.components.PostLayout
@@ -21,14 +25,18 @@ import com.neirasphere.ecosphere.ui.theme.PrimaryColor
 @Composable
 fun CommunityScreen(
     navController: NavController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: CommunityViewModel = hiltViewModel()
 ) {
+    val state by viewModel.getPostsState.collectAsStateWithLifecycle()
+    Log.d("cek posts", "${state.posts}")
+
     val tabs = listOf(
         MagicTabItem(
             title = "Populer"
         ) {
           TabItem(
-              item = DataSource.communityPostData().sortedByDescending { it.likes },
+              item = state.posts.sortedByDescending { it.likes },  //DataSource.communityPostData().sortedByDescending { it.likes },
               navController = navController
           )
         },
@@ -36,7 +44,7 @@ fun CommunityScreen(
             title = "Terbaru"
         ) {
             TabItem(
-                item = DataSource.communityPostData().sortedBy { it.timeDiff() },
+                item = state.posts.sortedByDescending { it.timeDiff() },  //DataSource.communityPostData().sortedBy { it.timeDiff() },
                 navController = navController
             )
         }
@@ -50,7 +58,7 @@ fun CommunityScreen(
 
 @Composable
 fun TabItem(
-    item: List<com.neirasphere.ecosphere.domain.model.CommunityPost> = DataSource.communityPostData(),
+    item: List<CommunityPostSQL>,
     navController: NavController,
     modifier: Modifier = Modifier
 ) {

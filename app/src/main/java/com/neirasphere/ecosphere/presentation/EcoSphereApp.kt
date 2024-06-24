@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.FloatingActionButtonDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Book
@@ -17,6 +18,7 @@ import androidx.compose.material.icons.filled.People
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -31,6 +33,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -41,26 +44,14 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.presentation.components.CenterTopAppBar
 import com.neirasphere.ecosphere.presentation.components.CommunityAppBar
-import com.neirasphere.ecosphere.presentation.components.PostingBottomBar
 import com.neirasphere.ecosphere.presentation.navigation.NavigationItem
 import com.neirasphere.ecosphere.presentation.navigation.Screen
+import com.neirasphere.ecosphere.presentation.screen.auth.changepassword.ChangePasswordScreen
 import com.neirasphere.ecosphere.presentation.screen.auth.login.LoginScreen
 import com.neirasphere.ecosphere.presentation.screen.auth.register.RegisterScreen
-import com.neirasphere.ecosphere.presentation.screen.home.HomeScreen
-import com.neirasphere.ecosphere.presentation.screen.onboarding.OnboardingScreen
-import com.neirasphere.ecosphere.presentation.screen.profile.ProfileScreen
-import com.neirasphere.ecosphere.presentation.screen.splashscreen.SplashScreen
-import com.neirasphere.ecosphere.ui.theme.BlackColor
-import com.neirasphere.ecosphere.ui.theme.PrimaryColor
-import com.neirasphere.ecosphere.ui.theme.containerColor
-import androidx.compose.material.FloatingActionButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.ui.text.font.FontWeight
-import androidx.navigation.navigation
-import com.neirasphere.ecosphere.R
-import com.neirasphere.ecosphere.presentation.screen.auth.changepassword.ChangePasswordScreen
 import com.neirasphere.ecosphere.presentation.screen.auth.verificationemail.VerificationEmailScreen
 import com.neirasphere.ecosphere.presentation.screen.classification.CameraScreen
 import com.neirasphere.ecosphere.presentation.screen.classification.ClassificationScreen
@@ -77,15 +68,22 @@ import com.neirasphere.ecosphere.presentation.screen.education.FifthEducationDet
 import com.neirasphere.ecosphere.presentation.screen.education.FourthEducationDetailScreen
 import com.neirasphere.ecosphere.presentation.screen.education.SecondEducationDetailScreen
 import com.neirasphere.ecosphere.presentation.screen.education.ThirdEducationDetailScreen
+import com.neirasphere.ecosphere.presentation.screen.home.HomeScreen
 import com.neirasphere.ecosphere.presentation.screen.interactivemap.MapScreen
 import com.neirasphere.ecosphere.presentation.screen.interactivemap.confirmMaps.ConfirmMapScreen
 import com.neirasphere.ecosphere.presentation.screen.interactivemap.detailtps.DetailTpsScreen
 import com.neirasphere.ecosphere.presentation.screen.interactivemap.search.SearchMapScreen
+import com.neirasphere.ecosphere.presentation.screen.onboarding.OnboardingScreen
+import com.neirasphere.ecosphere.presentation.screen.profile.ProfileScreen
 import com.neirasphere.ecosphere.presentation.screen.profile.edit.EditProfileScreen
 import com.neirasphere.ecosphere.presentation.screen.recycle.FirstRecycleScreen
 import com.neirasphere.ecosphere.presentation.screen.recycle.RecycleDone
 import com.neirasphere.ecosphere.presentation.screen.recycle.RecycleScreen
 import com.neirasphere.ecosphere.presentation.screen.recycle.SecondRecycleScreen
+import com.neirasphere.ecosphere.presentation.screen.splashscreen.SplashScreen
+import com.neirasphere.ecosphere.ui.theme.BlackColor
+import com.neirasphere.ecosphere.ui.theme.PrimaryColor
+import com.neirasphere.ecosphere.ui.theme.containerColor
 import java.io.File
 
 @Composable
@@ -164,7 +162,7 @@ fun EcoSphereApp(
                     )
                 }
 
-                Screen.EduHistoryScreen.route ->{
+                Screen.EduHistoryScreen.route -> {
                     CenterTopAppBar(
                         onBackClick = {
                             navController.popBackStack()
@@ -186,8 +184,8 @@ fun EcoSphereApp(
                 Screen.ChangePasswordScreen.route -> {
                     CenterTopAppBar(
                         onBackClick = {
-                            navController.navigate(Screen.ProfileScreen.route){
-                                popUpTo(Screen.ChangePasswordScreen.route){
+                            navController.navigate(Screen.ProfileScreen.route) {
+                                popUpTo(Screen.ChangePasswordScreen.route) {
                                     inclusive = true
                                 }
                             }
@@ -208,23 +206,23 @@ fun EcoSphereApp(
                 Screen.ClassifyScreen.route -> {
                     CenterTopAppBar(
                         onBackClick = {
-                            navController.navigate(Screen.HomeScreen.route){
-                                popUpTo(Screen.ClassifyScreen.route){
+                            navController.navigate(Screen.HomeScreen.route) {
+                                popUpTo(Screen.ClassifyScreen.route) {
                                     inclusive = true
-                            }
-                        }
-                    }, title = null,
-                        actionIcon = {
-                        Image(
-                            painter = painterResource(id = R.drawable.icon_history_classify),
-                            contentDescription = "",
-                            modifier = Modifier
-                                .size(34.dp)
-                                .clickable {
-
                                 }
-                        )
-                    })
+                            }
+                        }, title = null,
+                        actionIcon = {
+                            Image(
+                                painter = painterResource(id = R.drawable.icon_history_classify),
+                                contentDescription = "",
+                                modifier = Modifier
+                                    .size(34.dp)
+                                    .clickable {
+
+                                    }
+                            )
+                        })
                 }
             }
         },
@@ -234,35 +232,78 @@ fun EcoSphereApp(
                     BottomAppBar(navController = navController)
                 }
 
-                Screen.PostingScreen.route -> {
-                    PostingBottomBar()
-                }
+                Screen.PostingScreen.route -> {}
             }
         },
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Screen.HomeScreen.route,
+            startDestination = Screen.SplashScreen.route,
             modifier = modifier.padding(innerPadding)
         ) {
 
             /*Splash & Onboarding Route*/
             composable(Screen.SplashScreen.route) {
-                SplashScreen(navController = navController)
+                SplashScreen(
+                    moveToLogin = {
+                        navController.navigate(Screen.LoginScreen.route) {
+                            popUpTo(Screen.SplashScreen.route) {
+                                inclusive = true
+                            }
+                        }
+                    },
+                    moveToHome = {
+                        navController.navigate(Screen.HomeScreen.route) {
+                            popUpTo(Screen.SplashScreen.route) {
+                                inclusive = true
+                            }
+                        }
+                    },
+                    moveToOnboarding = {
+                        navController.navigate(Screen.OnboardingScreen.route) {
+                            popUpTo(Screen.SplashScreen.route) {
+                                inclusive = true
+                            }
+                        }
+                    }
+                )
             }
             composable(Screen.OnboardingScreen.route) {
-                OnboardingScreen(navController = navController)
+                OnboardingScreen(
+                    moveToLoginScreen = {
+                        navController.navigate(Screen.LoginScreen.route) {
+                            popUpTo(Screen.OnboardingScreen.route) {
+                                inclusive = true
+                            }
+                        }
+                    }
+                )
             }
 
             /*Auth Route*/
             composable(Screen.LoginScreen.route) {
-                LoginScreen(navController = navController)
+                LoginScreen(
+                    moveToRegister = {
+                        navController.navigate(Screen.RegisterScreen.route)
+                    },
+                    moveToHome = {
+                        navController.navigate(Screen.HomeScreen.route) {
+                            popUpTo(Screen.LoginScreen.route) {
+                                inclusive = true
+                            }
+                        }
+                    }
+                )
             }
             composable(Screen.RegisterScreen.route) {
-                RegisterScreen(navController = navController)
-            }
-            composable(Screen.ChangePasswordScreen.route) {
-                ChangePasswordScreen(navController = navController)
+                RegisterScreen(
+                    moveToLogin = {
+                        navController.navigate(Screen.LoginScreen.route) {
+                            popUpTo(Screen.RegisterScreen.route) {
+                                inclusive = true
+                            }
+                        }
+                    })
             }
             composable(Screen.VerificationEmailScreen.route) {
                 VerificationEmailScreen(navController = navController)
@@ -270,7 +311,11 @@ fun EcoSphereApp(
 
             /*Home Screen Route*/
             composable(Screen.HomeScreen.route) {
-                HomeScreen(navController = navController)
+                HomeScreen(
+                    moveToProfile = {
+                        navController.navigate(Screen.ProfileScreen.route)
+                    }
+                )
             }
 
             /*Education Route*/
@@ -434,7 +479,7 @@ fun EcoSphereApp(
                 )
                 ClassificationScreen(navController = navController, file = state)
             }
-            composable(Screen.CameraScreen.route){
+            composable(Screen.CameraScreen.route) {
                 CameraScreen(
                     moveToResult = { file ->
                         navController.currentBackStackEntry?.savedStateHandle?.set(
@@ -452,14 +497,47 @@ fun EcoSphereApp(
 
             /*Profile Route*/
             composable(Screen.ProfileScreen.route) {
-                ProfileScreen(navController = navController)
+                ProfileScreen(
+                    moveToChangePassword = {
+                        navController.navigate(Screen.ChangePasswordScreen.route)
+                    },
+                    moveToEditProfile = {
+                        navController.navigate(Screen.EditProfileScreen.route)
+                    },
+                    moveToHelpScreen = {},
+                    moveToSecurity = {},
+                    moveToNotifSetting = {},
+                    moveToReport = {},
+                    moveToLogin = {
+                        navController.navigate(Screen.LoginScreen.route) {
+                            popUpTo(Screen.ProfileScreen.route) {
+                                inclusive = true
+                            }
+                            popUpTo(Screen.HomeScreen.route) {
+                                inclusive = true
+                            }
+                        }
+                    }
+                )
             }
             composable(Screen.EditProfileScreen.route) {
-                EditProfileScreen(navController = navController)
+                EditProfileScreen(moveToProfile = {
+                    navController.navigate(Screen.ProfileScreen.route) {
+                        popUpTo(Screen.EditProfileScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                })
             }
 
             composable(Screen.ChangePasswordScreen.route) {
-                ChangePasswordScreen(navController = navController)
+                ChangePasswordScreen(moveToProfile = {
+                    navController.navigate(Screen.ProfileScreen.route) {
+                        popUpTo(Screen.ChangePasswordScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                })
             }
             composable(Screen.VerificationEmailScreen.route) {
                 VerificationEmailScreen(navController = navController)

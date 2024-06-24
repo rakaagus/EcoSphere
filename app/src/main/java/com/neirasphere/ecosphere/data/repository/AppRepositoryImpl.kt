@@ -16,6 +16,8 @@ import javax.inject.Inject
 import javax.inject.Singleton
 import com.neirasphere.ecosphere.data.Result
 import com.neirasphere.ecosphere.data.remote.ApiService
+import com.neirasphere.ecosphere.data.remote.response.RegisterResponse
+import com.neirasphere.ecosphere.domain.model.UserData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flowOn
@@ -33,19 +35,56 @@ class AppRepositoryImpl @Inject constructor(
         try {
             val response = apiService.login(email, password)
             val data = response.data
+            val user = data.user
             val success = data.success
-            if(success){
-                authDataStore.saveToken(data.token)
-                authDataStore.setLoginStatus(true)
+            if (success) {
+                setLoginStatus(true)
+                val userData = UserData(
+                    token = data.token,
+                    firstName = user.namaDepan,
+                    lastName = user.namaBelakang,
+                    email = user.email,
+                    avatar = user.imgProfile
+                )
+                saveSessionUser(userData)
                 Log.e("AppRepository", "data Login ${authDataStore.isLoggedIn()}")
-                Log.e("AppRepository", "data Login ${authDataStore.getToken()}")
+                Log.e("AppRepository", "data Login ${getSessionUser()}")
+
+                // Logging user data
+                Log.i("AppRepository", "User Token: ${userData.token}")
+                Log.i("AppRepository", "User First Name: ${userData.firstName}")
+                Log.i("AppRepository", "User Last Name: ${userData.lastName}")
+                Log.i("AppRepository", "User Email: ${userData.email}")
+                Log.i("AppRepository", "User Avatar: ${userData.avatar}")
             }
             emit(ResultDefault.Success(response))
-        } catch (e: Exception){
+        } catch (e: Exception) {
             Log.d("AppRepository", "loginUser: ${e.message.toString()}")
             emit(ResultDefault.Error(e.message.toString()))
         }
     }.flowOn(Dispatchers.IO)
+
+    override fun register(
+        firstName: String,
+        lastName: String,
+        email: String,
+        password: String
+    ): Flow<ResultDefault<RegisterResponse>> = flow {
+        emit(ResultDefault.Loading)
+        try {
+            val response = apiService.register(firstName, lastName, email, password)
+            val data = response.data
+            if(response.success){
+                emit(ResultDefault.Success(response))
+            }else {
+                emit(ResultDefault.Error("Error"))
+            }
+        } catch (e: Exception) {
+            Log.d("AppRepository", "registerUser: ${e.message.toString()}")
+            emit(ResultDefault.Error(e.message.toString()))
+        }
+    }.flowOn(Dispatchers.IO)
+
 
     override fun getStatusOnboardingUser(): Flow<Boolean> = appDataStore.getStatusOnboardingUser()
 
@@ -53,27 +92,23 @@ class AppRepositoryImpl @Inject constructor(
         appDataStore.saveStatusOnboardingUser(status)
     }
 
+    override suspend fun saveSessionUser(session: UserData) {
+        authDataStore.saveSessionUser(session)
+    }
+
+    override fun getSessionUser(): Flow<UserData> = authDataStore.getSession()
+
+    override suspend fun clearSessionUser() {
+        authDataStore.clearSessionUser()
+    }
+
     override fun isLoggedIn(): Flow<Boolean> = authDataStore.isLoggedIn()
 
-    override fun getToken(): Flow<String?> = authDataStore.getToken()
-
-    override fun getUserName(): Flow<String?> = authDataStore.getUserName()
 
     override suspend fun setLoginStatus(isLogin: Boolean) {
         authDataStore.setLoginStatus(isLogin)
     }
 
-    override suspend fun saveToken(token: String) {
-        authDataStore.saveToken(token)
-    }
-
-    override suspend fun saveUserName(userName: String) {
-        authDataStore.saveUserName(userName)
-    }
-
-    override suspend fun deleteToken() = authDataStore.deleteToken()
-
-    override suspend fun deleteUserName() = authDataStore.deleteUserName()
     override fun loginWithGoogle(credential: AuthCredential): Flow<Result<AuthResult>> {
         return flow {
             emit(Result.Loading())

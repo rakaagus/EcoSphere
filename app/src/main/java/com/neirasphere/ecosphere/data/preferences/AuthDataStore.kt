@@ -1,12 +1,11 @@
 package com.neirasphere.ecosphere.data.preferences
 
-import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import com.neirasphere.ecosphere.domain.model.UserData
 import com.neirasphere.ecosphere.domain.preferences.AuthPreferences
 import kotlinx.coroutines.flow.Flow
@@ -19,6 +18,7 @@ class AuthDataStore @Inject constructor(
     private val authDataStore: DataStore<Preferences>
 ) : AuthPreferences{
     override val statusLogin = booleanPreferencesKey(STATUS_LOGIN_KEY)
+    override val iduser = intPreferencesKey(ID_USER_KEY)
     override val tokenUser = stringPreferencesKey(TOKEN_USER_KEY)
     override val firstName = stringPreferencesKey(FIRST_NAME_KEY)
     override val lastName = stringPreferencesKey(LAST_NAME_KEY)
@@ -32,6 +32,7 @@ class AuthDataStore @Inject constructor(
     override fun getSession(): Flow<UserData> {
         return authDataStore.data.map {
             UserData(
+                id = it[iduser] ?: 0,
                 token = it[tokenUser] ?: "",
                 firstName = it[firstName] ?: "",
                 lastName = it[lastName] ?: "",
@@ -43,6 +44,7 @@ class AuthDataStore @Inject constructor(
 
     override suspend fun saveSessionUser(user: UserData) {
         authDataStore.edit {
+            it[iduser] = user.id ?: 0
             it[tokenUser] = user.token ?: ""
             it[lastName] = user.lastName ?: ""
             it[firstName] = user.firstName ?: ""
@@ -53,6 +55,7 @@ class AuthDataStore @Inject constructor(
 
     override suspend fun clearSessionUser() {
         authDataStore.edit {
+            it[iduser] = 0
             it[tokenUser] = ""
             it[lastName] = ""
             it[firstName] = ""
@@ -70,6 +73,7 @@ class AuthDataStore @Inject constructor(
 
     companion object{
         private const val STATUS_LOGIN_KEY = "status_login_key"
+        private const val ID_USER_KEY = "id_user_key"
         private const val TOKEN_USER_KEY = "token_user_key"
         private const val FIRST_NAME_KEY = "first_name_key"
         private const val LAST_NAME_KEY = "last_name_key"

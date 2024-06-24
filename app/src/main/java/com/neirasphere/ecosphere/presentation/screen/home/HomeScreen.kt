@@ -54,12 +54,12 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.domain.model.UserData
+import com.neirasphere.ecosphere.presentation.common.UiState
 import com.neirasphere.ecosphere.presentation.components.HomeAppBar
 import com.neirasphere.ecosphere.presentation.components.HomeCardClassify
+import com.neirasphere.ecosphere.presentation.components.HomeCategoriesLearnCard
 import com.neirasphere.ecosphere.presentation.components.SearchBar
 import com.neirasphere.ecosphere.presentation.components.SectionTextColumn
-import com.neirasphere.ecosphere.presentation.common.UiState
-import com.neirasphere.ecosphere.presentation.components.HomeCategoriesLearnCard
 import com.neirasphere.ecosphere.presentation.components.SectionTextColumnMap
 import com.neirasphere.ecosphere.presentation.navigation.Screen
 import com.neirasphere.ecosphere.presentation.screen.classification.ClassifyHistoryViewModel

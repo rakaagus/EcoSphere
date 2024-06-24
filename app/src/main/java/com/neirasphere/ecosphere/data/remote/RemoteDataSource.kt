@@ -23,7 +23,7 @@ class RemoteDataSource @Inject constructor(
         return apiClassifyService.classifyTrash(imageMultiPart)
     }
 
-    val imageBaseURL = "http:/192.168.1.7:4000/assets/"
+    val imageBaseURL = "https://ecosphereapi.alfindev.my.id/assets/"
 
     suspend fun getUserById(id: Int) = apiService.getUserById(id)
 

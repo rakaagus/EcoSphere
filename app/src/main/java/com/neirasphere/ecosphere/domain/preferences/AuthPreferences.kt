@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface AuthPreferences {
 
     val statusLogin : Preferences.Key<Boolean>
+    val iduser: Preferences.Key<Int>
     val tokenUser : Preferences.Key<String>
     val firstName : Preferences.Key<String>
     val lastName : Preferences.Key<String>

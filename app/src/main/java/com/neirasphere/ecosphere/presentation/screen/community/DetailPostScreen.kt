@@ -11,8 +11,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -33,6 +37,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,6 +57,7 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.presentation.components.CenterTopAppBar
+import com.neirasphere.ecosphere.presentation.components.CommentLayout
 import com.neirasphere.ecosphere.presentation.components.PostAvatarAndInfo
 import com.neirasphere.ecosphere.presentation.navigation.Screen
 import com.neirasphere.ecosphere.ui.theme.BlackColor
@@ -66,14 +72,21 @@ fun DetailPostScreen(
     postId: Int?,
     viewModel: CommunityViewModel = hiltViewModel()
 ) {
+    viewModel.getUser()
+    val user by viewModel.user.collectAsState()
+    val token = user.user?.token
     Log.d("cek postId", "$postId")
     viewModel.setPostId(postId!!)
     Log.d("cek VMPostId", "${viewModel.getPostId()}")
     viewModel.getPostById()
+    viewModel.getCommentsByPostId()
     val state by viewModel.getPostState.collectAsStateWithLifecycle()
+    val commentState by viewModel.getPostCommentState.collectAsState()
     Log.d("cek posts detail", "${state.posts}")
+    Log.d("cek comments detail", "${commentState.comments}")
 
     val post = state.posts
+    val comments = commentState.comments
 
     var text by remember {
         mutableStateOf("")
@@ -111,8 +124,54 @@ fun DetailPostScreen(
                     ),
                     placeholder = {
                         androidx.compose.material3.Text(text = "Tulis komentar di sini")
+                    },
+                    leadingIcon = {
+                        Image(
+                            modifier = modifier
+                                .size(50.dp)
+                                .clip(shape = CircleShape),
+                            painter = if (user.user?.avatar != null) rememberAsyncImagePainter(model = user.user!!.avatar) else painterResource(id = R.drawable.image_default),
+                            contentScale = ContentScale.Crop,
+                            contentDescription = "Post User Avatar"
+                        )
+                    },
+                    trailingIcon = {
+                        Button(
+                            onClick = { viewModel.postComment(
+                                token!!,
+                                postId,
+                                text
+                            ) },
+                            colors = ButtonDefaults.buttonColors(
+                                MaterialTheme.colorScheme.primary
+                            ),
+                            shape = RoundedCornerShape(24.dp)
+                        ) {
+                            androidx.compose.material3.Text(
+                                text = "Posting",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Color.White
+                            )
+                        }
                     }
                 )
+                Divider()
+                if (comments.isNotEmpty()) {
+                    LazyColumn(
+                        modifier = modifier.padding(bottom = 0.dp)
+                    ) {
+                        items(comments, key = { it.id }) {
+                            CommentLayout(comment = it, navController = navController)
+                            androidx.compose.material3.Divider()
+                        }
+                    }
+                } else {
+                    Text(
+                        text = "Tidak ada komentar",
+                        modifier = modifier
+                            .padding(16.dp)
+                        )
+                }
             } else {
                 Text(text = "Error data fetching: ${state.isLoading}")
             }
@@ -126,9 +185,15 @@ private fun DetailPostContent(
     modifier: Modifier = Modifier,
     navController: NavController
 ) {
-    val isLiked = remember { mutableStateOf(false) }
+    val isLiked = remember { mutableStateOf(post[0].liked) }
 
     fun toggleLike() {
+//        viewModel.postLike()
+        if (isLiked.value) {
+            post[0].likes--
+        } else {
+            post[0].likes++
+        }
         isLiked.value = !isLiked.value
     }
 

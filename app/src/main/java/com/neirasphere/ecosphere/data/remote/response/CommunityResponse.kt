@@ -19,6 +19,15 @@ data class GetPostsResponse(
     val message: String? = null
 )
 
+data class PostResponse(
+
+    @field:SerializedName("message")
+    val message: String,
+    @field:SerializedName("success")
+    val success: Boolean? = null
+
+)
+
 data class DataItem(
 
     @field:SerializedName("communityId")

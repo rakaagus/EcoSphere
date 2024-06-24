@@ -40,10 +40,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.domain.model.PostComment
+import com.neirasphere.ecosphere.presentation.screen.community.CommunityViewModel
 
 @Composable
 fun PostLayout(
@@ -67,7 +69,7 @@ fun PostLayout(
                 modifier = Modifier
                     .size(50.dp)
                     .clip(shape = CircleShape),
-                painter = if (post.user.avatar != null) rememberAsyncImagePainter(model = post.user.avatar) else painterResource(id = R.drawable.accoun_user),
+                painter = if (post.user.avatar != null) rememberAsyncImagePainter(model = post.user.avatar) else painterResource(id = R.drawable.image_default),
                 contentScale = ContentScale.Crop,
                 contentDescription = "Post User Avatar"
             )
@@ -85,14 +87,21 @@ fun PostLayout(
                         )
                         Spacer(modifier = Modifier.size(5.dp))
                         Text(
-                            text = "@${post.user.email} · ${post.timeAgo()}",
+                            text = "· ${post.timeAgo()}",
                             style = MaterialTheme.typography.bodySmall.copy(
                                 fontSize = 12.sp
                             )
                         )
                     } else {
                         Text(
-                            text = "@${post.user.email} · ${post.timeAgo()}",
+                            text = post.user.email,
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                fontSize = 12.sp
+                            )
+                        )
+                        Spacer(modifier = Modifier.size(5.dp))
+                        Text(
+                            text = "· ${post.timeAgo()}",
                             style = MaterialTheme.typography.bodySmall.copy(
                                 fontSize = 12.sp
                             )
@@ -146,7 +155,7 @@ fun CommentLayout(
                 modifier = Modifier
                     .size(50.dp)
                     .clip(shape = CircleShape),
-                painter = if (comment.User.avatar != null) rememberAsyncImagePainter(model = comment.User.avatar) else painterResource(id = R.drawable.accoun_user),
+                painter = if (comment.User.avatar != null) rememberAsyncImagePainter(model = comment.User.avatar) else painterResource(id = R.drawable.image_default),
                 contentScale = ContentScale.Crop,
                 contentDescription = "Post User Avatar"
             )
@@ -164,12 +173,19 @@ fun CommentLayout(
                         )
                         Spacer(modifier = Modifier.size(5.dp))
                         Text(
-                            text = "@${comment.User.email} · ${comment.timeAgo()}",
+                            text = "· ${comment.timeAgo()}",
                             style = MaterialTheme.typography.bodySmall.copy(
                                 fontSize = 12.sp
                             )
                         )
                     } else {
+                        Text(
+                            text = comment.User.email,
+                            style = MaterialTheme.typography.labelSmall.copy(
+                                fontSize = 12.sp
+                            )
+                        )
+                        Spacer(modifier = Modifier.size(5.dp))
                         Text(
                             text = "@${comment.User.email} · ${comment.timeAgo()}",
                             style = MaterialTheme.typography.bodySmall.copy(
@@ -242,7 +258,7 @@ fun CommentAvatarAndInfo(
                 modifier = modifier
                     .size(50.dp)
                     .clip(shape = CircleShape),
-                painter = if (comment.User.avatar != null) rememberAsyncImagePainter(model = comment.User.avatar) else painterResource(id = R.drawable.accoun_user),
+                painter = if (comment.User.avatar != null) rememberAsyncImagePainter(model = comment.User.avatar) else painterResource(id = R.drawable.image_default),
                 contentScale = ContentScale.Crop,
                 contentDescription = "Post User Avatar"
             )
@@ -288,7 +304,7 @@ fun PostAvatarAndInfo(
             modifier = modifier
                 .size(50.dp)
                 .clip(shape = CircleShape),
-            painter = if (post.user.avatar != null) rememberAsyncImagePainter(model = post.user.avatar) else painterResource(id = R.drawable.accoun_user),
+            painter = if (post.user.avatar != null) rememberAsyncImagePainter(model = post.user.avatar) else painterResource(id = R.drawable.image_default),
             contentScale = ContentScale.Crop,
             contentDescription = "Post User Avatar"
         )
@@ -303,14 +319,21 @@ fun PostAvatarAndInfo(
                 )
                 Spacer(modifier = Modifier.size(5.dp))
                 Text(
-                    text = "@${post.user.email} · ${post.timeAgo()}",
+                    text = "${post.user.email} · ${post.timeAgo()}",
                     style = MaterialTheme.typography.bodySmall.copy(
                         fontSize = 12.sp
                     )
                 )
             } else {
                 Text(
-                    text = "@${post.user.email} · ${post.timeAgo()}",
+                    text = post.user.email,
+                    style = MaterialTheme.typography.labelSmall.copy(
+                        fontSize = 12.sp
+                    )
+                )
+                Spacer(modifier = Modifier.size(5.dp))
+                Text(
+                    text = post.timeAgo(),
                     style = MaterialTheme.typography.bodySmall.copy(
                         fontSize = 12.sp
                     )
@@ -345,10 +368,20 @@ fun PostAndImage(post: com.neirasphere.ecosphere.domain.model.CommunityPostSQL, 
 }
 
 @Composable
-fun PostActions(post: com.neirasphere.ecosphere.domain.model.CommunityPostSQL, modifier: Modifier = Modifier) {
-    val isLiked = remember { mutableStateOf(false) }
+fun PostActions(
+    post: com.neirasphere.ecosphere.domain.model.CommunityPostSQL,
+    modifier: Modifier = Modifier,
+    viewModel: CommunityViewModel = hiltViewModel()
+) {
+    val isLiked = remember { mutableStateOf(post.liked) }
 
     fun toggleLike() {
+//        viewModel.postLike()
+        if (isLiked.value) {
+            post.likes--
+        } else {
+            post.likes++
+        }
         isLiked.value = !isLiked.value
     }
 

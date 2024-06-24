@@ -11,8 +11,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -52,6 +56,7 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.neirasphere.ecosphere.R
 import com.neirasphere.ecosphere.presentation.components.CenterTopAppBar
+import com.neirasphere.ecosphere.presentation.components.CommentLayout
 import com.neirasphere.ecosphere.presentation.components.PostAvatarAndInfo
 import com.neirasphere.ecosphere.presentation.navigation.Screen
 import com.neirasphere.ecosphere.ui.theme.BlackColor
@@ -70,10 +75,14 @@ fun DetailPostScreen(
     viewModel.setPostId(postId!!)
     Log.d("cek VMPostId", "${viewModel.getPostId()}")
     viewModel.getPostById()
+    viewModel.getCommentsByPostId()
     val state by viewModel.getPostState.collectAsStateWithLifecycle()
+    val commentState by viewModel.getPostCommentState.collectAsStateWithLifecycle()
     Log.d("cek posts detail", "${state.posts}")
+    Log.d("cek comments detail", "${commentState.comments}")
 
     val post = state.posts
+    val comments = commentState.comments
 
     var text by remember {
         mutableStateOf("")
@@ -111,8 +120,41 @@ fun DetailPostScreen(
                     ),
                     placeholder = {
                         androidx.compose.material3.Text(text = "Tulis komentar di sini")
+                    },
+                    trailingIcon = {
+                        Button(
+                            onClick = {},
+                            colors = ButtonDefaults.buttonColors(
+                                MaterialTheme.colorScheme.primary
+                            ),
+                            shape = RoundedCornerShape(24.dp)
+                        ) {
+                            androidx.compose.material3.Text(
+                                text = "Posting",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Color.White
+                            )
+                        }
                     }
                 )
+                Divider()
+                if (comments.isNotEmpty()) {
+                    LazyColumn(
+                        modifier = modifier.padding(bottom = 0.dp)
+                    ) {
+                        items(comments, key = { it.id }) {
+                            CommentLayout(comment = it, navController = navController)
+                            androidx.compose.material3.Divider()
+                        }
+                    }
+                } else {
+//                    Text(
+//                        text = "Error data fetching: ${commentState.isError}, ${commentState.isLoading}",
+//                        modifier = modifier
+//                            .padding(16.dp)
+//                        )
+                    // TODO: FIX Comment Fetching
+                }
             } else {
                 Text(text = "Error data fetching: ${state.isLoading}")
             }
